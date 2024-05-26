@@ -1,0 +1,9 @@
+{
+    "welcome": "Welcome",
+    "balance": "Balance",
+    "receipts": "Receipts",
+    "archive": "Archive",
+    "profile": "Profile",
+    "balanceAmount": "Balance: ${{amount}}"
+  }
+  
