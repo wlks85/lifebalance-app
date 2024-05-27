@@ -12,21 +12,23 @@ const Layout = ({children, title = '', header = null}) => {
     navigation.navigate('Start');
   };
   return (
-    <View style={styles.container}>
-      {!header && (
-        <View style={styles.headerContainer}>
-          <Icon
-            onPress={goBack}
-            style={styles.backButton}
-            name={'long-arrow-left'}
-            color={'#454d66'}
-            size={25}
-          />
-          <Text style={styles.header}>{title}</Text>
-        </View>
-      )}
-      <SafeAreaView style={styles.wrapper}>{children}</SafeAreaView>
-    </View>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        {!header && (
+          <View style={styles.headerContainer}>
+            <Icon
+              onPress={goBack}
+              style={styles.backButton}
+              name={'long-arrow-left'}
+              color={'#454d66'}
+              size={25}
+            />
+            <Text style={styles.header}>{title}</Text>
+          </View>
+        )}
+        <SafeAreaView style={styles.wrapper}>{children}</SafeAreaView>
+      </View>
+    </SafeAreaView>
   );
 };
 

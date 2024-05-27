@@ -1,47 +1,45 @@
 import React from 'react';
-import { View, Text,StyleSheet,TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useAppContext } from '../context';
 import Layout from '../components/Layout';
 import BankBalance from '../components/profile/BankBalanceComponent';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-const ProfilePageListItems = ({items})=> {
-    
-
+const ProfilePageListItems = ({ items }) => {
     const renderListItem = (item) => {
         return (
             <TouchableOpacity
                 key={Math.random()}
                 style={styles.menuItem}
             >
-                <Icon style={styles.menuIcon} name={item.icon} size={30} color="#6200ee" />   
+                <Icon style={styles.menuIcon} name={item.icon} size={30} color="#6200ee" />
                 <Text style={styles.menuText}>{item.title}</Text>
-                <Icon style={styles.menuIcon} name={item.icon} size={30} color="#6200ee" />  
+                <Icon style={styles.menuIcon} name={item.icon} size={30} color="#6200ee" />
             </TouchableOpacity>
         )
     }
-    
+
     return (
-    <View style={styles.navigationCard}>
-        {items.map(item=> renderListItem(item))}
-    </View>
+        <View style={styles.navigationCard}>
+            {items.map(item => renderListItem(item))}
+        </View>
     )
 }
 
-const OtherInformation = ()=> {
+const OtherInformation = () => {
     const items = [{
         title: "Data Protection",
         icon: 'home',
-    },{
+    }, {
         title: "Data M",
         icon: 'home',
     }];
     return <>
-    <ProfilePageListItems items={items} /></>
+        <ProfilePageListItems items={items} /></>
 }
 
-const Security = ({user})=> {
+const Security = ({ user }) => {
     const securityButtons = [{
         title: "Face-ID",
         icon: 'home',
@@ -54,22 +52,22 @@ const Security = ({user})=> {
         title: "Logout",
         icon: 'sign-out',
     },
-];
-    return (<ProfilePageListItems items={securityButtons}/>);
+    ];
+    return (<ProfilePageListItems items={securityButtons} />);
 }
 
-const SectionLabel = ({label=""}) => {
+const SectionLabel = ({ label = "" }) => {
     return (<View style={bStyles.sectionLabel}>
         <Text style={bStyles.sectionText}>{label}</Text>
     </View>);
 }
 
-const BasicInformaton = ({user}) => {
+const BasicInformaton = ({ user }) => {
     return (
-    <View>
-        <Text style={bStyles.name}>{user.fullname}</Text>
-        <Text style={bStyles.email}>{user.email}</Text>
-    </View>);
+        <View>
+            <Text style={bStyles.name}>{user.fullname}</Text>
+            <Text style={bStyles.email}>{user.email}</Text>
+        </View>);
 }
 const bStyles = StyleSheet.create({
     name: {
@@ -98,17 +96,16 @@ const bStyles = StyleSheet.create({
 
 const ProfileScreen = () => {
     // const { user } = useAppContext();
-    const user = {fullname: "Mehedi Hasan", email: "mh@annonlab.com",balance: 20.01};
+    const user = { fullname: "Mehedi Hasan", email: "mh@annonlab.com", balance: 20.01 };
     return (
         <Layout title='Profil'>
             <ScrollView>
                 <BasicInformaton user={user} />
-                <BankBalance user={user}/>
+                <BankBalance user={user} />
                 <SectionLabel label="Schicherheit" />
                 <Security user={user} />
                 <SectionLabel label="Rechtliche Informationen" />
                 <OtherInformation />
-                <SectionLabel />
             </ScrollView>
         </Layout>
     );
@@ -124,7 +121,7 @@ const styles = StyleSheet.create({
         shadowRadius: 25,
         shadowOffset: { width: 0, height: 5 },
         overflow: 'scroll',
-        
+
     },
     menuItem: {
         display: 'flex',

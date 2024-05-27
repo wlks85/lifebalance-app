@@ -1,14 +1,37 @@
+//@ts-nocheck
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const BankBalance = ({user}: any) => {
+const BankBalance = ({user, hasNavigation = false}: any) => {
+  const {navigate} = useNavigation();
   const formatBalance = value => {
     return `${value}`.replace('.', ',') + ' EUR';
   };
 
-  return (
+  const navigateTo = () => {
+    navigate('Profil');
+  };
+
+  return hasNavigation ? (
+    <TouchableOpacity activeOpacity={1} onPress={navigateTo}>
+      <View style={styles.balanceCard}>
+        <View style={styles.balanceHeader}>
+          <View>
+            <Text style={styles.cardTitle}>Kontostand</Text>
+          </View>
+          <View>
+            <Icon name="credit-card" size={30} color={'#ffffff'} />
+          </View>
+        </View>
+        <View style={styles.balanceContainer}>
+          <Text style={styles.balanceText}>{formatBalance(user?.balance)}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  ) : (
     <View style={styles.balanceCard}>
       <View style={styles.balanceHeader}>
         <View>
