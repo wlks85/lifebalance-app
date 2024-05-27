@@ -18,7 +18,8 @@ const Layout = ({children, title = '', header = null}) => {
           <Icon
             onPress={goBack}
             style={styles.backButton}
-            name={'arrow-left'}
+            name={'long-arrow-left'}
+            color={'#454d66'}
             size={25}
           />
           <Text style={styles.header}>{title}</Text>
@@ -32,6 +33,7 @@ const Layout = ({children, title = '', header = null}) => {
 const styles = StyleSheet.create({
   container: {
     minHeight: '100%',
+    backgroundColor: 'rgba(255,255,255,0)',
   },
   headerContainer: {
     display: 'flex',
@@ -44,16 +46,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingLeft: 15,
     fontWeight: 700,
+    backgroundColor: 'rgba(255,255,255,0)',
   },
   backButton: {
-    fontWeight: 200,
+    fontWeight: '100',
+    fontSize: 17,
+    fontStyle: 'normal',
   },
   header: {
     textAlign: 'center',
     paddingLeft: '25%',
     color: '#1e4251',
-    fontWeight: '700',
+    fontWeight: 'bold',
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans",',
+    fontSize: 17,
   },
   wrapper: {
     display: 'flex',
