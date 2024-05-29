@@ -24,10 +24,8 @@ const MainNavigation = () => {
 
   const router = useRoute();
   const routeName = getFocusedRouteNameFromRoute(router) ?? 'Home';
-
-  const isTabBarVisible = routeName !== 'Erfassen';
   const {t} = useTranslation();
-
+  const isTabBarVisible = routeName !== t('navigation.receipt');
   return (
     <Tab.Navigator
       screenOptions={({route}) => {
