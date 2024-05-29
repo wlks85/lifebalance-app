@@ -1,20 +1,42 @@
 //@ts-nocheck
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import BankBalanceComponent from "../components/profile/BankBalanceComponent";
+import { useTranslation } from 'react-i18next';
+import i18next from '../utils/i18next';
 
 const RenderNavigation = () => {
     const show = true;
     const navigation = useNavigation();
+    const { t } = useTranslation();
+    const [showLanguages, setShowLanguages] = useState(false);
+
+    function changeLanguage(lang: string) {
+        i18next.changeLanguage(lang);
+        setShowLanguages(false);
+    }
     return show && (<View style={styles.navigationCard}>
+        <Modal visible={showLanguages} onRequestClose={() => setShowLanguages(false)}>
+            <FlatList
+                data={[{ title: "English", short: "en" }, { title: "German", short: "de" }]}
+                renderItem={({ item }) => (
+                    <View>
+                        <Text onPress={() => changeLanguage(item.short)}>{item.title}</Text>
+                    </View>
+                )}
+            />
+        </Modal>
+        <View>
+            <Text onPress={() => setShowLanguages(true)}>Change Language</Text>
+        </View>
         <TouchableOpacity
             style={styles.menuItem}
             onPress={() => navigation.navigate('Receipts')}
         >
-            <Text style={styles.menuText}>Receipts</Text>
+            <Text style={styles.menuText}>{t("Receipts")}</Text>
             <Icon style={styles.menuIcon} name="file-text-o" size={30} color="#6200ee" />
             
         </TouchableOpacity>
