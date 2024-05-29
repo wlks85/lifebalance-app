@@ -5,16 +5,18 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import BankBalanceComponent from "../components/profile/BankBalanceComponent";
+import { useTranslation } from 'react-i18next';
 
 const RenderNavigation = () => {
     const show = true;
     const navigation = useNavigation();
+    const { t } = useTranslation();
     return show && (<View style={styles.navigationCard}>
         <TouchableOpacity
             style={styles.menuItem}
             onPress={() => navigation.navigate('Erfassen')}
         >
-            <Text style={styles.menuText}>Receipts</Text>
+            <Text style={styles.menuText}>{t("Receipts")}</Text>
             <Icon style={styles.menuIcon} name="file-text-o" size={30} color="#6200ee" />
 
         </TouchableOpacity>
