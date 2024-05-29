@@ -3,57 +3,87 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 
 import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/AntDesign';
 
-const Layout = ({children, title = '', header = null}) => {
+const Layout = ({
+  children,
+  title = '',
+  header = null,
+  nobackButton = false,
+}) => {
   const navigation = useNavigation();
 
   const goBack = () => {
     navigation.navigate('Start');
   };
   return (
-    <View style={styles.container}>
-      {!header && (
-        <View style={styles.headerContainer}>
-          <Icon
-            onPress={goBack}
-            style={styles.backButton}
-            name={'arrow-left'}
-            size={25}
-          />
-          <Text style={styles.header}>{title}</Text>
-        </View>
-      )}
-      <SafeAreaView style={styles.wrapper}>{children}</SafeAreaView>
-    </View>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        {!header && (
+          <View style={styles.headerContainer}>
+            {!nobackButton && (
+              <>
+                <View style={styles.backButtonContainer}>
+                  <Icon
+                    onPress={goBack}
+                    style={styles.backButton}
+                    name={'arrowleft'}
+                    color={'#454d66'}
+                    size={25}
+                  />
+                </View>
+              </>
+            )}
+
+            <View style={styles.headerTextContainer}>
+              <Text style={styles.header}>{title}</Text>
+            </View>
+            <View style={{flex: 1}} />
+          </View>
+        )}
+        <SafeAreaView style={styles.wrapper}>{children}</SafeAreaView>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     minHeight: '100%',
+    backgroundColor: 'rgba(255,255,255,0)',
   },
   headerContainer: {
     display: 'flex',
     flexDirection: 'row',
-    gap: 20,
-    alignItems: 'center',
     height: 80,
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans"',
-    color: '#1e4251',
-    textAlign: 'center',
-    paddingLeft: 15,
-    fontWeight: 700,
+    backgroundColor: '#ffffff',
+    padding: 15,
+  },
+  backButtonContainer: {
+    height: 48,
+    justifyContent: 'center',
+    width: '20%',
+    display: 'flex',
+    flex: 1,
   },
   backButton: {
-    fontWeight: 200,
+    fontWeight: '100',
+    fontSize: 27,
+    fontStyle: 'normal',
+  },
+  headerTextContainer: {
+    display: 'flex',
+    height: 48,
+    justifyContent: 'center',
+    flex: 5,
   },
   header: {
     textAlign: 'center',
-    paddingLeft: '25%',
     color: '#1e4251',
-    fontWeight: '700',
+    fontWeight: 'bold',
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans",',
+    fontSize: 17,
   },
   wrapper: {
     display: 'flex',
