@@ -1,7 +1,7 @@
 //@ts-nocheck
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import BankBalanceComponent from "../components/profile/BankBalanceComponent";
@@ -11,10 +11,19 @@ const RenderNavigation = () => {
     const show = true;
     const navigation = useNavigation();
     const { t } = useTranslation();
+    const routes = useNavigationState(states => states.routes);
+
+    const navigateToX = (path)=> {
+        const profileRoute = routes.find(route=> route.params?.title === path);
+        if(profileRoute) {
+            navigation.navigate({key: profileRoute.key});
+        }
+    }
+
     return show && (<View style={styles.navigationCard}>
         <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => navigation.navigate('Erfassen')}
+            onPress={()=> navigateToX('receipt')}
         >
             <Text style={styles.menuText}>{t("navigation.receipt")}</Text>
             <Icon style={styles.menuIcon} name="file-text-o" size={30} color="#6200ee" />
@@ -22,14 +31,14 @@ const RenderNavigation = () => {
         </TouchableOpacity>
         <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => navigation.navigate('Archiv')}
+            onPress={()=> navigateToX('archive')}
         >
             <Text style={styles.menuText}>Archive</Text>
             <Icon style={styles.menuIcon} name="folder-o" size={30} color="#6200ee" />
         </TouchableOpacity>
         <TouchableOpacity
             style={styles.menuItem}
-            onPress={() => navigation.navigate('Profil')}
+            onPress={()=> navigateToX('profile')}
         >
             <Text style={styles.menuText}>Profile</Text>
             <Icon style={styles.menuIcon} name="user-o" size={30} color="#6200ee" />

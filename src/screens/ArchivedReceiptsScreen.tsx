@@ -8,6 +8,7 @@ import { formatDate, formatAmount } from '../utils';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import AntIcon from 'react-native-vector-icons/AntDesign';
+import { ReceiptService } from '../services';
 
 const ModalComponent = ({visible, onClose, children,})=> (
   <Modal
@@ -237,6 +238,8 @@ const ReceiptItem = ({ receipt,onItemClicked }) => {
 // 0px 2px 25px 0px rgba(0, 0, 0, 0.07);
 
 const styles = StyleSheet.create({
+  container: {
+  },
   card: {
     backgroundColor: '#ffffff',
     borderRadius: 10,
@@ -396,32 +399,22 @@ const ListComponent = ({ data = [] }) => {
 
 const ArchivedReceiptsScreen = () => {
   const navigation = useNavigation();
+  const [receipts, setReceipts] = useState([]);
 
-  const data = [{ "title": "January", "items": [{ "id": 1, "amount": 32.21, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-01-03T00:00:00", "amount_paid": 18.54 }, { "id": 2, "amount": 91.26, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-01-18T00:00:00", "amount_paid": 44.73 }] }, { "title": "February", "items": [{ "id": 1, "amount": 38.52, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-02-18T00:00:00", "amount_paid": 23.63 }] }, { "title": "March", "items": [{ "id": 1, "amount": 51.93, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-03-26T00:00:00", "amount_paid": 16.34 }, { "id": 2, "amount": 53.25, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-03-12T00:00:00", "amount_paid": 88.75 }, { "id": 3, "amount": 56.51, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-03-21T00:00:00", "amount_paid": 42.13 }] }, { "title": "April", "items": [{ "id": 1, "amount": 20.98, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-04-22T00:00:00", "amount_paid": 41.26 }, { "id": 2, "amount": 33.07, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-04-08T00:00:00", "amount_paid": 30.35 }, { "id": 3, "amount": 56.44, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-04-15T00:00:00", "amount_paid": 83.23 }] }, { "title": "May", "items": [{ "id": 1, "amount": 45.28, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-05-18T00:00:00", "amount_paid": 75.74 }, { "id": 2, "amount": 29.7, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-05-17T00:00:00", "amount_paid": 33.84 }, { "id": 3, "amount": 61.76, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-05-20T00:00:00", "amount_paid": 78.98 }, { "id": 4, "amount": 74.78, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-05-17T00:00:00", "amount_paid": 83.95 }, { "id": 5, "amount": 31.43, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-05-07T00:00:00", "amount_paid": 54.38 }] }]
-    .map((item) => ({ title: item.title, data: item.items }));
+  useEffect(()=>{
+    ReceiptService.getArchivedReceipts()
+    .then((receipts)=> {
+      setReceipts(receipts);
+    })
+  }, []);
 
-  const receipts = [{
-    id: 1,
-    amount: 23.93,
-    company: { name: "GMbh Finance", logo: "GF" },
-    date: new Date(),
-    amount_paid: 14.32,
-  },
-  {
-    id: 2,
-    amount: 21.93,
-    company: { name: "GMbh Finance", logo: "GF" },
-    date: new Date(),
-    amount_paid: 3.32,
-  },
-  ];
   const { user } = useAppContext();
 
 
   return (
     <Layout title='Belagarchiv'>
       <SafeAreaView style={styles.container}>
-        <ListComponent data={data} />
+        <ListComponent data={receipts} />
       </SafeAreaView>
     </Layout>
   );

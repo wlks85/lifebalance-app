@@ -1,9 +1,8 @@
 //@ts-nocheck
 import { useNavigation, useNavigationState } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { Text,Modal, View,StyleSheet, SafeAreaView } from 'react-native';
-import Icon from "react-native-vector-icons/AntDesign"
-import Layout from '../components/Layout';
+import React from 'react';
+import { Text, View,StyleSheet, SafeAreaView } from 'react-native';
+import Icon from "react-native-vector-icons/AntDesign";
 
 const ReceiptScreen = ()=> {
     const navigation = useNavigation();

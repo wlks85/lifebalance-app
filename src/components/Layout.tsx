@@ -38,10 +38,9 @@ const Layout = ({
             <View style={styles.headerTextContainer}>
               <Text style={styles.header}>{title}</Text>
             </View>
-            <View style={{flex: 1}} />
           </View>
         )}
-        <SafeAreaView style={styles.wrapper}>{children}</SafeAreaView>
+        <View style={styles.wrapper}>{children}</View>
       </View>
     </SafeAreaView>
   );
@@ -49,7 +48,7 @@ const Layout = ({
 
 const styles = StyleSheet.create({
   container: {
-    minHeight: '100%',
+    flex: 1,
     backgroundColor: 'rgba(255,255,255,0)',
   },
   headerContainer: {
@@ -80,19 +79,17 @@ const styles = StyleSheet.create({
   },
   header: {
     textAlign: 'center',
-    color: '#1e4251',
-    fontWeight: 'bold',
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans",',
-    fontSize: 17,
+    color: '#454d66',
+    fontWeight: '700',
+    fontSize: 22,
   },
   wrapper: {
     display: 'flex',
     paddingLeft: 15,
-    paddingRight: 15,
     flexGrow: 1,
-    backgroundColor: 'rgba(255,255,255,0)',
+    backgroundColor: 'rgb(255,255,255)',
     paddingBottom: 90,
-    marginBottom: 80,
   },
 });
 
