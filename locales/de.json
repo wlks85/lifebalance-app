@@ -1,3 +1,9 @@
 {
-  "Receipts": "Quittungen"
+  "Receipts": "Quittungen",
+  "navigation": {
+    "receipt": "Receipt",
+    "home": "Start",
+    "archive": "Archive",
+    "profile": "Profile"
+  }
 }

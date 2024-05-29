@@ -16,7 +16,7 @@ const RenderNavigation = () => {
             style={styles.menuItem}
             onPress={() => navigation.navigate('Erfassen')}
         >
-            <Text style={styles.menuText}>{t("Receipts")}</Text>
+            <Text style={styles.menuText}>{t("navigation.receipt")}</Text>
             <Icon style={styles.menuIcon} name="file-text-o" size={30} color="#6200ee" />
 
         </TouchableOpacity>

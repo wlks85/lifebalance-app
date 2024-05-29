@@ -14,6 +14,7 @@ import AppLogin from '../screens/Login';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useTheme} from '../theme';
+import {useTranslation} from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -25,6 +26,7 @@ const MainNavigation = () => {
   const routeName = getFocusedRouteNameFromRoute(router) ?? 'Home';
 
   const isTabBarVisible = routeName !== 'Erfassen';
+  const {t} = useTranslation();
 
   return (
     <Tab.Navigator
@@ -76,22 +78,22 @@ const MainNavigation = () => {
         };
       }}>
       <Tab.Screen
-        name="Start"
+        name={t('navigation.home')}
         component={HomeScreen}
         initialParams={{title: 'home'}}
       />
       <Tab.Screen
-        name="Erfassen"
+        name={t('navigation.receipt')}
         component={RecordReceiptScreen}
         initialParams={{title: 'receipt'}}
       />
       <Tab.Screen
-        name="Archiv"
+        name={t('navigation.archive')}
         component={ArchivedReceiptsScreen}
         initialParams={{title: 'archive'}}
       />
       <Tab.Screen
-        name="Profil"
+        name={t('navigation.profile')}
         component={ProfileScreen}
         initialParams={{title: 'user'}}
       />
