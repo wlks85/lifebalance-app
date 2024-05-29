@@ -9,6 +9,7 @@ import HomeScreen from '../screens/HomeScreen';
 import RecordReceiptScreen from '../screens/RecordReceiptScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ArchivedReceiptsScreen from '../screens/ArchivedReceiptsScreen';
+import AppLogin from '../screens/Login';
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -104,6 +105,7 @@ const AppNavigator = () => (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="MainNav" component={MainNavigation} />
       <Stack.Screen name="Receipt" component={RecordReceiptScreen} />
+      <Stack.Screen name="Login" component={AppLogin} />
     </Stack.Navigator>
   </NavigationContainer>
 );

@@ -229,7 +229,7 @@ const ReceiptItem = ({ receipt,onItemClicked }) => {
     </TouchableOpacity>
   );
 }
-
+// 0px 2px 25px 0px rgba(0, 0, 0, 0.07);
 
 const styles = StyleSheet.create({
   card: {
@@ -239,7 +239,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 5 },
-    overflow: 'scroll'
+    overflow: 'scroll',
+    elevation: 5,
   },
   receipt: {
     width: '100%',
@@ -418,14 +419,6 @@ const ArchivedReceiptsScreen = () => {
       <SafeAreaView style={styles.container}>
         <ListComponent data={data} />
       </SafeAreaView>
-      {/* <View>
-          <FlatList
-            style={styles.card}
-            data={receipts}
-            renderItem={({item}) => <ReceiptItem key={item.id.toString()} receipt={item} />}
-            keyExtractor={item => item.id.toString()}
-          />
-        </View> */}
     </Layout>
   );
 };

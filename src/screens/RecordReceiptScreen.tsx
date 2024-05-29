@@ -16,7 +16,7 @@ const ReceiptScreen = ()=> {
     }
 
     return (
-        <Layout>
+        <Layout title='Dienstleistung'>
             <View>
                 <Text>RECORD SCREEN</Text>
             </View>
