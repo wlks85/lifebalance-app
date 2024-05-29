@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 80,
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans"',
-    backgroundColor: 'rgba(255,255,255,0)',
+    backgroundColor: '#ffffff',
     padding: 15,
   },
   backButtonContainer: {

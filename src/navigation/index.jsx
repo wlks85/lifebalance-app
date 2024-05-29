@@ -21,15 +21,14 @@ const Stack = createStackNavigator();
 const MainNavigation = () => {
   const {theme} = useTheme();
 
-  const route = useRoute();
-  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+  const router = useRoute();
+  const routeName = getFocusedRouteNameFromRoute(router) ?? 'Home';
 
   const isTabBarVisible = routeName !== 'Erfassen';
 
   return (
     <Tab.Navigator
       screenOptions={({route}) => {
-        console.log('Route', route);
         return {
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size, focused}) => {
@@ -102,7 +101,8 @@ const MainNavigation = () => {
 
 const AppNavigator = () => (
   <NavigationContainer>
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      screenOptions={{headerShown: false, tabBarStyle: {display: 'flex'}}}>
       <Stack.Screen name="MainNav" component={MainNavigation} />
       <Stack.Screen name="Receipt" component={RecordReceiptScreen} />
       <Stack.Screen name="Login" component={AppLogin} />

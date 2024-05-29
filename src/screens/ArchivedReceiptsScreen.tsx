@@ -7,6 +7,7 @@ import Layout from '../components/Layout';
 import { formatDate, formatAmount } from '../utils';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 
 const ModalComponent = ({visible, onClose, children,})=> (
   <Modal
@@ -15,7 +16,9 @@ const ModalComponent = ({visible, onClose, children,})=> (
     onRequestClose={onClose}
   >
     <View style={modalStyles.modalContainer}>
-      <View style={modalStyles.modalHeader}><Text onPress={onClose} style={modalStyles.modalCloseButton}>X</Text></View>
+      <View style={modalStyles.modalHeader}>
+        <AntIcon name="close" onPress={onClose} style={modalStyles.modalCloseButton} />
+      </View>
       <View style={modalStyles.modalContent}>
         {children}
         {/* <View style={{height: 30,width: '100%',
@@ -111,16 +114,18 @@ const ReceiptModal = ({ receipt, visible, onClose,onAction }) => (
 const modalStyles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(255,255,255,1)',
   },
   modalHeader: {
+    flexDirection: 'row',
     height: 80,
     backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    paddingLeft: 15,
+    alignItems: 'center'
   },
   modalCloseButton: {
-    fontSize: 25,
+    fontSize: 27,
+    color: '#454d66',
+    paddingLeft: 15,
   },
   modalContent: {
     flex: 1,
@@ -237,10 +242,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: '#000',
     shadowOpacity: 0.1,
-    shadowRadius: 10,
+    shadowRadius: 2,
     shadowOffset: { width: 0, height: 5 },
     overflow: 'scroll',
-    elevation: 5,
   },
   receipt: {
     width: '100%',
