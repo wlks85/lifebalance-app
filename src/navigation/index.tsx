@@ -17,6 +17,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {useTheme} from '../theme';
 import {useTranslation} from 'react-i18next';
 import {Text, View} from 'react-native';
+import ReceiptScreen from '../screens/RecordReceiptScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
