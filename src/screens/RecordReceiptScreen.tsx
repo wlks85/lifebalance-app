@@ -355,6 +355,10 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     color: '#454d66'
   },
+  sectionWrapper: {
+    display: 'flex',
+    gap: 10
+  },
   sectionTitle: {
     lineHeight: 24,
     paddingTop: 24,
@@ -502,18 +506,10 @@ const ReceiptScreen = () => {
 
 
   return (
-    <Layout title='Dienstleistung' showSearchIcon={true}>
+    <Layout title='Dienstleistung' showSearchIcon={false}>
       <SafeAreaView style={styles.container}>
         <ListComponent data={data} />
       </SafeAreaView>
-      {/* <View>
-          <FlatList
-            style={styles.card}
-            data={receipts}
-            renderItem={({item}) => <ReceiptItem key={item.id.toString()} receipt={item} />}
-            keyExtractor={item => item.id.toString()}
-          />
-        </View> */}
     </Layout>
   );
 };
