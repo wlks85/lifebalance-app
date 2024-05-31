@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 80,
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans"',
-    backgroundColor: '#ffffff',
+    // backgroundColor: '#ffffff',
     padding: 15,
   },
   backButtonContainer: {
@@ -90,9 +90,9 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     display: 'flex',
-    paddingLeft: 15,
+    // paddingLeft: 15,
     flexGrow: 1,
-    backgroundColor: 'rgb(255,255,255)',
+    // backgroundColor: 'red',
     paddingBottom: 90,
   },
 });
