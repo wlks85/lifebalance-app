@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Button, Pressable } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity } from 'react-native';
 import ModalComponent from '../modal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ReceiptItem from '../modules/receipt/receiptItem';
@@ -39,11 +39,9 @@ const ReceiptModal = ({ receipt, visible, onClose,onAction }) => (
           </View>
         </View>
         <View style={modalStyles.btnContainer}>
-        <Pressable onPress={()=>console.log('pressed')} style={({pressed})=> [
-          modalStyles.furtherBtn
-        ]}>
+        <TouchableOpacity onPress={()=>console.log('pressed')} style={modalStyles.furtherBtn}>
           <Text style={modalStyles.btnText}>Weiter</Text>
-        </Pressable>
+        </TouchableOpacity>
         </View>
       </View>
     )}
