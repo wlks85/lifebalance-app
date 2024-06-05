@@ -4,6 +4,7 @@ import React from 'react';
 
 import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {useTranslation} from 'react-i18next';
 
 const Layout = ({
   children,
@@ -12,9 +13,10 @@ const Layout = ({
   nobackButton = false,
 }) => {
   const navigation = useNavigation();
+  const {t} = useTranslation();
 
   const goBack = () => {
-    navigation.navigate('Start');
+    navigation.navigate(t('navigation.home'));
   };
   return (
     <SafeAreaView style={{flex: 1}}>
