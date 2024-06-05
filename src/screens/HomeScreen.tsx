@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, SafeAreaView, ImageBackground } from 'react-native';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -60,7 +60,47 @@ const HomeScreen = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView style={styles.container}>
-                <View style={styles.bannerContainer}>
+                <ImageBackground source={{  uri: "https://picsum.photos/200" }} style={{ width: "auto", height: 250, overflow: "hidden", borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
+                    <View
+                        style={{
+                            position: "relative",
+                        }}
+                    >
+                        <Image
+                            source={require("../assets/normal_u13.png")}
+                            style={{
+                                transform: [{ rotate: "45deg" }],
+                                position: "absolute",
+                                top: 122,
+                                left: -50,
+                                zIndex: 1
+                            }}
+                        />
+                        <Image
+                            source={require("../assets/normal_u15.png")}
+                            style={{
+                                transform: [{ rotate: "45deg" }],
+                                position: "absolute",
+                                top: 115,
+                                left: -46,
+                                zIndex: 2
+                            }}
+                        />
+                        <View
+                            style={{
+                                position: "absolute",
+                                top: 135,
+                                left: 30,
+                                zIndex: 3,
+                                margin: 0
+                            }}
+                        >
+                            <Text style={{ color: "#fff", fontSize: 26, fontWeight: 700, fontFamily: "serif" }}>John</Text>
+                            <Text style={{ color: "#fff", fontSize: 26, fontWeight: 700, fontFamily: "serif" }}>Doe!</Text>
+                        </View>
+                    </View>
+                </ImageBackground>
+                {/* <View style={styles.bannerContainer}>
                     <Image
                         source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUKydDx97ben_aZABRk5MRpYj7zaRfgAMW7Q&s' }}
                         style={styles.avatar}
@@ -68,7 +108,7 @@ const HomeScreen = () => {
                     <View style={styles.nameContainer}>
                         <View style={styles.nameGradient}><Text style={styles.nameText}>John Doe</Text></View>
                     </View>
-                </View>
+                </View> */}
                 <View style={styles.components}>
                     {RenderBalance()}
                     {RenderNavigation()}
@@ -211,8 +251,11 @@ const styles = StyleSheet.create({
     },
     components: {
         flex: 1,
-        padding: 20,
-        marginTop: -40,
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingTop: 30,
+        paddingBottom: 30,
+        marginTop: -60,
     }
 });
 

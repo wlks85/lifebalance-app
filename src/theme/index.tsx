@@ -16,7 +16,7 @@ const themes = {
       background: '#ffffff',
       card: '#f8f9fa',
       text: '#000000',
-      border: '#2c2c2c',
+      border: '#f0f0f0',
     },
     navigation: {
       icon: '#454d66',

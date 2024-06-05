@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useTheme} from '../theme';
 import {useTranslation} from 'react-i18next';
+import {Text, View} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -62,17 +63,18 @@ const MainNavigation = () => {
           tabBarLabelStyle: {
             fontSize: 14,
             fontWeight: 'bold',
+            display: 'none',
           },
           tabBarStyle: {
             display: isTabBarVisible ? 'flex' : 'none',
             justifyContent: 'center',
-            height: 90,
+            height: 96,
             backgroundColor: theme.colors.card,
             borderTopColor: theme.colors.border,
-            paddingTop: 10,
-            paddingBottom: 10,
-            paddingLeft: 10,
-            paddingRight: 10,
+            paddingTop: 2,
+            paddingBottom: 2,
+            paddingLeft: 2,
+            paddingRight: 2,
           },
         };
       }}>
@@ -80,21 +82,137 @@ const MainNavigation = () => {
         name={t('navigation.home')}
         component={HomeScreen}
         initialParams={{title: 'home'}}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({focused, color, size}) => (
+            <View
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icon name="home" size={size} color={color} />
+              <Text
+                // eslint-disable-next-line react-native/no-inline-styles
+                style={{
+                  fontSize: 12,
+                  fontWeight: 'bold',
+                  fontFamily: '"Open Sans", sans-serif',
+                  color: focused ? '#309975' : '#454d66',
+                }}>
+                {t('navigation.home')}
+              </Text>
+            </View>
+          ),
+        }}
       />
       <Tab.Screen
         name={t('navigation.receipt')}
         component={RecordReceiptScreen}
         initialParams={{title: 'receipt'}}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({focused, size, color}) => (
+            <View
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icon
+                name={focused ? 'file-text' : 'file-text-o'}
+                size={size}
+                color={color}
+              />
+              <Text
+                // eslint-disable-next-line react-native/no-inline-styles
+                style={{
+                  fontSize: 12,
+                  fontWeight: 'bold',
+                  fontFamily: '"Open Sans", sans-serif',
+                  color: focused ? '#309975' : '#454d66',
+                }}>
+                {t('navigation.receipt')}
+              </Text>
+            </View>
+          ),
+        }}
       />
       <Tab.Screen
         name={t('navigation.archive')}
         component={ArchivedReceiptsScreen}
         initialParams={{title: 'archive'}}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({focused, size, color}) => (
+            <View
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icon
+                name={focused ? 'folder' : 'folder-o'}
+                size={size}
+                color={color}
+              />
+              <Text
+                // eslint-disable-next-line react-native/no-inline-styles
+                style={{
+                  fontSize: 12,
+                  fontWeight: 'bold',
+                  fontFamily: '"Open Sans", sans-serif',
+                  color: focused ? '#309975' : '#454d66',
+                }}>
+                {t('navigation.archive')}
+              </Text>
+            </View>
+          ),
+        }}
       />
       <Tab.Screen
         name={t('navigation.profile')}
         component={ProfileScreen}
         initialParams={{title: 'user'}}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({focused, size, color}) => (
+            <View
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icon
+                name={focused ? 'user' : 'user-o'}
+                size={size}
+                color={color}
+              />
+              <Text
+                // eslint-disable-next-line react-native/no-inline-styles
+                style={{
+                  fontSize: 12,
+                  fontWeight: 'bold',
+                  fontFamily: '"Open Sans", sans-serif',
+                  color: focused ? '#309975' : '#454d66',
+                }}>
+                {t('navigation.profile')}
+              </Text>
+            </View>
+          ),
+        }}
       />
     </Tab.Navigator>
   );
