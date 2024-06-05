@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from 'react';
 import {
   NavigationContainer,
@@ -33,7 +34,7 @@ const MainNavigation = () => {
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color, size, focused}) => {
             let iconName: string;
-            switch (route.params.title) {
+            switch (route.params?.title) {
               case 'home':
                 iconName = focused ? 'home' : 'home';
                 break;
