@@ -46,6 +46,7 @@ export default ModalComponent;
     modalContent: {
       flex: 1,
       width: '100%',
+      height: '100%',
       borderRadius: 0, // No border radius to make it full screen
       paddingRight: 25,
       paddingLeft: 25,
