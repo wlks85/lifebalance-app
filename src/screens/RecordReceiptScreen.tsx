@@ -10,6 +10,7 @@ import FAIcon from 'react-native-vector-icons/FontAwesome';
 import ReceiptItem from '../components/modules/receipt/receiptItem';
 import ModalComponent from '../components/modal';
 import ReceiptModal from '../components/modals/receiptModal';
+import AddReceiptModal from '../components/modals/addReciptModal';
 
 
 const ReceiptImageModal = ({receipt, visible,onClose}) => (
@@ -90,9 +91,12 @@ const styles = StyleSheet.create({
 
 });
 
-const SectionWrapper = ({ section,onSelectedItem }) => (
+const SectionWrapper = ({ section,onSelectedItem, openAddReceiptModal }) => (
   <View style={styles.sectionWrapper}>
-    <View style={styles.addReceiptBtnContainer}>
+    <TouchableOpacity 
+    style={styles.addReceiptBtnContainer}
+    onPress={()=>openAddReceiptModal()}
+    >
             <View style={styles.addReceiptTitle}>
                 <Icon name='plus' size={15} />
                 <Text style={styles.textStyle}>Neue Dienstleistung </Text>
@@ -100,7 +104,7 @@ const SectionWrapper = ({ section,onSelectedItem }) => (
             <View>
             <Icon name='chevron-right' size={15}  />
             </View>
-        </View>
+    </TouchableOpacity>
     <View style={styles.sectionTitle}>
       <Text style={styles.sectionTitleText}>{section.title}</Text>
     </View>
@@ -114,6 +118,7 @@ const SectionWrapper = ({ section,onSelectedItem }) => (
 );
 const ListComponent = ({ data = [] }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [createReceiptVisible, setCreateReceiptVisible] = useState(false);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
   const [imageSelectedReceipt, setImageSelectedReceipt] = useState(null);
   const [imageVisible, setImageVisible] = useState(false);
@@ -122,9 +127,14 @@ const ListComponent = ({ data = [] }) => {
     setModalVisible(true);
   };
 
+  const openAddReceiptModal = ()=>{
+    setCreateReceiptVisible(true);
+  }
+
   const closeModal = () => {
     setModalVisible(false);
     setSelectedReceipt(null);
+    setCreateReceiptVisible(false);
   };
 
   const closeImageModal = ()=> {
@@ -143,13 +153,18 @@ const ListComponent = ({ data = [] }) => {
         sections={data}
         keyExtractor={(item) => item.id.toString()}
         renderItem={() => null}  // No need to render items here, they will be rendered in the wrapper
-        renderSectionHeader={({ section }) => <SectionWrapper onSelectedItem={openModal} section={section} />}
+        renderSectionHeader={({ section }) => <SectionWrapper onSelectedItem={openModal} section={section} openAddReceiptModal={openAddReceiptModal} />}
       />
       <ReceiptModal
         visible={modalVisible}
         receipt={selectedReceipt}
         onClose={closeModal}
         onAction={onReceiptImageDisplay}
+      />
+
+      <AddReceiptModal
+        onClose={closeModal}
+        visible={createReceiptVisible}
       />
       <ReceiptImageModal
         visible={imageVisible}
