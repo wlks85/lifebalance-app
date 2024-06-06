@@ -1,5 +1,5 @@
 //@ts-nocheck
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   NavigationContainer,
   useRoute,
@@ -17,12 +17,24 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {useTheme} from '../theme';
 import {useTranslation} from 'react-i18next';
 import {Text, View} from 'react-native';
+import BootSplash from 'react-native-bootsplash';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const MainNavigation = () => {
   const {theme} = useTheme();
+
+  useEffect(() => {
+    const init = async () => {
+      // …do multiple sync or async tasks
+    };
+
+    init().finally(async () => {
+      await BootSplash.hide({fade: true});
+      console.log('BootSplash has been hidden successfully');
+    });
+  }, []);
 
   const router = useRoute();
   const routeName = getFocusedRouteNameFromRoute(router) ?? 'Home';
