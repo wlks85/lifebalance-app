@@ -71,7 +71,7 @@ const HomeScreen = () => {
                             style={{
                                 transform: [{ rotate: "45deg" }],
                                 position: "absolute",
-                                top: 130,
+                                top: 122,
                                 left: -50,
                                 zIndex: 1
                             }}
@@ -81,7 +81,7 @@ const HomeScreen = () => {
                             style={{
                                 transform: [{ rotate: "45deg" }],
                                 position: "absolute",
-                                top: 125,
+                                top: 115,
                                 left: -46,
                                 zIndex: 2
                             }}
@@ -89,14 +89,14 @@ const HomeScreen = () => {
                         <View
                             style={{
                                 position: "absolute",
-                                top: 120,
+                                top: 135,
                                 left: 30,
                                 zIndex: 3,
                                 margin: 0
                             }}
                         >
-                            <Text style={{ color: "#fff", fontSize: 24, fontWeight: 700, fontFamily: "serif" }}>John</Text>
-                            <Text style={{ color: "#fff", fontSize: 24, fontWeight: 700, fontFamily: "serif" }}>Doe!</Text>
+                            <Text style={{ color: "#fff", fontSize: 26, fontWeight: 700, fontFamily: "serif" }}>John</Text>
+                            <Text style={{ color: "#fff", fontSize: 26, fontWeight: 700, fontFamily: "serif" }}>Doe!</Text>
                         </View>
                     </View>
                 </ImageBackground>
