@@ -6,17 +6,18 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface ServiceCategoryProps {
     onPress: ()=>void;
-    services: {id: number, title: string}[]
+    serviceCategories: {id: number, title: string}[]
+    error: string;
 }
 
-const ServiceCategory = ({onPress, services}: ServiceCategoryProps) => {
+const ServiceCategory = ({onPress, serviceCategories, error}: ServiceCategoryProps) => {
     return (
       <Pressable onPress={onPress}>
         <FieldLabel label={'Name des Dienstleisters'}>
-            <FieldError error={''}>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.catText}>{services?.[0]?.title ?? 'Bitte wählen'} …</Text>
-                    <Icon name="chevron-right" size={20} />
+            <FieldError error={error}>
+                <View style={[styles.inputContainer, error && {borderColor: 'red', borderWidth: 2}]} >
+                    <Text style={[styles.catText, error && {color: 'red'}]}>{serviceCategories?.[0]?.title ?? 'Bitte wählen'} …</Text>
+                    <Icon name="chevron-right" size={20} color={error && 'red'} />
                 </View>
             </FieldError>
         </FieldLabel>

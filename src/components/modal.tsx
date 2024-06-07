@@ -24,7 +24,7 @@ export default ModalComponent;
   const modalStyles = StyleSheet.create({
     modalContainer: {
       flex: 1,
-      backgroundColor: '#ebe4e4', // this color needs to be changed
+      backgroundColor: '#f8f6f4',
     },
     modalHeaderContainer: {
       display: 'flex',

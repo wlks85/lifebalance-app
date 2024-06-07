@@ -1,47 +1,42 @@
 //@ts-nocheck
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity } from 'react-native';
 import ModalComponent from '../modal';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import AddReceiptForm from '../forms/addReceipt';
 import { ScrollView } from 'react-native-gesture-handler';
 import NextButton from '../ui/nextButton';
+import { ReceiptService } from '../../services';
 
-interface CategoryServiceModalProps {
+interface IServiceCategory {
+  id: number; 
+  title: string
+}
+
+interface ServiceCategoryModalProps {
     visible: boolean;
     onClose: ()=>void;
     onAction?: ()=>void;
-    setServices: ()=>void;
-    services: {id: number; title: string}[];
+    setServiceCategories: Dispatch<SetStateAction<any[]>>;
+    services: IServiceCategory[];
 }
 
-const categories = [
-    {id: 1, title: 'Yoga'},
-    {id: 2, title: 'Yoga'},
-    {id: 3, title: 'Yoga'},
-    {id: 4, title: 'Yoga'},
-    {id: 5, title: 'Yoga'},
-    {id: 6, title: 'Yoga'},
-    {id: 7, title: 'Yoga'},
-    {id: 8, title: 'Yoga'},
-    {id: 9, title: 'Yoga'},
-    {id: 10, title: 'Yoga'},
-    {id: 11, title: 'Yoga'},
-    {id: 12, title: 'Yoga'},
-    {id: 13, title: 'Yoga'},
-    {id: 14, title: 'Yoga'},
-    {id: 15, title: 'Yoga99'},
-]
+const ServiceCategoryModal = ({ visible, onClose, onAction, setServiceCategories, services  }: ServiceCategoryModalProps) => {
+    const [categories, setCategories] = useState([]);
 
-const CategoryServiceModal = ({ visible, onClose, onAction, setServices, services  }: CategoryServiceModalProps) => {
+
     const handleAddService = (srvs)=>{
         if(services?.find(service => service.id === srvs.id)){
             const restService = services.filter(service => service.id !== srvs.id);
-            setServices(restService);
+            setServiceCategories(restService);
         }else {
-            setServices( preValue => ([...preValue, srvs]))
+            setServiceCategories( preValue => ([...preValue, srvs]))
         }
     }
+    useEffect(()=>{
+        ReceiptService.getServiceCategories()
+        .then((cats)=> {
+          setCategories(cats);
+        })
+      }, []);
     return (
         <ModalComponent
           onClose={onClose}
@@ -61,7 +56,6 @@ const CategoryServiceModal = ({ visible, onClose, onAction, setServices, service
                                             key={index} 
                                             style={[
                                                 modalStyles.categoryCard,
-                                                
                                             ]}
                                             onPress={()=>handleAddService(cat)}
                                         >
@@ -74,29 +68,15 @@ const CategoryServiceModal = ({ visible, onClose, onAction, setServices, service
                 </View>
                 <View style={{backgroundColor: '#ffffff', flex: .5/3, marginHorizontal: -25}}>
                     <View style={modalStyles.applyBtn}>
-                        <NextButton buttonStyles={{backgroundColor: '#309975'}} title={'Auswahl anwenden'} />
+                        <NextButton buttonStyles={{backgroundColor: '#309975'}} title={'Auswahl anwenden'} onPress={onClose} />
                     </View>
                 </View>
-                {/* <ScrollView contentContainerStyle={{flexGrow: 1}}>
-                    <SafeAreaView>
-                        <View style={modalStyles.catContainer}>
-                            {
-                                categories?.map((cat, index) => (
-                                    <View key={index} style={modalStyles.categoryCard}>
-                                        <Text style={modalStyles.catTitle}>{cat.title}</Text>
-                                    </View>
-                                ))
-                            }
-                        </View>
-                    </SafeAreaView>
-                </ScrollView>
-                <View style={modalStyles.applyBtn}><Text>Button goes here</Text></View> */}
             </View>
         </ModalComponent>
       )
 };
 
-export default CategoryServiceModal 
+export default ServiceCategoryModal 
 
 const modalStyles = StyleSheet.create({
     container: {

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { View, TouchableOpacity, Text, StyleSheet, Pressable } from "react-native";
 
 interface NextButtonProps {
   title: string;
@@ -11,9 +11,9 @@ interface NextButtonProps {
 const NextButton = ({title, onPress, containerStyles, buttonStyles}: NextButtonProps)=>{
     return (
         <View style={[btnStyles.btnContainer, containerStyles]}>
-        <TouchableOpacity onPress={onPress} style={[btnStyles.btn, buttonStyles]}>
+        <Pressable onPress={onPress} style={[btnStyles.btn, buttonStyles]}>
           <Text style={btnStyles.btnText}>{title}</Text>
-        </TouchableOpacity>
+        </Pressable>
         </View>
     )
 }

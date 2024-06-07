@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import {TextInput, StyleSheet, View, Pressable} from 'react-native';
 
-const Input = ({inputType, error = false, ...restProps})=>{
+interface InputProps {
+    inputType: string;
+    error: boolean;
+    value: string;
+    onBlur: ()=>void;
+    onChange: (value: string) => void; 
+}
+
+const Input = ({inputType, error, onBlur, onChange, value, ...restProps}: InputProps)=>{
     const [focused, setFocused] = useState(false);
     switch (inputType) {
         case 'text':
@@ -12,7 +20,12 @@ const Input = ({inputType, error = false, ...restProps})=>{
                     error && {borderColor: 'red', borderWidth: 2}
                 ]} >
                     <TextInput 
-                        onBlur={()=>setFocused(false)} 
+                        onBlur={()=>{
+                            setFocused(false);
+                            onBlur?.();
+                        }}
+                        onChangeText={(value)=>onChange(value)}
+                        value={value}
                         onFocus={()=>setFocused(true)} 
                         style={inputStyle.textInput} 
                         {...restProps} 

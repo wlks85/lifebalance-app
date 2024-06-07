@@ -13,13 +13,10 @@ const AddReceiptModal = ({ visible, onClose, onAction }) => (
       headerComponent={<View style={modalStyles.headerContainer}>
         <View style={modalStyles.modalHeader}><Text onPress={onClose} style={modalStyles.modalCloseButton}>x</Text></View>
         <Text style={modalStyles.modalTitle}>Gezahlter Betrag</Text>
-        <View style={modalStyles.modalHeader}>
-            <Text><Icon name='question' size={20}/></Text>
-        </View>
     </View>}
     >
        <View style={modalStyles.container}>
-           <AddReceiptForm />
+           <AddReceiptForm onClose={onClose} />
        </View>
     </ModalComponent>
   );
@@ -32,7 +29,7 @@ const modalStyles = StyleSheet.create({
     justifyContent: 'space-between',
     flex: 1,
   },
-    headerContainer: {
+  headerContainer: {
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
@@ -56,7 +53,9 @@ const modalStyles = StyleSheet.create({
   modalTitle: {
     fontSize: 24,
     color: '#454d66',
-    fontWeight: '700'
+    fontWeight: '700',
+    textAlign: 'center',
+    flex: 1
   },
 
   receiptDetails: {

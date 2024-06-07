@@ -9,7 +9,7 @@ const FieldError = ({children, error})=>{
                 children
             }
             </View>
-            <Text style={errorStyle.error}>{error}</Text>
+            <Text style={[errorStyle.error, error && {marginBottom: 4}]}>{error}</Text>
         </View>
     )
 }

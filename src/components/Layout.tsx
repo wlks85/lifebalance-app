@@ -1,17 +1,23 @@
 //@ts-nocheck
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, { PropsWithChildren, ReactElement, ReactNode } from 'react';
 
 import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useTranslation} from 'react-i18next';
 
+interface LayoutProps {
+  title: string;
+  Header: React.ComponentType<any> | null;
+  noBackButton?: boolean;
+}
+
 const Layout = ({
   children,
   title = '',
-  header = null,
-  nobackButton = false,
-}) => {
+  Header = null,
+  noBackButton = false,
+}: PropsWithChildren<LayoutProps>) => {
   const navigation = useNavigation();
   const {t} = useTranslation();
 
@@ -21,9 +27,9 @@ const Layout = ({
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
-        {!header && (
+        {!Header ? (
           <View style={styles.headerContainer}>
-            {!nobackButton && (
+            {!noBackButton && (
               <>
                 <View style={styles.backButtonContainer}>
                   <Icon
@@ -41,7 +47,10 @@ const Layout = ({
               <Text style={styles.header}>{title}</Text>
             </View>
           </View>
-        )}
+        )
+        :
+        <Header goBack={goBack} />
+      }
         <View style={styles.wrapper}>{children}</View>
       </View>
     </SafeAreaView>
@@ -60,8 +69,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 80,
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans"',
-    // backgroundColor: '#ffffff',
-    padding: 15,
+    paddingTop: 15,
   },
   backButtonContainer: {
     height: 48,
@@ -90,9 +98,7 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     display: 'flex',
-    // paddingLeft: 15,
     flexGrow: 1,
-    // backgroundColor: 'red',
     paddingBottom: 90,
   },
 });
