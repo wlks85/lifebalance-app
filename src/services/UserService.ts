@@ -8,12 +8,36 @@ class UserService {
     this.path = '/users';
   }
 
-  async getUserDetails(id: string) {
+  async getUserDetails(id?: string) {
     // this.client.get(this.path,)
     // .then((data)=> {
 
     // })
-    return {id: id, username: 'johndoe', name: 'John Doe'};
+    return id ? {id: id, username: 'johndoe', name: 'John Doe'} : null;
+  }
+
+  async register(values: unknown) {
+    // this.client.get(this.path,)
+    // .then((data)=> {
+
+    // })
+    return {id: 0, username: 'johndoe', name: 'John Doe'};
+  }
+
+  async login(values: unknown) {
+    // this.client.get(this.path,)
+    // .then((data)=> {
+
+    // })
+    return {id: 0, username: 'johndoe', name: 'John Doe'};
+  }
+
+  async forgot(email: string) {
+    // this.client.get(this.path,)
+    // .then((data)=> {
+
+    // })
+    return null;
   }
 }
 const userService = new UserService();
