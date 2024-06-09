@@ -6,27 +6,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import ReceiptItem from '../modules/receipt/receiptItem';
 
-// const BottomModal = ({children, visible})=>{
-//   const visibleStyle = {
-//     display: 'block',
-//   }
-//   return (
-//     <View style={[bottomModalStyle.container, visible && visibleStyle]}>
-//       {children}
-//     </View>
-//   )
-// }
-
-// const bottomModalStyle = StyleSheet.create({
-//   container: {
-//     display: 'none',
-//     width: '120%',
-//     position: 'absolute',
-//     bottom: 0,
-//     marginHorizontal: -25,
-//   }
-// })
-
 const ReceiptModal = ({ receipt, visible, onClose,onAction }) => {
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const handleFurther = ()=>{
