@@ -1,11 +1,38 @@
 //@ts-nocheck
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import ModalComponent from '../modal';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import IconAnt from 'react-native-vector-icons/AntDesign';
 import ReceiptItem from '../modules/receipt/receiptItem';
 
-const ReceiptModal = ({ receipt, visible, onClose,onAction }) => (
+// const BottomModal = ({children, visible})=>{
+//   const visibleStyle = {
+//     display: 'block',
+//   }
+//   return (
+//     <View style={[bottomModalStyle.container, visible && visibleStyle]}>
+//       {children}
+//     </View>
+//   )
+// }
+
+// const bottomModalStyle = StyleSheet.create({
+//   container: {
+//     display: 'none',
+//     width: '120%',
+//     position: 'absolute',
+//     bottom: 0,
+//     marginHorizontal: -25,
+//   }
+// })
+
+const ReceiptModal = ({ receipt, visible, onClose,onAction }) => {
+  const [showPhotoModal, setShowPhotoModal] = useState(false);
+  const handleFurther = ()=>{
+    setShowPhotoModal(true);
+  }
+  return (
     <ModalComponent
       onClose={onClose}
       visible={visible}
@@ -39,14 +66,33 @@ const ReceiptModal = ({ receipt, visible, onClose,onAction }) => (
           </View>
         </View>
         <View style={modalStyles.btnContainer}>
-        <TouchableOpacity onPress={()=>console.log('pressed')} style={modalStyles.furtherBtn}>
+        <TouchableOpacity onPress={handleFurther} style={modalStyles.furtherBtn}>
           <Text style={modalStyles.btnText}>Weiter</Text>
         </TouchableOpacity>
+
+        <Modal visible={showPhotoModal} transparent={true} animationType='slide'>
+          <Pressable style={{backgroundColor: 'rgba(0, 0, 0, 0.15)', flex: 1}} onPress={()=>setShowPhotoModal(false)}>
+            <TouchableWithoutFeedback>
+              <View style={modalStyles.photoBtnContainer}>
+                <TouchableOpacity style={modalStyles.takeOrUploadPhotoBtn} onPress={()=>console.log("form button")}>
+                  <Text style={modalStyles.photoBtnTitle}>Beleg fotografieren</Text>
+                  <Icon name="camera" size={25} />
+                </TouchableOpacity>
+                <TouchableOpacity style={modalStyles.takeOrUploadPhotoBtn}>
+                  <Text style={modalStyles.photoBtnTitle}>Beleg hochladen</Text>
+                  <IconAnt name='upload' size={25} />
+                </TouchableOpacity>
+              </View>
+            </TouchableWithoutFeedback>
+          </Pressable>
+        </Modal>
+        
         </View>
       </View>
     )}
     </ModalComponent>
-  );
+  )
+};
 
 export default ReceiptModal;
 
@@ -54,7 +100,7 @@ const modalStyles = StyleSheet.create({
   container: {
     display: 'flex',
     justifyContent: 'space-between',
-    flex: 1
+    flex: 1,
   },
     headerContainer: {
         width: '100%',
@@ -143,6 +189,35 @@ const modalStyles = StyleSheet.create({
     color: 'white',
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
     fontSize: 18,
+    fontWeight: '700'
+  },
+  photoBtnContainer:{
+    backgroundColor: '#f8f6f4',
+    height: 270,
+    width: '100%',
+    paddingHorizontal: 25,
+    paddingVertical: 35,
+    position: 'absolute',
+    bottom: 0,
+    borderRadius: 8,
+    display: 'flex',
+    justifyContent: 'center',
+    gap: 16
+  },
+  takeOrUploadPhotoBtn: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 26,
+    paddingVertical: 32,
+  },
+  photoBtnTitle: {
+    textAlign: 'center',
+    color: '#454d66',
+    fontSize: 16,
+    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
     fontWeight: '700'
   }
 })
