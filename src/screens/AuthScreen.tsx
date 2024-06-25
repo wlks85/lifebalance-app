@@ -4,7 +4,10 @@ import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
+import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import {UserService} from '../services';
+import {useAuth} from '../providers/auth-provider';
+import {useAxios} from '../providers/axios-provider';
 
 const formSchema = z.object({
   username: z.string(),
@@ -13,23 +16,45 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-const AuthScreen = ({onSubmit}: {onSubmit?: () => void}) => {
+const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
+  const [loading, setLoading] = useState(false);
+  const storage = useAsyncStorage('auth.credentials');
+  const {setIsLoggedIn, setUserDetails} = useAuth();
+  const axios = useAxios();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
   const [mode, setMode] = useState<'login' | 'forgot' | 'register'>('login');
 
-  function handleSubmit(values: FormSchema) {
-    if (mode === 'login') {
-      UserService.login(values);
-      onSubmit?.();
-    }
-    if (mode === 'register') {
-      UserService.register(values);
-      onSubmit?.();
-    }
-    if (mode === 'forgot') {
-      UserService.forgot('');
+  async function handleSubmit(values: FormSchema) {
+    setLoading(true);
+    try {
+      if (mode === 'login') {
+        await storage.setItem(JSON.stringify(values));
+        const {data} = await axios.get(
+          '/lbp/mobile-app/rest-service/v1.0/ep/node.json/?parameters[type]=account',
+        );
+        if (data[0]?.nid) {
+          const {data: userDetails} = await axios.get(
+            `/lbp/mobile-app/rest-service/v1.0/ep/node/${data[0]?.nid}.json`,
+          );
+          setUserDetails(userDetails);
+          setIsLoggedIn(true);
+          onSubmit?.(userDetails);
+        }
+      }
+      if (mode === 'register') {
+        await storage.setItem(JSON.stringify(values));
+        setIsLoggedIn(true);
+        onSubmit?.(null);
+      }
+      if (mode === 'forgot') {
+        await UserService.forgot('');
+      }
+    } catch (err) {
+      
+    } finally {
+      setLoading(false);
     }
   }
   return (
@@ -94,9 +119,15 @@ const AuthScreen = ({onSubmit}: {onSubmit?: () => void}) => {
           style={styles.formButton}
           onPress={form.handleSubmit(handleSubmit)}>
           <Text style={styles.formButtonText}>
-            {mode === 'login' && <>Login</>}
-            {mode === 'forgot' && <>Send</>}
-            {mode === 'register' && <>Register</>}
+            <>
+              {loading ? "Loading..." : (
+                <>
+                  {mode === 'login' && <>Login</>}
+                  {mode === 'forgot' && <>Send</>}
+                  {mode === 'register' && <>Register</>}
+                </>
+              )}
+            </>
           </Text>
         </Pressable>
 
@@ -109,7 +140,7 @@ const AuthScreen = ({onSubmit}: {onSubmit?: () => void}) => {
           {mode === 'login' && (
             <Text
               style={[styles.formInfoText, styles.formLabelPrimary]}
-              onPress={() => setMode('register')}>
+              onPress={() => ''}>
               Registrieren Sie sich hier …
             </Text>
           )}

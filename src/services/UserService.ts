@@ -16,23 +16,23 @@ class UserService {
     return id ? {id: id, username: 'johndoe', name: 'John Doe'} : null;
   }
 
-  async register(values: unknown) {
-    // this.client.get(this.path,)
-    // .then((data)=> {
-
-    // })
-    return {id: 0, username: 'johndoe', name: 'John Doe'};
+  async register(values: {username: string; password: string}) {
+    return null;
   }
 
-  async login(values: unknown) {
-    // this.client.get(this.path,)
-    // .then((data)=> {
-
-    // })
-    return {id: 0, username: 'johndoe', name: 'John Doe'};
+  async login(values: {username: string; password: string}) {
+    return null;
   }
 
   async forgot(email: string) {
+    // this.client.get(this.path,)
+    // .then((data)=> {
+
+    // })
+    return null;
+  }
+
+  async get() {
     // this.client.get(this.path,)
     // .then((data)=> {
 
