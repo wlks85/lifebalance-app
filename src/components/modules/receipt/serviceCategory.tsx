@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Pressable, TextInput } from 'react-native';
-import FieldLabel from '../../ui/fieldLabel';
-import FieldError from '../../ui/fieldError';
+import FieldLabel from '../../ui/FieldLabel';
+import FieldError from '../../ui/FieldError';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface ServiceCategoryProps {

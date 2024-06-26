@@ -4,13 +4,13 @@ import {Text, View, StyleSheet} from 'react-native';
 const FieldLabel = ({children, label})=>{
     return (
         <View style={labelStyle.container}>
-        <Text style={labelStyle.label}>{label}</Text>
-        <View>
-        {
-            children
-        }
+            <Text style={labelStyle.label}>{label}</Text>
+            <View>
+                {
+                    children
+                }
+            </View>
         </View>
-    </View>
     )
 }
 
@@ -20,7 +20,7 @@ const labelStyle = StyleSheet.create({
     container: {
         display: 'flex',
         gap: 10,
-        flex: 1
+        // flex: 1
     },
     label: {
         fontSize: 16,

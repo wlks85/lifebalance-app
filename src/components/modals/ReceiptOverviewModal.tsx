@@ -1,35 +1,39 @@
 //@ts-nocheck
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import ModalComponent from '../Modal';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AddReceiptForm from '../forms/AddReceipt';
-import { ScrollView } from 'react-native-gesture-handler';
-import { IReceipt } from '../modules/receipt/ReceiptItem';
+import IconAnt from 'react-native-vector-icons/AntDesign';
+import ReceiptItem from '../modules/receipt/ReceiptItem';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import ReceiptOverview from '../modules/receipt/ReceiptOverview';
+// import CameraModule from '../modules/camera';
 
-interface AddReceiptModalProps {
-  visible: boolean;
-  onClose: ()=>void;
-  onAction: (values: Partial<IReceipt>)=>void;
-  defaultValue?: IReceipt;
-}
 
-const AddReceiptModal = ({ visible, onClose, onAction, defaultValue }: AddReceiptModalProps) => (
+const ReceiptOverviewModal = ({ receipt, visible, onClose,onAction }) => {
+  const [showPhotoModal, setShowPhotoModal] = useState(false);
+  const handleFurther = ()=>{
+    setShowPhotoModal(true);
+  }
+
+  return (
     <ModalComponent
       onClose={onClose}
       visible={visible}
       headerComponent={<View style={modalStyles.headerContainer}>
         <View style={modalStyles.modalHeader}><Text onPress={onClose} style={modalStyles.modalCloseButton}>x</Text></View>
-        <Text style={modalStyles.modalTitle}>{defaultValue ? 'Dienstleistung bearbeiten' : 'Gezahlter Betrag'}</Text>
+        <Text style={modalStyles.modalTitle}>Übersicht</Text>
+        <View style={modalStyles.modalHeader}>
+            <Text><Icon name='question' size={20}/></Text>
+        </View>
     </View>}
     >
-       <View style={modalStyles.container}>
-           <AddReceiptForm onClose={onClose} defaultValue={defaultValue} onSubmit={(values)=>onAction(values)} />
-       </View>
+      <ReceiptOverview receipt={receipt} />
     </ModalComponent>
-  );
+  )
+};
 
-export default AddReceiptModal;
+export default ReceiptOverviewModal;
 
 const modalStyles = StyleSheet.create({
   container: {
@@ -37,7 +41,7 @@ const modalStyles = StyleSheet.create({
     justifyContent: 'space-between',
     flex: 1,
   },
-  headerContainer: {
+    headerContainer: {
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
@@ -61,9 +65,7 @@ const modalStyles = StyleSheet.create({
   modalTitle: {
     fontSize: 24,
     color: '#454d66',
-    fontWeight: '700',
-    textAlign: 'center',
-    flex: 1
+    fontWeight: '700'
   },
 
   receiptDetails: {
@@ -126,6 +128,35 @@ const modalStyles = StyleSheet.create({
     color: 'white',
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
     fontSize: 18,
+    fontWeight: '700'
+  },
+  photoBtnContainer:{
+    backgroundColor: '#f8f6f4',
+    height: 270,
+    width: '100%',
+    paddingHorizontal: 25,
+    paddingVertical: 35,
+    position: 'absolute',
+    bottom: 0,
+    borderRadius: 8,
+    display: 'flex',
+    justifyContent: 'center',
+    gap: 16
+  },
+  takeOrUploadPhotoBtn: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 26,
+    paddingVertical: 32,
+  },
+  photoBtnTitle: {
+    textAlign: 'center',
+    color: '#454d66',
+    fontSize: 16,
+    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
     fontWeight: '700'
   }
 })

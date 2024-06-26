@@ -1,9 +1,9 @@
 //@ts-nocheck
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity } from 'react-native';
-import ModalComponent from '../modal';
+import ModalComponent from '../Modal';
 import { ScrollView } from 'react-native-gesture-handler';
-import NextButton from '../ui/nextButton';
+import NextButton from '../ui/NextButton';
 import { ReceiptService } from '../../services';
 
 interface IServiceCategory {

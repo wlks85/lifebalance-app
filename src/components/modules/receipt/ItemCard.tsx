@@ -1,65 +1,51 @@
-import React, {ReactElement, useState} from 'react';
+import React, { ReactElement } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AddReceiptModal from '../../modals/AddReciptModal';
 
-export interface IReceipt {
-  company: {
-    logo?: string | ReactElement;
-    name: string;
-    postCode?: number;
-  },
-  amountIncludingTax: number;
-  amountPaid: number;
+
+interface IItem {
+  title: string;
+  logo: string | ReactElement;
+  subtitle: string;
 }
 
-interface ReceiptItemProps {
-  receipt: IReceipt;
-  onItemClicked: (item: IReceipt)=>void;
+interface ItemCardProps {
+  item: IItem;
+  onItemClicked?: (item: IItem)=>void;
   disabled?: boolean;
   showEditBtn?: boolean;
   onEditBtnPress?: ()=>void;
 }
 
 
-const ReceiptItem = ({ receipt,onItemClicked, disabled, showEditBtn, onEditBtnPress }: ReceiptItemProps) => {
-  const [showAddReceiptModal, setShowAddReceiptModal] = useState(false);
-  const onEditBtnPressHandler = ()=>{
-    onEditBtnPress?.();
-  }
+const ItemCard = ({ item,onItemClicked, disabled, showEditBtn, onEditBtnPress }: ItemCardProps) => {
     return (
-      <TouchableOpacity style={styles.receipt} onPress={()=> onItemClicked(receipt)} disabled={disabled}>
-        <View style={styles.receiptLogo}><Text style={styles.logoText}>{receipt.company.logo}</Text></View>
-        <View style={styles.receiptInfo}>
-          <View style={styles.receiptCompanyInfo}>
-            <Text style={styles.receiptCompanyText}>{receipt.company.name}</Text>
+      <TouchableOpacity style={styles.container} onPress={()=> onItemClicked(item)} disabled={disabled}>
+        <View style={styles.itemLogo}><Text style={styles.logoText}>{item.logo}</Text></View>
+        <View style={styles.itemInfo}>
+          <View style={styles.itemTitleContainer}>
+            <Text style={styles.itemTitle}>{item.title}</Text>
           </View>
-          <View style={styles.receiptDateInfo}>
-            <Text style={styles.date}>12345・Yoga-Kurs</Text>
+          <View style={styles.itemSubtitleContainer}>
+            <Text style={styles.itemSubtitle}>{item.subtitle}</Text>
           </View>
         </View>
         {
           showEditBtn &&
-          <TouchableOpacity onPress={onEditBtnPressHandler}>
+          <TouchableOpacity onPress={onEditBtnPress}>
               <Text>
                 <Icon name="pencil" size={25} color="#454d66" />
               </Text>
           </TouchableOpacity>
         }
-        <AddReceiptModal 
-        visible={showAddReceiptModal}
-        onClose={()=>setShowAddReceiptModal(false)} 
-        defaultValue={receipt} 
-        onAction={()=>{}}
-        />
       </TouchableOpacity>
     );
 }
 
-export default ReceiptItem;
+export default ItemCard;
 
 const styles = StyleSheet.create({
-    receipt: {
+    container: {
       width: '100%',
       display: 'flex',
       flexDirection: 'row',
@@ -73,34 +59,34 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
       borderRadius: 8
     },
-    receiptInfo: {
+    itemInfo: {
       flex: 1,
       display: 'flex',
       flexDirection: 'column',
       gap: 10
     },
-    receiptLogo: {
+    itemLogo: {
       width: 50,
       height: 50,
       padding: 10,
-      backgroundColor: '#454d66',
+      backgroundColor: '#f8f6f4',
       color: '#fffffff',
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 50,
     },
     logoText: {
-      color: '#ffffff',
+      color: '#454d66',
       fontSize: 20,
       fontWeight: '600',
     },
-    receiptCompanyText: {
+    itemTitle: {
       color: '#454d66',
       fontSize: 18,
       lineHeight: 24,
       fontFamily: '"OpenSans-Regular", "Open Sans"',
     },
-    receiptCompanyInfo: {
+    itemTitleContainer: {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
@@ -112,14 +98,14 @@ const styles = StyleSheet.create({
       lineHeight: 24,
       color: '#454d66',
     },
-    receiptDateInfo: {
+    itemSubtitleContainer: {
       paddingTop: 0,
       paddingRight: 0,
       display: 'flex',
       flexDirection: 'row',
       gap: 2,
     },
-    date: {
+    itemSubtitle: {
       fontFamily: '"OpenSans-Regular", "sans-serif"',
       fontSize: 15,
       fontWeight: '400',

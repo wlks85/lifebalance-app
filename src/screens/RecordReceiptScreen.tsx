@@ -6,9 +6,9 @@ import { useAppContext } from '../context';
 import Layout from '../components/Layout';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconAnt from 'react-native-vector-icons/AntDesign';
-import ReceiptItem from '../components/modules/receipt/receiptItem';
-import ReceiptModal from '../components/modals/receiptModal';
-import AddReceiptModal from '../components/modals/addReciptModal';
+import ReceiptItem from '../components/modules/receipt/ReceiptItem';
+import ReceiptModal from '../components/modals/ReceiptModal';
+import AddReceiptModal from '../components/modals/AddReciptModal';
 import { ReceiptService } from '../services';
 
 interface HeaderProps {

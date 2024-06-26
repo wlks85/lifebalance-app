@@ -1,31 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, SafeAreaView, View, StyleSheet} from 'react-native'
-import FieldLabel from "../ui/fieldLabel";
-import FieldError from "../ui/fieldError";
-import Input from "../ui/input";
-import ServiceCategory from "../modules/receipt/serviceCategory";
-import NextButton from "../ui/nextButton";
+import FieldLabel from "../ui/FieldLabel";
+import FieldError from "../ui/FieldError";
+import Input from "../ui/Input";
+import ServiceCategory from "../modules/receipt/ServiceCategory";
+import NextButton from "../ui/NextButton";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import ServiceCategoryModal from "../modals/catServiceModal";
+import ServiceCategoryModal from "../modals/ServiceCatModal";
 import { ReceiptService } from "../../services";
+import ReceiptOverviewModal from "../modals/ReceiptOverviewModal";
+import ReceiptModal from "../modals/ReceiptModal";
+import { IReceipt } from "../modules/receipt/ReceiptItem";
 
 interface AddReceiptFormProps {
     onClose: ()=>void;
+    defaultValue: IReceipt;
+    onSubmit?: (values: IReceipt)=>void;
 }
 
 const serviceCatSchema = z.object({
-    serviceProviderName: z.string(),
+    name: z.string(),
     postCode: z.string(),
     serviceCategory: z.array(z.string()),
   });
   
   type ServiceCategorySchema = z.infer<typeof serviceCatSchema>;
 
-const AddReceiptForm = ({ onClose }: AddReceiptFormProps)=>{
+const AddReceiptForm = ({ onClose, defaultValue, onSubmit }: AddReceiptFormProps)=>{
     const [showModal, setShowModal] = useState(false);
+    const [showReceiptModal, setShowReceiptModal] = useState(false);
     const [serviceCategories, setServiceCategories] = useState([]);
+    const [receipt, setReceipt] = useState<IReceipt | null>(null);
     const {
         formState: {errors},
         handleSubmit,
@@ -35,14 +42,30 @@ const AddReceiptForm = ({ onClose }: AddReceiptFormProps)=>{
         watch
     } = useForm<ServiceCategorySchema>({
         resolver: zodResolver(serviceCatSchema),
+        defaultValues: defaultValue ? {
+            name: defaultValue?.company.name,
+            postCode: String(defaultValue?.company?.postCode)
+        } : {},
         mode: 'all',
         reValidateMode: 'onChange'
       });
     const closeModal = ()=>{
         setShowModal(false);
     }
+
+    const onReceiptModalClose = ()=>{
+        setShowReceiptModal(false);
+    }
+
    const handleCreateReceipt = async (values: ServiceCategorySchema)=>{
         await ReceiptService.addReceipt(values);
+        setReceipt({company: values});
+        setShowReceiptModal(true);
+        // onClose?.();
+    }
+
+    const handleUpdateService = async(values: ServiceCategorySchema)=>{
+        onSubmit?.({company: values});
         onClose?.();
     }
     useEffect(()=>{
@@ -52,23 +75,24 @@ const AddReceiptForm = ({ onClose }: AddReceiptFormProps)=>{
             setValue("serviceCategory", values);
         }
     }, [serviceCategories])
+    console.log({errors})
     return (
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
             <SafeAreaView style={{height: '100%'}}>
                 <View style={formStyle.container}>
                     <View>
                     <Controller
-                        name="serviceProviderName"
+                        name="name"
                         control={control}
                         render={({field}) => (
                             <FieldLabel label={'Name des Dienstleisters'}>
-                                <FieldError error={errors.serviceProviderName?.message}>
+                                <FieldError error={errors.name?.message}>
                                         <Input 
                                             inputType="text"
                                             onChange={field.onChange}
                                             onBlur={field.onBlur}
                                             value={field.value}
-                                            error={!!errors.serviceProviderName?.message}
+                                            error={!!errors.name?.message}
                                         />
                                 </FieldError>
                             </FieldLabel>
@@ -96,7 +120,9 @@ const AddReceiptForm = ({ onClose }: AddReceiptFormProps)=>{
                         <ServiceCategory error={errors?.serviceCategory?.message} serviceCategories={serviceCategories} onPress={()=>setShowModal(true)} />
                     </View>
 
-                    <NextButton title={'Weiter'} onPress={handleSubmit(handleCreateReceipt)} />
+                    { !defaultValue ? <NextButton title={'Weiter'} onPress={handleSubmit(handleCreateReceipt)} />
+                    :
+                    <NextButton title={'Übernehmen'} onPress={handleSubmit(handleUpdateService)} />}
                 </View>
                 <ServiceCategoryModal 
                     visible={showModal}
@@ -104,6 +130,26 @@ const AddReceiptForm = ({ onClose }: AddReceiptFormProps)=>{
                     onAction={()=>console.log("modal action")}
                     setServiceCategories={setServiceCategories}
                     services={serviceCategories}
+                />
+                {/* <ReceiptOverviewModal 
+                    receipt={receipt}
+                    visible={showOverviewModal}
+                    onClose={()=>setShowOverviewModal(false)}
+                    onAction={()=>console.log()}
+                /> */}
+                <ReceiptModal 
+                    visible={showReceiptModal}
+                    onClose={onReceiptModalClose}
+                    onAction={()=>console.log("receipt modal action")}
+                    receipt={{
+                        amount: '00',
+                        amount_paid: '00',
+                        company: {
+                            name: watch("name") || 'Default Name',
+                            logo: 'GF',
+                            postCode: watch("postCode")
+                        }
+                    }}
                 />
             </SafeAreaView>
          </ScrollView> 

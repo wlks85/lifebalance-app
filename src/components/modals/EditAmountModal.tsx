@@ -1,62 +1,32 @@
 //@ts-nocheck
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import ModalComponent from '../Modal';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import IconAnt from 'react-native-vector-icons/AntDesign';
-import ReceiptItem from '../modules/receipt/ReceiptItem';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { TextInput } from 'react-native-gesture-handler';
-import ReceiptOverviewModal from './ReceiptOverviewModal';
-// import CameraModule from '../modules/camera';
+
+interface EditAmountModalProps {
+    receipt: Partial<IReceipt>;
+    visible: boolean;
+    onClose: ()=>void;
+    onAction: (values: number)=>void;
+}
 
 
-const ReceiptModal = ({ receipt, visible, onClose,onAction }) => {
-  const [showPhotoModal, setShowPhotoModal] = useState(false);
-  const [showOverviewModal, setShowOverviewModal] = useState(false);
-  const [image, setImage] = useState(null);
-  const handleFurther = ()=>{
-    setShowPhotoModal(true);
-  }
-  // const [shoeCamera, setSho]
-
-  const onOverviewClose = ()=>{
-    setShowOverviewModal(false);
-  }
-
-  const handleOpenCamera = async ()=>{
-    const result = await launchCamera({mediaType: 'photo', quality: 1, cameraType: 'back'});
-    console.log("photo from camera: ", JSON.stringify(result));
-    setImage(result);
-  }
-
-  const handleOpenGallery = async ()=>{
-    const result = await launchImageLibrary({mediaType: 'photo', quality: 1});
-    console.log("photo from gallery: ", JSON.stringify(result));
-    setImage(result);
-  }
-  console.log("This is receipt from overview ==> ", receipt);
-  useEffect(()=>{
-    if(image){
-      setShowOverviewModal(true);
-    }
-  }, [image])
+const EditAmountModal = ({ receipt, visible, onClose,onAction }: EditAmountModalProps) => {
+  
   return (
     <ModalComponent
       onClose={onClose}
       visible={visible}
       headerComponent={<View style={modalStyles.headerContainer}>
         <View style={modalStyles.modalHeader}><Text onPress={onClose} style={modalStyles.modalCloseButton}>x</Text></View>
-        <Text style={modalStyles.modalTitle}>Gezahlter Betrag</Text>
-        <View style={modalStyles.modalHeader}>
-            <Text><Icon name='question' size={20}/></Text>
-        </View>
+        <Text style={modalStyles.modalTitle}>Betrag bearbeiten</Text>
     </View>}
     >
       {receipt && (
       <View style={modalStyles.container}>
         <View style={modalStyles.receiptDetails}>
-          <ReceiptItem receipt={receipt} disabled={true} />
+          {/* <ReceiptItem receipt={receipt} disabled={true} /> */}
           <View>
             <Text style={modalStyles.title}>Betrag des Belegs (inkl. MwSt.)</Text>
           </View>
@@ -65,6 +35,7 @@ const ReceiptModal = ({ receipt, visible, onClose,onAction }) => {
             style={modalStyles.amount} 
             placeholder='0,00 €' 
             placeholderTextColor={"#454d66"}
+            defaultValue={receipt.amountIncludingTax}
             />
           </View>
           <View style={modalStyles.amountsSection}>
@@ -79,33 +50,9 @@ const ReceiptModal = ({ receipt, visible, onClose,onAction }) => {
           </View>
         </View>
         <View style={modalStyles.btnContainer}>
-        <TouchableOpacity onPress={handleFurther} style={modalStyles.furtherBtn}>
-          <Text style={modalStyles.btnText}>Weiter</Text>
+        <TouchableOpacity onPress={onClose} style={modalStyles.furtherBtn}>
+          <Text style={modalStyles.btnText}>Übernehmen</Text>
         </TouchableOpacity>
-
-        <Modal visible={showPhotoModal} transparent={true} animationType='slide'>
-          <Pressable style={{backgroundColor: 'rgba(0, 0, 0, 0.15)', flex: 1}} onPress={()=>setShowPhotoModal(false)}>
-            <TouchableWithoutFeedback>
-              <View style={modalStyles.photoBtnContainer}>
-                <TouchableOpacity style={modalStyles.takeOrUploadPhotoBtn} onPress={handleOpenCamera}>
-                  <Text style={modalStyles.photoBtnTitle}>Beleg fotografieren</Text>
-                  <Icon name="camera" size={25} />
-                </TouchableOpacity>
-                <TouchableOpacity style={modalStyles.takeOrUploadPhotoBtn} onPress={handleOpenGallery}>
-                  <Text style={modalStyles.photoBtnTitle}>Beleg hochladen</Text>
-                  <IconAnt name='upload' size={25} />
-                </TouchableOpacity>
-              </View>
-            </TouchableWithoutFeedback>
-          </Pressable>
-        </Modal>
-
-        <ReceiptOverviewModal 
-                    receipt={receipt}
-                    visible={showOverviewModal}
-                    onClose={()=>setShowOverviewModal(false)}
-                    onAction={()=>console.log()}
-                />
         </View>
       </View>
     )}
@@ -113,7 +60,7 @@ const ReceiptModal = ({ receipt, visible, onClose,onAction }) => {
   )
 };
 
-export default ReceiptModal;
+export default EditAmountModal;
 
 const modalStyles = StyleSheet.create({
   container: {
@@ -145,7 +92,9 @@ const modalStyles = StyleSheet.create({
   modalTitle: {
     fontSize: 24,
     color: '#454d66',
-    fontWeight: '700'
+    fontWeight: '700',
+    flex: 1,
+    textAlign: 'center'
   },
 
   receiptDetails: {
@@ -153,6 +102,7 @@ const modalStyles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    flex:1,
     gap: 50
   },
   title: {
