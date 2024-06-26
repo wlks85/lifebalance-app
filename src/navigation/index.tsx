@@ -219,14 +219,16 @@ const MainNavigation = () => {
 };
 
 const AppNavigator = () => (
-  <NavigationContainer>
-    <Stack.Navigator
-      screenOptions={{headerShown: false, tabBarStyle: {display: 'flex'}}}>
-      <Stack.Screen name="MainNav" component={MainNavigation} />
-      <Stack.Screen name="Receipt" component={RecordReceiptScreen} />
-      <Stack.Screen name="Auth" component={AppLogin} />
-    </Stack.Navigator>
-  </NavigationContainer>
+  <>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{headerShown: false, tabBarStyle: {display: 'flex'}}}>
+        <Stack.Screen name="MainNav" component={MainNavigation} />
+        <Stack.Screen name="Receipt" component={RecordReceiptScreen} />
+        <Stack.Screen name="Auth" component={AppLogin} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  </>
 );
 
 export default AppNavigator;

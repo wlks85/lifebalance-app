@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import BankBalanceComponent from "../components/profile/BankBalanceComponent";
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../providers/auth-provider';
 
 const RenderNavigation = () => {
     const show = true;
@@ -46,17 +47,17 @@ const RenderNavigation = () => {
     </View>)
 }
 
-const RenderBalance = () => {
+const RenderBalance = (userDetails: any) => {
     const formatBalance = (value) => {
         return `${value}`.replace(".", ',') + " EUR"
     }
-    const user = { balance: 29.23 };
+    const user = { balance: userDetails?.field_balance_current?.und?.[0]?.value };
     const show = true;
     return show && (<BankBalanceComponent hasNavigation={true} user={user} />)
 }
 
 const HomeScreen = () => {
-
+    const {userDetails} = useAuth();
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView style={styles.container}>
@@ -95,8 +96,7 @@ const HomeScreen = () => {
                                 margin: 0
                             }}
                         >
-                            <Text style={{ color: "#fff", fontSize: 26, fontWeight: 700, fontFamily: "serif" }}>John</Text>
-                            <Text style={{ color: "#fff", fontSize: 26, fontWeight: 700, fontFamily: "serif" }}>Doe!</Text>
+                            <Text style={{ color: "#fff", fontSize: 26, fontWeight: 700, fontFamily: "serif" }}>{userDetails?.name?.split("@")?.[0] || 'Not Found'}</Text>
                         </View>
                     </View>
                 </ImageBackground>
@@ -110,7 +110,7 @@ const HomeScreen = () => {
                     </View>
                 </View> */}
                 <View style={styles.components}>
-                    {RenderBalance()}
+                    {RenderBalance(userDetails)}
                     {RenderNavigation()}
                 </View>
             </ScrollView>

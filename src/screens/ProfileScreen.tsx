@@ -4,6 +4,7 @@ import { useAppContext } from '../context';
 import Layout from '../components/Layout';
 import BankBalance from '../components/profile/BankBalanceComponent';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useAuth } from '../providers/auth-provider';
 
 
 const ProfilePageListItems = ({ items }) => {
@@ -15,7 +16,7 @@ const ProfilePageListItems = ({ items }) => {
             >
                 <Icon style={styles.menuIcon} name={item.icon} size={30} color="#6200ee" />
                 <Text style={styles.menuText}>{item.title}</Text>
-                <Icon style={styles.menuIcon} name={item.icon} size={30} color="#6200ee" />
+                <Icon style={[styles.menuIcon, styles.menuIconRight]} name="chevron-right" size={30} color="#6200ee" />
             </TouchableOpacity>
         )
     }
@@ -75,7 +76,6 @@ const bStyles = StyleSheet.create({
         fontWeight: '700',
         fontSize: 17,
         paddingBottom: 8,
-
     },
     email: {
         color: '#454d66',
@@ -96,7 +96,8 @@ const bStyles = StyleSheet.create({
 
 const ProfileScreen = () => {
     // const { user } = useAppContext();
-    const user = { fullname: "Mehedi Hasan", email: "mh@annonlab.com", balance: 20.01 };
+    const {userDetails} = useAuth();
+    const user = { fullname: userDetails?.name?.split("@")?.[0], email: userDetails?.name, balance: userDetails?.field_balance_current?.und?.[0]?.value };
     return (
         <Layout title='Profil'>
             <ScrollView>
@@ -127,7 +128,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 15,
         borderBottomColor: "#f0f0f0",
         borderBottomWidth: 1,
         minHeight: 80,
@@ -136,16 +136,19 @@ const styles = StyleSheet.create({
     menuText: {
         color: '#454d66',
         marginLeft: 10,
-        fontFamily: `"FontAwesome6Pro-Light", "Font Awesome 6 Pro Light", "Font Awesome 6 Pro", sans-serif`
+        fontFamily: `"FontAwesome6Pro-Light", "Font Awesome 6 Pro Light", "Font Awesome 6 Pro", sans-serif`,
+        fontSize: 15
     },
     menuIcon: {
-        paddingTop: 26,
         paddingLeft: 32,
-        paddingBottom: 8,
-        paddingRight: 32,
+        paddingRight: 20,
         color: '#454d66',
-        marginLeft: 10,
         textAlign: 'center',
+        fontSize: 25,
+    },
+    menuIconRight: {
+        fontSize: 15,
+        marginLeft: 'auto',
     },
     components: {
         display: 'flex',
