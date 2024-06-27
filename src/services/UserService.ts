@@ -1,4 +1,5 @@
 import {RestClient} from '../lib';
+import {LocalStorage} from '../utils';
 
 class UserService {
   client: RestClient;
@@ -16,20 +17,42 @@ class UserService {
     return id ? {id: id, username: 'johndoe', name: 'John Doe'} : null;
   }
 
-  async register(values: {username: string; password: string}) {
-    return null;
-  }
-
   async login(values: {username: string; password: string}) {
-    return null;
+    try {
+      await LocalStorage.save('auth.credentials', JSON.stringify(values));
+      return this.getMe();
+    } catch (err) {
+      return {
+        data: null,
+        error: err?.message,
+      };
+    }
   }
 
-  async forgot(email: string) {
-    // this.client.get(this.path,)
-    // .then((data)=> {
-
-    // })
-    return null;
+  async getMe() {
+    try {
+      const res = await this.client.get(
+        '/lbp/mobile-app/rest-service/v1.0/ep/node.json/?parameters[type]=account',
+      );
+      if (!res) throw new Error('Invalid credentials');
+      if (res[0]?.nid) {
+        const userDetails = await this.client.get(
+          `/lbp/mobile-app/rest-service/v1.0/ep/node/${res[0]?.nid}.json`,
+        );
+        await LocalStorage.save(
+          'auth.credentials.details',
+          JSON.stringify(userDetails),
+        );
+        return {
+          data: userDetails,
+        };
+      }
+    } catch (err) {
+      return {
+        data: null,
+        error: err?.message,
+      };
+    }
   }
 
   async get() {

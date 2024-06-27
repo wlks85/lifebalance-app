@@ -1,4 +1,11 @@
-import axios, {AxiosInstance, AxiosResponse} from 'axios';
+import axios, {
+  AxiosInstance,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
+import base64 from 'react-native-base64';
+import {LocalStorage} from '../utils';
+export * from './storage';
 
 export interface Response {
   status: number;
@@ -16,16 +23,48 @@ abstract class BaseClient {
   abstract post(url: string, data: any): Promise<any>;
 }
 
+const API_BASE_URL = 'https://w3.lbplus.de';
 export class RestClient extends BaseClient {
   private axiosInstance: AxiosInstance;
 
   constructor() {
     super();
     this.axiosInstance = axios.create({
-      baseURL: 'https://api.example.com', // replace with your API base URL
+      baseURL: API_BASE_URL, // replace with your API base URL
       timeout: 10000,
       headers: {'Content-Type': 'application/json'},
     });
+
+    this.axiosInstance.interceptors.request.use(
+      async config => {
+        try {
+          const {data: response} = await LocalStorage.get('auth.credentials');
+          const parsedResponse = JSON.parse(response || '');
+          const credentialsText = `${parsedResponse.username}:${parsedResponse.password}`;
+          if (!config.headers.Authorization) {
+            config.headers.Authorization = `Basic ${base64.encode(
+              credentialsText,
+            )}`;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+
+        const {data: csrfToken} = await axios.get(
+          `${API_BASE_URL}/session/token`,
+        );
+
+        return {
+          ...config,
+          headers: {
+            'X-CSRF-Token': csrfToken,
+          },
+        } as unknown as InternalAxiosRequestConfig;
+      },
+      error => {
+        return Promise.reject(error);
+      },
+    );
   }
 
   async get(url: string, params: Record<string, any> = {}): Promise<any> {

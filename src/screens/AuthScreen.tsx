@@ -4,10 +4,8 @@ import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {useAsyncStorage} from '@react-native-async-storage/async-storage';
-import {UserService} from '../services';
 import {useAuth} from '../providers/auth-provider';
-import {useAxios} from '../providers/axios-provider';
+import userService from '../services/UserService';
 
 const formSchema = z.object({
   username: z.string(),
@@ -18,38 +16,31 @@ type FormSchema = z.infer<typeof formSchema>;
 
 const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
   const [loading, setLoading] = useState(false);
-  const storage = useAsyncStorage('auth.credentials');
+  const [error, setError] = useState("");
   const {setIsLoggedIn, setUserDetails} = useAuth();
-  const axios = useAxios();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
   const [mode, setMode] = useState<'login' | 'forgot' | 'register'>('login');
 
   async function handleSubmit(values: FormSchema) {
+    setError("");
     setLoading(true);
     try {
       if (mode === 'login') {
-        await storage.setItem(JSON.stringify(values));
-        const {data} = await axios.get(
-          '/lbp/mobile-app/rest-service/v1.0/ep/node.json/?parameters[type]=account',
-        );
-        if (data[0]?.nid) {
-          const {data: userDetails} = await axios.get(
-            `/lbp/mobile-app/rest-service/v1.0/ep/node/${data[0]?.nid}.json`,
-          );
-          setUserDetails(userDetails);
-          setIsLoggedIn(true);
-          onSubmit?.(userDetails);
+        const { data: userDetails, error } = await userService.login({
+          username: values.username!,
+          password: values.password!,
+        });
+        if (error) {
+          setError(error);
+          setLoading(false);
+          return;
         }
-      }
-      if (mode === 'register') {
-        await storage.setItem(JSON.stringify(values));
+        setUserDetails(userDetails);
         setIsLoggedIn(true);
-        onSubmit?.(null);
-      }
-      if (mode === 'forgot') {
-        await UserService.forgot('');
+        setError("");
+        onSubmit?.(userDetails);
       }
     } catch (err) {
       
@@ -132,6 +123,13 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
         </Pressable>
 
         <View style={styles.formInfo}>
+          {error && (
+            <Text style={[styles.formInfoText, {
+              color: "red"
+            }]}>
+              {error}
+            </Text>
+          )}
           {mode !== 'forgot' && (
             <Text style={styles.formInfoText}>
               Sie haben noch kein lifebalancePlus-Konto?

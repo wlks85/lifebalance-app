@@ -1,3 +1,5 @@
+export * from './local-storage';
+
 export function getRandomCompanyName(length) {
   const syllables = [
     'tech',

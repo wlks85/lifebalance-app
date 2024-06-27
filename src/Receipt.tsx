@@ -5,14 +5,26 @@ import {ThemeProvider} from './theme';
 import AppLoginScreen from './screens/AuthScreen';
 import {UserService} from './services';
 import Providers from './providers';
+import { LocalStorage } from './utils';
 
 const App = () => {
   const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const { data: userDetails } = await LocalStorage.get('auth.credentials.details');
+      if (!userDetails) return;
+      try {
+        const data = JSON.parse(userDetails || "{}");
+        setUser(data);
+      } catch (err) {}
+    })()
+  }, [])
   
   return (
     <ThemeProvider>
       <AppProvider>
-        <Providers>
+        <Providers user={user}>
           {user !== null ? (
             <AppNavigator />
           ) : (
