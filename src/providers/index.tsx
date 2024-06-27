@@ -1,12 +1,11 @@
 import React from 'react';
 import {PropsWithChildren} from 'react';
 import AuthProvider from './auth-provider';
-import AxiosProvider from './axios-provider';
 
-export default function Providers({children}: PropsWithChildren) {
+export default function Providers({children, user}: PropsWithChildren<{ user: any }>) {
   return (
-    <AuthProvider>
-      <AxiosProvider>{children}</AxiosProvider>
+    <AuthProvider user={user}>
+      {children}
     </AuthProvider>
   );
 }

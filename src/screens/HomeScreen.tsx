@@ -1,12 +1,13 @@
 //@ts-nocheck
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, SafeAreaView, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, SafeAreaView, ImageBackground, Pressable } from 'react-native';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import BankBalanceComponent from "../components/profile/BankBalanceComponent";
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../providers/auth-provider';
+import userService from '../services/UserService';
 
 const RenderNavigation = () => {
     const show = true;
