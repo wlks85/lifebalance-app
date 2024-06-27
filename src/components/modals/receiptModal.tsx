@@ -8,6 +8,7 @@ import ReceiptItem from '../modules/receipt/ReceiptItem';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { TextInput } from 'react-native-gesture-handler';
 import ReceiptOverviewModal from './ReceiptOverviewModal';
+import { useAxios } from '../../providers/axios-provider';
 // import CameraModule from '../modules/camera';
 
 
@@ -15,13 +16,27 @@ const ReceiptModal = ({ receipt, visible, onClose,onAction }) => {
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [showOverviewModal, setShowOverviewModal] = useState(false);
   const [image, setImage] = useState(null);
+  const [receiptDetails, setReceiptDetails] = useState({});
+  const axios = useAxios();
   const handleFurther = ()=>{
     setShowPhotoModal(true);
   }
-  // const [shoeCamera, setSho]
 
-  const onOverviewClose = ()=>{
-    setShowOverviewModal(false);
+  const getSingleReceipt = async ()=>{
+    try{
+      const result = await axios.get(`https://w3.lbplus.de/lbp/mobile-app/rest-service/v1.0/ep/node/${receipt?.nid}.json`);
+      // console.log(result?.data?.title)
+      // console.log({result: result?.data?.field_amount_gross?.und[0]?.value})
+      const transformedData = {
+        title: result?.data?.title || 'default title',
+        amount: result?.data?.field_amount_gross?.und[0]?.value ?? 0
+      }
+      console.log(transformedData);
+      // setReceiptDetails(transformedData);
+    }catch(err){
+      console.log(err);
+    }
+    
   }
 
   const handleOpenCamera = async ()=>{
@@ -35,12 +50,17 @@ const ReceiptModal = ({ receipt, visible, onClose,onAction }) => {
     console.log("photo from gallery: ", JSON.stringify(result));
     setImage(result);
   }
-  console.log("This is receipt from overview ==> ", receipt);
+  // console.log("This is receipt from overview ==> ", receipt);
   useEffect(()=>{
     if(image){
       setShowOverviewModal(true);
     }
   }, [image])
+
+  useEffect(()=>{
+    getSingleReceipt();
+  }, [receipt]);
+  console.log({receiptDetails});
   return (
     <ModalComponent
       onClose={onClose}
@@ -65,6 +85,7 @@ const ReceiptModal = ({ receipt, visible, onClose,onAction }) => {
             style={modalStyles.amount} 
             placeholder='0,00 €' 
             placeholderTextColor={"#454d66"}
+            defaultValue={receiptDetails?.amount && receiptDetails?.amount }
             />
           </View>
           <View style={modalStyles.amountsSection}>

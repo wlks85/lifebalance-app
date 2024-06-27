@@ -2,13 +2,10 @@ import React, {ReactElement, useState} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AddReceiptModal from '../../modals/AddReciptModal';
+import { useAxios } from '../../../providers/axios-provider';
 
 export interface IReceipt {
-  company: {
-    logo?: string | ReactElement;
-    name: string;
-    postCode?: number;
-  },
+  title: string;
   amountIncludingTax: number;
   amountPaid: number;
 }
@@ -27,12 +24,13 @@ const ReceiptItem = ({ receipt,onItemClicked, disabled, showEditBtn, onEditBtnPr
   const onEditBtnPressHandler = ()=>{
     onEditBtnPress?.();
   }
+
     return (
       <TouchableOpacity style={styles.receipt} onPress={()=> onItemClicked(receipt)} disabled={disabled}>
-        <View style={styles.receiptLogo}><Text style={styles.logoText}>{receipt.company.logo}</Text></View>
+        <View style={styles.receiptLogo}><Text style={styles.logoText}>{receipt?.company?.logo || "GF"}</Text></View>
         <View style={styles.receiptInfo}>
           <View style={styles.receiptCompanyInfo}>
-            <Text style={styles.receiptCompanyText}>{receipt.company.name}</Text>
+            <Text style={styles.receiptCompanyText}>{receipt?.title || "title"}</Text>
           </View>
           <View style={styles.receiptDateInfo}>
             <Text style={styles.date}>12345・Yoga-Kurs</Text>
