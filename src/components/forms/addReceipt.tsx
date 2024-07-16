@@ -9,8 +9,6 @@ import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ServiceCategoryModal from "../modals/ServiceCatModal";
-import { ReceiptService } from "../../services";
-import ReceiptOverviewModal from "../modals/ReceiptOverviewModal";
 import ReceiptModal from "../modals/ReceiptModal";
 import { IReceipt } from "../modules/receipt/ReceiptItem";
 
@@ -20,13 +18,13 @@ interface AddReceiptFormProps {
     onSubmit?: (values: IReceipt)=>void;
 }
 
-const serviceCatSchema = z.object({
-    name: z.string(),
+const providerInfoSchema = z.object({
+    providerName: z.string(),
     postCode: z.string(),
     serviceCategory: z.array(z.string()),
   });
   
-  type ServiceCategorySchema = z.infer<typeof serviceCatSchema>;
+  type ServiceCategorySchema = z.infer<typeof providerInfoSchema>;
 
 const AddReceiptForm = ({ onClose, defaultValue, onSubmit }: AddReceiptFormProps)=>{
     const [showModal, setShowModal] = useState(false);
@@ -41,10 +39,10 @@ const AddReceiptForm = ({ onClose, defaultValue, onSubmit }: AddReceiptFormProps
         setValue,
         watch
     } = useForm<ServiceCategorySchema>({
-        resolver: zodResolver(serviceCatSchema),
+        resolver: zodResolver(providerInfoSchema),
         defaultValues: defaultValue ? {
-            name: defaultValue?.company.name,
-            postCode: String(defaultValue?.company?.postCode)
+            providerName: defaultValue?.providerName,
+            postCode: String(defaultValue?.postCode)
         } : {},
         mode: 'all',
         reValidateMode: 'onChange'
@@ -58,14 +56,13 @@ const AddReceiptForm = ({ onClose, defaultValue, onSubmit }: AddReceiptFormProps
     }
 
    const handleCreateReceipt = async (values: ServiceCategorySchema)=>{
-        await ReceiptService.addReceipt(values);
-        setReceipt({company: values});
+        setReceipt(values);
         setShowReceiptModal(true);
         // onClose?.();
     }
 
     const handleUpdateService = async(values: ServiceCategorySchema)=>{
-        onSubmit?.({company: values});
+        onSubmit?.(values);
         onClose?.();
     }
     useEffect(()=>{
@@ -75,24 +72,23 @@ const AddReceiptForm = ({ onClose, defaultValue, onSubmit }: AddReceiptFormProps
             setValue("serviceCategory", values);
         }
     }, [serviceCategories])
-    console.log({errors})
     return (
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
             <SafeAreaView style={{height: '100%'}}>
                 <View style={formStyle.container}>
                     <View>
                     <Controller
-                        name="name"
+                        name="providerName"
                         control={control}
                         render={({field}) => (
                             <FieldLabel label={'Name des Dienstleisters'}>
-                                <FieldError error={errors.name?.message}>
+                                <FieldError error={errors.providerName?.message}>
                                         <Input 
                                             inputType="text"
                                             onChange={field.onChange}
                                             onBlur={field.onBlur}
                                             value={field.value}
-                                            error={!!errors.name?.message}
+                                            error={!!errors.providerName?.message}
                                         />
                                 </FieldError>
                             </FieldLabel>
@@ -131,12 +127,6 @@ const AddReceiptForm = ({ onClose, defaultValue, onSubmit }: AddReceiptFormProps
                     setServiceCategories={setServiceCategories}
                     services={serviceCategories}
                 />
-                {/* <ReceiptOverviewModal 
-                    receipt={receipt}
-                    visible={showOverviewModal}
-                    onClose={()=>setShowOverviewModal(false)}
-                    onAction={()=>console.log()}
-                /> */}
                 <ReceiptModal 
                     visible={showReceiptModal}
                     onClose={onReceiptModalClose}
@@ -144,11 +134,9 @@ const AddReceiptForm = ({ onClose, defaultValue, onSubmit }: AddReceiptFormProps
                     receipt={{
                         amount: '00',
                         amount_paid: '00',
-                        company: {
-                            name: watch("name") || 'Default Name',
-                            logo: 'GF',
-                            postCode: watch("postCode")
-                        }
+                        providerName: watch("providerName") || 'Default Name',
+                        logo: 'GF',
+                        postCode: watch("postCode")
                     }}
                 />
             </SafeAreaView>

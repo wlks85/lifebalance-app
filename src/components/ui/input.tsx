@@ -53,6 +53,6 @@ const inputStyle = StyleSheet.create({
         paddingVertical: 4,
         height: 48,
         borderRadius: 4,
-        color: '#999999'
+        color: '#454d66'
     }
 })

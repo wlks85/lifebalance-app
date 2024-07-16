@@ -1,39 +1,82 @@
-import React, {ReactElement, useState} from 'react';
+//@ts-nocheck
+import React, {ReactElement, useEffect, useState} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AddReceiptModal from '../../modals/AddReciptModal';
-import { useAxios } from '../../../providers/axios-provider';
+import receiptService from '../../../services/ReceiptService';
+import { formatAmount } from '../../../utils';
 
 export interface IReceipt {
-  title: string;
-  amountIncludingTax: number;
-  amountPaid: number;
+  title?: string;
+  amountIncludingTax?: number;
+  amountPaid?: number;
+  providerName: string;
+  amount: number;
+  price: number;
+  postCode: string;
+  logo: string;
+}
+
+
+const ReceiptStatus = ({status, amount})=>{
+  if(status === '0') return <Text style={{color: 'green'}}>{amount} erstattet</Text>
+  if(status === '1') return <Text style={{color: 'red'}}>Abgelehnt</Text>
+  return <Text>Wird geprüft …</Text>
 }
 
 interface ReceiptItemProps {
   receipt: IReceipt;
-  onItemClicked: (item: IReceipt)=>void;
+  onItemClicked?: (item: IReceipt)=>void;
   disabled?: boolean;
   showEditBtn?: boolean;
   onEditBtnPress?: ()=>void;
+  showAmount?: boolean;
 }
 
 
-const ReceiptItem = ({ receipt,onItemClicked, disabled, showEditBtn, onEditBtnPress }: ReceiptItemProps) => {
+const ReceiptItem = ({ receipt,onItemClicked, disabled = false, showEditBtn, onEditBtnPress, showAmount }: ReceiptItemProps) => {
   const [showAddReceiptModal, setShowAddReceiptModal] = useState(false);
+  const [receiptDetails, setReceiptDetails] = useState(receipt);
   const onEditBtnPressHandler = ()=>{
     onEditBtnPress?.();
   }
 
+  useEffect(()=>{
+    setReceiptDetails(receipt);
+  }, [receipt])
+
+  useEffect(()=>{
+    if(!disabled && !receipt?.providerName){
+      try{
+        receiptService.getReceiptDetails(receipt?.nid).then((data)=>{
+          setReceiptDetails(data);
+        })
+      }catch(err){
+        console.log("inside receipt item", err);
+      }
+    }
+  }, [receipt])
+  // console.log("a", disabled);
+  
     return (
-      <TouchableOpacity style={styles.receipt} onPress={()=> onItemClicked(receipt)} disabled={disabled}>
-        <View style={styles.receiptLogo}><Text style={styles.logoText}>{receipt?.company?.logo || "GF"}</Text></View>
+      <TouchableOpacity style={styles.receipt} onPress={()=> {
+        console.log("clicked");
+        onItemClicked(receiptDetails)
+      }}
+      // disabled={disabled}
+      >
+        <View style={styles.receiptLogo}><Text style={styles.logoText}>{receiptDetails?.logo || "GF"}</Text></View>
         <View style={styles.receiptInfo}>
           <View style={styles.receiptCompanyInfo}>
-            <Text style={styles.receiptCompanyText}>{receipt?.title || "title"}</Text>
+            <Text style={styles.receiptCompanyText}>{receiptDetails?.providerName}</Text>
+            {showAmount && receiptDetails?.amount !== 'NaN' && <Text style={[styles.receiptCompanyText, {fontWeight: 'bold'}]}>{formatAmount(receiptDetails?.amount === undefined ? 0 : receiptDetails?.amount  / 100)} </Text>}
           </View>
           <View style={styles.receiptDateInfo}>
-            <Text style={styles.date}>12345・Yoga-Kurs</Text>
+            { !showAmount ?
+              <Text style={styles.date}>{receiptDetails?.postCode || '1234'}・Yoga-Kurs</Text>
+              :
+              <Text style={styles.date}>{receiptDetails?.postCode || '1234'}・{ReceiptStatus({status: receiptDetails?.status, amount: formatAmount(receiptDetails?.amount === undefined ? 0 : receiptDetails?.amount  / 100)})}</Text>
+            }
           </View>
         </View>
         {
@@ -47,7 +90,7 @@ const ReceiptItem = ({ receipt,onItemClicked, disabled, showEditBtn, onEditBtnPr
         <AddReceiptModal 
         visible={showAddReceiptModal}
         onClose={()=>setShowAddReceiptModal(false)} 
-        defaultValue={receipt} 
+        defaultValue={receiptDetails} 
         onAction={()=>{}}
         />
       </TouchableOpacity>

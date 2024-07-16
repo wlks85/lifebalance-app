@@ -11,43 +11,43 @@ import EditAmountModal from "../../modals/EditAmountModal";
 import ModalComponent from "../../Modal";
 import ReceiptImageModal from "../../modals/ReceiptImageModal";
 import AddReceiptCompleted from "../../modals/AddReceiptCompletedModal";
+import receiptService from "../../../services/ReceiptService";
+import { useAuth } from "../../../providers/auth-provider";
 
 
 const ReceiptOverview = ({receipt})=>{
-    const [receiptInfo, setReceiptInfo] = useState({
-        receipt,
-        amountIncludingTax: {
-            title: '99.999,99 €',
-            logo: "€",
-            subtitle: 'Erstattetet: 66.666,66 €'
-        },
-        image:''
-    });
+    const [receiptInfo, setReceiptInfo] = useState(receipt);
     const [showAddReceiptModal, setShowAddReceiptModal] = useState(false);
     const [showEditAmountModal, setShowEditAmountModal] = useState(false);
     const [showReceiptImageModal, setShowReceiptImageModal] = useState(false);
     const [showCompletedModal, setShowCompletedModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const {userDetails} = useAuth();
 
-    // const handleUpdateReceiptInfo = (values)=>{
-    //     setReceiptInfo(preValue => ({...preValue, values}))
-    // }
-    const handleSubmitReceipt = ()=>{
+    const handleSubmitReceipt = async ()=>{
+       try{
+        setLoading(true);
+        const result = await receiptService.addReceipt({
+            ...receiptInfo,
+            owner: userDetails?.field_bank_account_owner.und[0]?.value,
+            iban: userDetails?.field_bank_iban.und[0]?.value
+
+        });
         setShowCompletedModal(true);
+        setLoading(false);
+       }catch(err){
+        console.log(err);
+        alert(err?.message ?? "Something went wrong");
+        setLoading(false)
+       }
     }
     return (
         <ScrollView contentContainerStyle={{width: '100%'}}>
             <View style={styles.container}>
             <View style={styles.overview}>
                 <FieldLabel label="Dienstleistung">
-                    <ReceiptItem receipt={{
-                        company: {
-                            logo: 'GF',
-                            name: receiptInfo?.receipt.company?.name,
-                            postCode: receiptInfo?.receipt.company?.postCode
-                        },
-                    }}
+                    <ReceiptItem receipt={receiptInfo}
                     disabled={false}
-                    onItemClicked={()=>console.log("receipt", receipt)}
                     showEditBtn={true}
                     onEditBtnPress={()=>setShowAddReceiptModal(true)}
                     />
@@ -55,7 +55,11 @@ const ReceiptOverview = ({receipt})=>{
 
                 <FieldLabel label="Betrag inkl. MwSt.">
                     <ItemCard
-                        item={receiptInfo.amountIncludingTax}
+                        item={{
+                            title: receiptInfo?.amount,
+                            logo: '€',
+                            subtitle: receiptInfo?.amount
+                        }}
                         showEditBtn={true}
                         onItemClicked={()=>console.log("item clicked")}
                         onEditBtnPress={()=>setShowEditAmountModal(true)}
@@ -65,7 +69,7 @@ const ReceiptOverview = ({receipt})=>{
                 <FieldLabel label="Beleg">
                     <ItemCard
                         item={{
-                            title: '123-1234567-lbBeleg',
+                            title: receiptInfo?.title ?? '123-1234567-lbBeleg',
                             logo: <Icon name="file-text-o" size={20} />,
                             subtitle: 'Foto'
                         }}
@@ -83,38 +87,39 @@ const ReceiptOverview = ({receipt})=>{
             </View>
 
             <NextButton 
-            title="Beleg jetzt einreichen"
+            title={!loading ? 'Beleg jetzt einreichen' : 'Loading...'}
             onPress={handleSubmitReceipt}
             buttonStyles={{backgroundColor: '#309975'}}
+            disabled={loading}
             />
 
-<AddReceiptModal
-        visible={showAddReceiptModal}
-        onClose={()=>setShowAddReceiptModal(false)} 
-        defaultValue={receipt} 
-        onAction={(values: Partial<IReceipt>)=>setReceiptInfo(preValue => ({
-            ...preValue,
-            receipt: values
-        }))}
+        <AddReceiptModal
+            visible={showAddReceiptModal}
+            onClose={()=>setShowAddReceiptModal(false)} 
+            defaultValue={receiptInfo} 
+            onAction={(values: Partial<IReceipt>)=>{
+                console.log("re over ===> ", values);
+                setReceiptInfo(preValue => ({
+                    ...preValue,
+                    ...values
+                }))
+            }}
         />
 
         <EditAmountModal 
-        receipt={receipt} 
-        visible={showEditAmountModal}
-        onClose={()=>setShowEditAmountModal(false)}
-        onAction={(values)=>setReceiptInfo(preValue => ({
-            ...preValue,
-            amountIncludingTax: {
-                ...preValue.amountIncludingTax,
-                title: String(values)
-            }
-        }))}
+            receipt={receiptInfo} 
+            visible={showEditAmountModal}
+            onClose={()=>setShowEditAmountModal(false)}
+            onAction={(values)=>setReceiptInfo(preValue => ({
+                ...preValue,
+                amount: values
+            }))}
         />
 
         <ReceiptImageModal
             visible={showReceiptImageModal}
             onClose={()=>setShowReceiptImageModal(false)}
-            image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMp2QN2WCx7VRAXuJme-AcdxJJeXRSM3obFhXX_uIKvQ&s"
+            image={receipt?.image}
             onAction={()=>{}}
         />
 
@@ -122,20 +127,6 @@ const ReceiptOverview = ({receipt})=>{
             visible={showCompletedModal}
             onClose={()=>setShowCompletedModal(false)}
         />
-
-{/* <ModalComponent
-    visible={showReceiptImageModal}
-    onClose={()=>setShowReceiptImageModal(false)}
-    headerComponent={}
-  >
-    {
-      receipt && (<>
-        <View style={{flex: 1, backgroundColor: 'red'}}>
-          <Image style={{flex: 1, width: '100%',height: '100%',}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMp2QN2WCx7VRAXuJme-AcdxJJeXRSM3obFhXX_uIKvQ&s"/>
-        </View>
-      </>)
-    }
-  </ModalComponent> */}
         </View>
         </ScrollView>
     )

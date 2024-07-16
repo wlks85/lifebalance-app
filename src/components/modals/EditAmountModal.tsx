@@ -1,8 +1,10 @@
-//@ts-nocheck
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import ModalComponent from '../Modal';
 import { TextInput } from 'react-native-gesture-handler';
+import { IReceipt } from '../modules/receipt/ReceiptCard';
+import { useAuth } from '../../providers/auth-provider';
 
 interface EditAmountModalProps {
     receipt: Partial<IReceipt>;
@@ -13,7 +15,17 @@ interface EditAmountModalProps {
 
 
 const EditAmountModal = ({ receipt, visible, onClose,onAction }: EditAmountModalProps) => {
-  
+  const [amount, setAmount] = useState('0,00 €');
+  const {userDetails} = useAuth();
+
+  const handleEditAmount = ()=>{
+    onAction?.(Number(amount));
+    onClose?.();
+  }
+
+  useEffect(()=>{
+    setAmount(String(receipt?.amount));
+  }, [receipt])
   return (
     <ModalComponent
       onClose={onClose}
@@ -31,26 +43,28 @@ const EditAmountModal = ({ receipt, visible, onClose,onAction }: EditAmountModal
             <Text style={modalStyles.title}>Betrag des Belegs (inkl. MwSt.)</Text>
           </View>
           <View>
-            <TextInput 
+          <TextInput 
             style={modalStyles.amount} 
-            placeholder='0,00 €' 
+            placeholder='0,00 €'
             placeholderTextColor={"#454d66"}
-            defaultValue={receipt.amountIncludingTax}
+            value={amount ?? '0,00 €'}
+            onChangeText={(value)=>setAmount(value)}
+            keyboardType='numeric'
             />
           </View>
           <View style={modalStyles.amountsSection}>
             <View style={modalStyles.amountInfo}>
               <Text style={modalStyles.amountInfoText}>Erstatteter Betrag:</Text>
-              <Text style={modalStyles.refundAmount}>{receipt.amount_paid} €</Text>
+              <Text style={modalStyles.refundAmount}>{amount} €</Text>
             </View>
             <View style={modalStyles.amountInfo}>
               <Text style={modalStyles.amountInfoText}>Aktueller Kontostand:</Text>
-              <Text style={modalStyles.currentBalance}>{receipt.amount} €</Text>
+              <Text style={modalStyles.currentBalance}>{userDetails?.field_balance_current?.und[0]?.value} €</Text>
             </View>
           </View>
         </View>
         <View style={modalStyles.btnContainer}>
-        <TouchableOpacity onPress={onClose} style={modalStyles.furtherBtn}>
+        <TouchableOpacity onPress={handleEditAmount} style={modalStyles.furtherBtn}>
           <Text style={modalStyles.btnText}>Übernehmen</Text>
         </TouchableOpacity>
         </View>

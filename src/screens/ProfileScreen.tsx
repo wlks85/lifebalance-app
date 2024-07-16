@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useAppContext } from '../context';
@@ -5,6 +6,9 @@ import Layout from '../components/Layout';
 import BankBalance from '../components/profile/BankBalanceComponent';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useAuth } from '../providers/auth-provider';
+import userService from '../services/UserService';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 
 const ProfilePageListItems = ({ items }) => {
@@ -13,6 +17,7 @@ const ProfilePageListItems = ({ items }) => {
             <TouchableOpacity
                 key={Math.random()}
                 style={styles.menuItem}
+                onPress={item?.onPress}
             >
                 <Icon style={styles.menuIcon} name={item.icon} size={30} color="#6200ee" />
                 <Text style={styles.menuText}>{item.title}</Text>
@@ -41,6 +46,9 @@ const OtherInformation = () => {
 }
 
 const Security = ({ user }) => {
+    const {setUserDetails} = useAuth();
+    const navigation = useNavigation();
+    const {t} = useTranslation();
     const securityButtons = [{
         title: "Face-ID",
         icon: 'home',
@@ -52,8 +60,14 @@ const Security = ({ user }) => {
     {
         title: "Logout",
         icon: 'sign-out',
+        onPress: handleLogout
     },
     ];
+    async function handleLogout(){
+        await userService.logout();
+        setUserDetails(null);
+        navigation.navigate(t('navigation.home'));
+    }
     return (<ProfilePageListItems items={securityButtons} />);
 }
 

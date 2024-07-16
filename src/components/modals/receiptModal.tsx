@@ -8,59 +8,67 @@ import ReceiptItem from '../modules/receipt/ReceiptItem';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { TextInput } from 'react-native-gesture-handler';
 import ReceiptOverviewModal from './ReceiptOverviewModal';
-import { useAxios } from '../../providers/axios-provider';
-// import CameraModule from '../modules/camera';
+import ReceiptCard from '../modules/receipt/ReceiptCard';
+import receiptService from '../../services/ReceiptService';
+import { useAuth } from '../../providers/auth-provider';
+import { generateReceiptTitle } from '../../utils';
 
 
 const ReceiptModal = ({ receipt, visible, onClose,onAction }) => {
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [showOverviewModal, setShowOverviewModal] = useState(false);
   const [image, setImage] = useState(null);
-  const [receiptDetails, setReceiptDetails] = useState({});
-  const axios = useAxios();
+  const [fid, setFid] = useState(null);
+  const [amount, setAmount] = useState('0,00 €');
+  const {userDetails} = useAuth();
   const handleFurther = ()=>{
     setShowPhotoModal(true);
   }
-
-  const getSingleReceipt = async ()=>{
-    try{
-      const result = await axios.get(`https://w3.lbplus.de/lbp/mobile-app/rest-service/v1.0/ep/node/${receipt?.nid}.json`);
-      // console.log(result?.data?.title)
-      // console.log({result: result?.data?.field_amount_gross?.und[0]?.value})
-      const transformedData = {
-        title: result?.data?.title || 'default title',
-        amount: result?.data?.field_amount_gross?.und[0]?.value ?? 0
-      }
-      console.log(transformedData);
-      // setReceiptDetails(transformedData);
-    }catch(err){
-      console.log(err);
-    }
-    
-  }
+  const ImageLibConfig = {
+    mediaType: 'photo', 
+    quality: 1,
+    includeBase64: true
+  };
 
   const handleOpenCamera = async ()=>{
-    const result = await launchCamera({mediaType: 'photo', quality: 1, cameraType: 'back'});
-    console.log("photo from camera: ", JSON.stringify(result));
+    const result = await launchCamera({...ImageLibConfig, cameraType: 'back'});
     setImage(result);
+    onAction?.(amount)
+    try{
+      const uploadResult = await receiptService.uploadReceiptImage({
+        filename: result?.assets[0]?.fileName,
+        base64: result?.assets[0]?.base64 
+      });
+      setFid(uploadResult?.fid) // TO-DO: change it to actual property
+      setShowOverviewModal(true);
+    }catch(err){
+      console.log(err);
+      alert(err.message);
+    }
   }
 
   const handleOpenGallery = async ()=>{
-    const result = await launchImageLibrary({mediaType: 'photo', quality: 1});
-    console.log("photo from gallery: ", JSON.stringify(result));
+    try{
+      const result = await launchImageLibrary(ImageLibConfig);
+    if(!result?.assets?.length)return;
     setImage(result);
-  }
-  // console.log("This is receipt from overview ==> ", receipt);
-  useEffect(()=>{
-    if(image){
+    onAction?.(amount)
+      const uploadResult = await receiptService.uploadReceiptImage({
+        filename: result?.assets[0]?.fileName,
+        base64: result?.assets[0]?.base64 
+      });
+      console.log("photo upload result: ", uploadResult);
+      setFid(uploadResult?.fid) // TO-DO: change it to actual property
       setShowOverviewModal(true);
+    }catch(err){
+      console.log(err);
+      alert(err.message);
     }
-  }, [image])
+  }
 
   useEffect(()=>{
-    getSingleReceipt();
-  }, [receipt]);
-  console.log({receiptDetails});
+    setAmount(receipt?.amount ? String(receipt?.amount) : '');
+  }, [receipt?.amount])
   return (
     <ModalComponent
       onClose={onClose}
@@ -76,26 +84,28 @@ const ReceiptModal = ({ receipt, visible, onClose,onAction }) => {
       {receipt && (
       <View style={modalStyles.container}>
         <View style={modalStyles.receiptDetails}>
-          <ReceiptItem receipt={receipt} disabled={true} />
+          <ReceiptCard receipt={receipt} />
           <View>
             <Text style={modalStyles.title}>Betrag des Belegs (inkl. MwSt.)</Text>
           </View>
           <View>
             <TextInput 
             style={modalStyles.amount} 
-            placeholder='0,00 €' 
+            placeholder='0,00 €'
             placeholderTextColor={"#454d66"}
-            defaultValue={receiptDetails?.amount && receiptDetails?.amount }
+            value={amount ? amount : ''}
+            onChangeText={(value)=>setAmount(value)}
+            keyboardType='numeric'
             />
           </View>
           <View style={modalStyles.amountsSection}>
             <View style={modalStyles.amountInfo}>
               <Text style={modalStyles.amountInfoText}>Erstatteter Betrag:</Text>
-              <Text style={modalStyles.refundAmount}>{receipt.amount_paid} €</Text>
+              <Text style={modalStyles.refundAmount}>{amount ? `${amount} €`: '0,00 €'}</Text>
             </View>
             <View style={modalStyles.amountInfo}>
               <Text style={modalStyles.amountInfoText}>Aktueller Kontostand:</Text>
-              <Text style={modalStyles.currentBalance}>{receipt.amount} €</Text>
+              <Text style={modalStyles.currentBalance}>{userDetails?.field_balance_current?.und[0]?.value} €</Text>
             </View>
           </View>
         </View>
@@ -122,11 +132,17 @@ const ReceiptModal = ({ receipt, visible, onClose,onAction }) => {
         </Modal>
 
         <ReceiptOverviewModal 
-                    receipt={receipt}
-                    visible={showOverviewModal}
-                    onClose={()=>setShowOverviewModal(false)}
-                    onAction={()=>console.log()}
-                />
+          receipt={{
+            ...receipt, 
+            amount, 
+            fid,
+            title: generateReceiptTitle(),
+            image: image?.assets[0]?.uri
+          }}
+          visible={showOverviewModal}
+          onClose={()=>setShowOverviewModal(false)}
+          onAction={()=>console.log()}
+        />
         </View>
       </View>
     )}

@@ -51,12 +51,13 @@ export class RestClient extends BaseClient {
         }
 
         const {data: csrfToken} = await axios.get(
-          `${API_BASE_URL}/session/token`,
+          `${API_BASE_URL}/services/session/token`,
         );
 
         return {
           ...config,
           headers: {
+            ...config.headers,
             'X-CSRF-Token': csrfToken,
           },
         } as unknown as InternalAxiosRequestConfig;

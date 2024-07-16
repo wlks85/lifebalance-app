@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity, Modal, TouchableWithoutFeedback, Image } from 'react-native';
 import ModalComponent from '../Modal';
-// import CameraModule from '../modules/camera';
 
 interface EditAmountModalProps {
     image: string;
@@ -13,7 +12,6 @@ interface EditAmountModalProps {
 
 
 const ReceiptImageModal = ({ image, visible, onClose,onAction }: EditAmountModalProps) => {
-//   console.log("This is receipt from overview ==> ", receipt);
   
   return (
     <ModalComponent
@@ -23,10 +21,11 @@ const ReceiptImageModal = ({ image, visible, onClose,onAction }: EditAmountModal
         <View style={modalStyles.modalHeader}><Text onPress={onClose} style={modalStyles.modalCloseButton}>x</Text></View>
         <Text style={modalStyles.modalTitle}>Betrag bearbeiten</Text>
     </View>}
+    contentStyle={{paddingHorizontal: 0}}
     >
       {image && (
-       <View style={{flex: 1, backgroundColor: 'red', width: '100%', paddingHorizontal: '-25'}}>
-       <Image style={{flex: 1, width: '100%',height: '100%',}} src={image}/>
+       <View style={modalStyles.imageContainer}>
+       <Image style={modalStyles.image} src={image}/>
      </View>
     )}
     </ModalComponent>
@@ -63,5 +62,15 @@ const modalStyles = StyleSheet.create({
     fontWeight: '700',
     flex: 1,
     textAlign: 'center'
+  },
+  imageContainer: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 })

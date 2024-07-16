@@ -55,4 +55,69 @@ export const formatAmount = amount => {
   }).format(amount);
 };
 
-export default {formatAmount, formatDate};
+export const generateReceiptTitle = ()=> {
+  const timestamp = Math.floor(Date.now() / 1000);
+  const randomNumber = Math.floor(100000 + Math.random() * 900000);
+  const receiptString = `Posted Receipt #R${timestamp}${randomNumber}`;
+  return receiptString;
+}
+
+export const formatDateAndTime = (date) => {
+  const pad = (num) => String(num).padStart(2, '0');
+
+  const day = pad(date.getDate());
+  const month = pad(date.getMonth() + 1);
+  const year = date.getFullYear();
+
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  const seconds = pad(date.getSeconds());
+
+  return `${day}.${month}.${year} - ${hours}:${minutes}:${seconds}`;
+};
+
+export function formatDataMonthWise(data) {
+  const monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni", 
+                      "Juli", "August", "September", "Oktober", "November", "Dezember"];
+  function getMonthName(timestamp) {
+      const date = new Date(parseInt(timestamp) * 1000);
+      return monthNames[date.getMonth()];
+  }
+
+  const grouped = {};
+  const last7Days = [];
+  const currentDate = new Date();
+  const sevenDaysAgo = currentDate.setDate(currentDate.getDate() - 7) / 1000;
+
+  data.forEach(obj => {
+      const createdTimestamp = parseInt(obj.created);
+      const monthName = getMonthName(createdTimestamp);
+
+      if (createdTimestamp >= sevenDaysAgo) {
+          last7Days.push(obj);
+      }
+
+      if (!grouped[monthName]) {
+          grouped[monthName] = [];
+      }
+      grouped[monthName].push(obj);
+  });
+
+  const result = Object.keys(grouped).map(monthName =>grouped[monthName]?.length && ({
+      title: monthName,
+      data: grouped[monthName]
+  }));
+
+  result.sort((a, b) => monthNames.indexOf(a.title) - monthNames.indexOf(b.title));
+
+  if(last7Days.length){
+    result.unshift({
+      title: "Letzte 7 Tage",
+      data: last7Days
+  });
+  }
+
+  return result;
+}
+
+export default {formatAmount, formatDate, generateReceiptTitle, formatDateAndTime, formatDataMonthWise};

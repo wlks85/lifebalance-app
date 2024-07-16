@@ -1,14 +1,5 @@
 import {RestClient} from '../lib';
-
-const sampleData =
-  '[{ "title": "January", "items": [{ "id": 1, "amount": 32.21, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-01-03T00:00:00", "amount_paid": 18.54 }, { "id": 2, "amount": 91.26, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-01-18T00:00:00", "amount_paid": 44.73 }] }, { "title": "February", "items": [{ "id": 1, "amount": 38.52, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-02-18T00:00:00", "amount_paid": 23.63 }] }, { "title": "March", "items": [{ "id": 1, "amount": 51.93, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-03-26T00:00:00", "amount_paid": 16.34 }, { "id": 2, "amount": 53.25, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-03-12T00:00:00", "amount_paid": 88.75 }, { "id": 3, "amount": 56.51, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-03-21T00:00:00", "amount_paid": 42.13 }] }, { "title": "April", "items": [{ "id": 1, "amount": 20.98, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-04-22T00:00:00", "amount_paid": 41.26 }, { "id": 2, "amount": 33.07, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-04-08T00:00:00", "amount_paid": 30.35 }, { "id": 3, "amount": 56.44, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-04-15T00:00:00", "amount_paid": 83.23 }] }, { "title": "May", "items": [{ "id": 1, "amount": 45.28, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-05-18T00:00:00", "amount_paid": 75.74 }, { "id": 2, "amount": 29.7, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-05-17T00:00:00", "amount_paid": 33.84 }, { "id": 3, "amount": 61.76, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-05-20T00:00:00", "amount_paid": 78.98 }, { "id": 4, "amount": 74.78, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-05-17T00:00:00", "amount_paid": 83.95 }, { "id": 5, "amount": 31.43, "company": { "name": "GMbh Finance", "logo": "GF" }, "date": "2024-05-07T00:00:00", "amount_paid": 54.38 }] }]';
-const receiptsData = JSON.stringify([{ "title": "Zuletzt verwendet", "items": [{ "id": 1, "amount": 32.21, "company": { "name": "Good Feel GmBH", "logo": "GF" }, "date": "2024-01-03T00:00:00", "amount_paid": 18.54 },
-{ "id": 2, "amount": 91.26, "company": { "name": "Good Feel GmBH", "logo": "GF" }, "date": "2024-01-18T00:00:00", "amount_paid": 44.73 },
-{ "id": 3, "amount": 91.26, "company": { "name": "Good Feel GmBH", "logo": "GF" }, "date": "2024-01-18T00:00:00", "amount_paid": 44.73 },
-{ "id": 4, "amount": 91.26, "company": { "name": "Good Feel GmBH", "logo": "GF" }, "date": "2024-01-18T00:00:00", "amount_paid": 44.73 },
-{ "id": 5, "amount": 91.26, "company": { "name": "Good Feel GmBH", "logo": "GF" }, "date": "2024-01-18T00:00:00", "amount_paid": 44.73 },
-{ "id": 6, "amount": 91.26, "company": { "name": "Good Feel GmBH", "logo": "GF" }, "date": "2024-01-18T00:00:00", "amount_paid": 44.73 },
-]}]);
+import { formatDataMonthWise, formatDateAndTime, generateReceiptTitle } from '../utils';
 
 const serviceCategories = JSON.stringify([
   {id: 1, title: 'Yoga'},
@@ -34,16 +25,38 @@ class ReceiptService {
   }
 
   async getArchivedReceipts() {
-    const data = JSON.parse(sampleData).map((item: any) => {
-      return {title: item.title, data: item.items};
-    });
-    return data;
+    
+    const result = await this.__client.get('/lbp/mobile-app/rest-service/v1.0/ep/node.json?parameters[type]=receipt&page=0');
+    const decoratedData = formatDataMonthWise(result);
+    return decoratedData;
   }
 
   async getReceipts(){
-    const data = JSON.parse(receiptsData).map((item: any) => {
-      return {title: item.title, data: item.items};
-    });
+    const result = await this.__client.get('/lbp/mobile-app/rest-service/v1.0/ep/node.json?parameters[type]=receipt&page=0');
+    return result;
+  }
+
+  async getReceiptDetails(nid: string){
+    const result = await this.__client.get(`/lbp/mobile-app/rest-service/v1.0/ep/node/${nid}.json`)
+    const providerInfo = result?.field_address?.und[0];
+    let amount = result?.field_amount_gross.und?.[0]?.value;
+    let price = result?.field_price_gross.und?.[0]?.value;
+    const fileName = result?.field_media?.und?.[0]?.filename;
+    const date = new Date(parseInt(result?.created) * 1000);
+    const image = `https://w3.lbplus.de/sites/all/files/public/receipts/${fileName}`
+    if(amount === undefined || amount === 'undefined' || amount === 'NaN' || amount === '') amount = '00'
+    if(price === undefined || price === 'undefined' || price === 'NaN' || price === '') price = '00'
+    const data = {
+      title: result?.title,
+      providerName: providerInfo?.organisation_name || result?.body?.und?.[0]?.value || result?.title,
+      postCode: providerInfo?.postal_code || 'N/A',
+      logo: providerInfo?.country,
+      status: result?.status,
+      amount,
+      price,
+      image,
+      date
+    }
     return data;
   }
 
@@ -55,9 +68,84 @@ class ReceiptService {
   }
 
   async addReceipt(values){
-    console.log(values);
-    return;
+    const modifiedBody = {
+    "title": values?.title,
+    "type": "receipt",
+    "log": "LifebalanceplusReceipt.upload(): receipt data sent by mobile app!",
+    "body":  {"und": [
+      {
+         "value": `${values?.providerName}`
+      }
+    ]},
+    "field_bank_iban":  {"und": [
+      {
+         "value": values?.iban
+      }
+    ]},
+    "field_bank_account_owner":  {"und": [
+      {
+         "value": values?.owner
+      }
+    ]},
+    "field_amount_gross":  {"und": [
+      {
+         "value": `${values?.amount}`
+      }
+    ]},
+    "field_uploads_prf":  {"und": [
+      {
+         "fid": "1510"
+      }
+    ]},
+    "field_wf_d_booked":  {"und": [
+      {
+         "value": formatDateAndTime(new Date())
+      }
+    ]},
+    "field_wf_u_booked":  {"und": [
+      {
+         "value": values?.email
+      }
+    ]},
+    "field_submission_type":  {
+        "und": 113
+    },
+    "field_address": {
+      "und": [
+        {
+          "organisation_name": values?.providerName,
+          "postal_code": values?.postCode
+        }
+      ]
+    }
+
+    }
+    const result = await this.__client.post(
+      'lbp/mobile-app/rest-service/v1.0/ep/node.json',
+      modifiedBody
+    );
+
+    return result;
+  }
+
+  async uploadReceiptImage(body){
+    console.log("triggering upload image ==>", {body});
+    const modifiedBody = {
+      "title": "Posted File",
+      "type": {
+              "href": "https://w3.lbplus.de/rest/type/file/image"
+      },
+      "_links": {
+              "href": "https://w3.lbplus.de/rest/type/file/image"
+      },
+      "filename": body?.filename,
+      "filepath": `public://${body?.filename}`,
+      "file": `${body?.base64}`
+  }
+  
+    const result = await this.__client.post('/lbp/mobile-app/rest-service/v1.0/ep/file.json', modifiedBody);
+    return result;
   }
 }
-
-export default new ReceiptService();
+const receiptService = new ReceiptService();
+export default receiptService;

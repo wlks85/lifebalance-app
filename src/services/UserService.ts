@@ -29,6 +29,16 @@ class UserService {
     }
   }
 
+  async logout() {
+    try {
+      await LocalStorage.delete('auth.credentials');
+      await LocalStorage.delete('auth.credentials.details');
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
   async getMe() {
     try {
       const res = await this.client.get(

@@ -5,6 +5,8 @@ import ModalComponent from '../Modal';
 import { TextInput } from 'react-native-gesture-handler';
 import NextButton from '../ui/NextButton';
 import Icon from 'react-native-vector-icons/FontAwesome6';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 
 interface AddReceiptCompletedProps {
@@ -14,13 +16,27 @@ interface AddReceiptCompletedProps {
 
 
 const AddReceiptCompleted = ({ visible, onClose,onAction }: AddReceiptCompletedProps) => {
-  
+  const navigation = useNavigation();
+  const { t } = useTranslation();
+  // const routes = useNavigationState(states => states.routes);
+
+  //   const navigateToX = (path)=> {
+  //       const profileRoute = routes.find(route=> route.params?.title === path);
+  //       if(profileRoute) {
+  //           navigation.navigate({key: profileRoute.key});
+  //       }
+  //   }
+  const handleClose = ()=>{
+    navigation.navigate(t('navigation.home'))
+    // navigateToX('receipt')
+    onClose?.()
+  }
   return (
     <ModalComponent
       onClose={onClose}
       visible={visible}
       headerComponent={<View style={modalStyles.headerContainer}>
-        <View style={modalStyles.modalHeader}><Text onPress={onClose} style={modalStyles.modalCloseButton}>x</Text></View>
+        <View style={modalStyles.modalHeader}><Text onPress={handleClose} style={modalStyles.modalCloseButton}>x</Text></View>
     </View>}
     >
         <View style={modalStyles.container}>
@@ -51,6 +67,7 @@ const AddReceiptCompleted = ({ visible, onClose,onAction }: AddReceiptCompletedP
             <NextButton 
             title='Weiteren Beleg einreichen' 
             buttonStyles={{backgroundColor: '#309975'}}
+            onPress={handleClose}
             />
         </View>
     </ModalComponent>

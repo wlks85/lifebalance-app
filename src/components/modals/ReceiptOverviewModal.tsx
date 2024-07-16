@@ -1,20 +1,13 @@
 //@ts-nocheck
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import ModalComponent from '../Modal';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import IconAnt from 'react-native-vector-icons/AntDesign';
-import ReceiptItem from '../modules/receipt/ReceiptItem';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ReceiptOverview from '../modules/receipt/ReceiptOverview';
-// import CameraModule from '../modules/camera';
+
 
 
 const ReceiptOverviewModal = ({ receipt, visible, onClose,onAction }) => {
-  const [showPhotoModal, setShowPhotoModal] = useState(false);
-  const handleFurther = ()=>{
-    setShowPhotoModal(true);
-  }
 
   return (
     <ModalComponent

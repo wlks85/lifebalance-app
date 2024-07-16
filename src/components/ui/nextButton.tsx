@@ -6,12 +6,13 @@ interface NextButtonProps {
   onPress: ()=>void;
   containerStyles?: Record<string, string>;
   buttonStyles?: Record<string, string>;
+  disabled?: boolean;
 }
 
-const NextButton = ({title, onPress, containerStyles, buttonStyles}: NextButtonProps)=>{
+const NextButton = ({title, onPress, containerStyles, buttonStyles, disabled}: NextButtonProps)=>{
     return (
         <View style={[btnStyles.btnContainer, containerStyles]}>
-        <Pressable onPress={onPress} style={[btnStyles.btn, buttonStyles]}>
+        <Pressable onPress={onPress} style={[btnStyles.btn, buttonStyles]} disabled={disabled}>
           <Text style={btnStyles.btnText}>{title}</Text>
         </Pressable>
         </View>

@@ -20,6 +20,12 @@ const App = () => {
       } catch (err) {}
     })()
   }, [])
+
+  useEffect(()=>{
+    LocalStorage.subscribe(({type})=>{
+      if(type === 'delete')setUser(null);
+    })
+  }, [])
   
   return (
     <ThemeProvider>

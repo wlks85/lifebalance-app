@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Modal, StyleSheet } from 'react-native';
 
-const ModalComponent = ({visible, onClose, children, headerComponent})=> (
+const ModalComponent = ({visible, onClose, children, headerComponent, contentStyle})=> (
     <Modal
       animationType='slide'
       visible={visible}
@@ -12,7 +12,7 @@ const ModalComponent = ({visible, onClose, children, headerComponent})=> (
         <View style={modalStyles.modalHeaderContainer}>
         { headerComponent }
         </View>
-        <View style={modalStyles.modalContent}>
+        <View style={[modalStyles.modalContent, contentStyle]}>
           {children}
         </View>
       </View>
@@ -47,9 +47,8 @@ export default ModalComponent;
       flex: 1,
       width: '100%',
       height: '100%',
-      borderRadius: 0, // No border radius to make it full screen
-      paddingRight: 25,
-      paddingLeft: 25,
+      borderRadius: 0,
+      paddingHorizontal: 25
     },
     modalTitle: {
       fontSize: 24,

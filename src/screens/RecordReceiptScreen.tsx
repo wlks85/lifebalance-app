@@ -1,7 +1,7 @@
 //@ts-nocheck
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, SectionList, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, SectionList, FlatList, Button } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useAppContext } from '../context';
 import Layout from '../components/Layout';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -9,9 +9,7 @@ import IconAnt from 'react-native-vector-icons/AntDesign';
 import ReceiptItem from '../components/modules/receipt/ReceiptItem';
 import ReceiptModal from '../components/modals/ReceiptModal';
 import AddReceiptModal from '../components/modals/AddReciptModal';
-import { ReceiptService } from '../services';
-import { useAuth } from '../providers/auth-provider';
-import { useAxios } from '../providers/axios-provider';
+import receiptService from '../services/ReceiptService';
 
 interface HeaderProps {
   goBack: ()=>void;
@@ -61,7 +59,7 @@ const SectionWrapper = ({ section,onSelectedItem, openAddReceiptModal }) => (
 
     <View style={styles.card}>
       {section?.data?.map(item => (
-        <ReceiptItem key={item?.uuid} onItemClicked={onSelectedItem} receipt={item} />
+        <ReceiptItem key={item?.uuid} onItemClicked={onSelectedItem} receipt={item} disabled={false} />
       ))}
     </View>
   </View>
@@ -84,7 +82,6 @@ const ListComponent = ({ data = [] }) => {
     setSelectedReceipt(null);
     setCreateReceiptVisible(false);
   };
-
   return (
     <SafeAreaView style={styles.container}>
       <SectionList
@@ -93,16 +90,7 @@ const ListComponent = ({ data = [] }) => {
         renderItem={() => null}  // No need to render items here, they will be rendered in the wrapper
         renderSectionHeader={({ section }) => <SectionWrapper onSelectedItem={openModal} section={section} openAddReceiptModal={openAddReceiptModal} />}
       />
-      {/* <FlatList 
-        data={data}
-        ListEmptyComponent={()=>(
-          <Text>No data</Text>
-        )}
-        showsVerticalScrollIndicator={false}
-        renderItem={({item})=>(
 
-        )}
-      /> */}
       <ReceiptModal
         visible={modalVisible}
         receipt={selectedReceipt}
@@ -119,42 +107,22 @@ const ListComponent = ({ data = [] }) => {
 
 
 const ReceiptScreen = () => {
-  const navigation = useNavigation();
-  const [receipts, setReceipts] = useState([]);
-  const {userDetails} = useAuth();
-  const axiosClient = useAxios();
   const [receiptData, setReceiptData]= useState([]);
 
-  async function getReceipts(){
-    const result = await axiosClient.get('https://w3.lbplus.de/lbp/mobile-app/rest-service/v1.0/ep/node.json?parameters[type]=receipt&page=1');
-    // console.log({result: result?.data?.data});
-    setReceiptData([{title: "Zuletzt verwendet", data: result?.data}]);
-  //   {
-  //     "nid": "10902",
-  //     "vid": "40073",
-  //     "type": "receipt",
-  //     "language": "und",
-  //     "title": "#R171890922222704",
-  //     "uid": "909",
-  //     "status": "0",
-  //     "created": "1718909219",
-  //     "changed": "1718909219",
-  //     "comment": "0",
-  //     "promote": "0",
-  //     "sticky": "0",
-  //     "tnid": "0",
-  //     "translate": "0",
-  //     "uuid": "d4ea0bee-4c87-4825-bb92-62eeda616816",
-  //     "uri": "https://w3.lbplus.de/lbp/mobile-app/rest-service/v1.0/ep/node/10902"
-  // }
-  }
-
-  useEffect(()=>{
-    getReceipts();
+  const fetchReceipts = useCallback(() => {
+    receiptService.getReceipts().then(data => {
+      setReceiptData([{ title: "Zuletzt verwendet", data: data || [] }]);
+    });
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchReceipts();
+    }, [fetchReceipts])
+  );
+
+
   const { user } = useAppContext();
-console.log(receiptData);
   return (
     <Layout Header={Header}>
       <SafeAreaView style={styles.container}>
@@ -173,6 +141,7 @@ const styles = StyleSheet.create({
     height: 80,
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans"',
     paddingVertical: 15,
+    // backgroundColor: 
   },
   headerButtons: {
     fontWeight: '100',
