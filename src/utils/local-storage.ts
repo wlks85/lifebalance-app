@@ -1,7 +1,7 @@
 import {storage} from '../lib';
 
 export class LocalStorage {
-  public static _listeners: ((payload: {type: 'delete'})=> void)[] = []
+  public static _listeners: ((payload: {type: 'delete'}) => void)[] = [];
   public static async save(key: string, data: string) {
     try {
       await storage.save({
@@ -15,7 +15,7 @@ export class LocalStorage {
     }
   }
 
-  public static subscribe(fn: (payload: {type: 'delete'})=>void) {
+  public static subscribe(fn: (payload: {type: 'delete'}) => void) {
     LocalStorage._listeners.push(fn);
   }
   public static async get(key: string) {
@@ -49,9 +49,9 @@ export class LocalStorage {
       });
       LocalStorage._listeners.forEach(fn => {
         fn({
-          type: 'delete'
+          type: 'delete',
         });
-      })
+      });
       return true;
     } catch (err) {
       return false;

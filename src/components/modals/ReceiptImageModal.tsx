@@ -1,47 +1,51 @@
+/* eslint-disable react-native/no-inline-styles */
 //@ts-nocheck
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity, Modal, TouchableWithoutFeedback, Image } from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import ModalComponent from '../Modal';
 
 interface EditAmountModalProps {
-    image: string;
-    visible: boolean;
-    onClose: ()=>void;
-    onAction: (values: number)=>void;
+  image: string;
+  visible: boolean;
+  onClose: () => void;
+  onAction: (values: number) => void;
 }
 
-
-const ReceiptImageModal = ({ image, visible, onClose,onAction }: EditAmountModalProps) => {
-  
+const ReceiptImageModal = ({image, visible, onClose}: EditAmountModalProps) => {
   return (
     <ModalComponent
       onClose={onClose}
       visible={visible}
-      headerComponent={<View style={modalStyles.headerContainer}>
-        <View style={modalStyles.modalHeader}><Text onPress={onClose} style={modalStyles.modalCloseButton}>x</Text></View>
-        <Text style={modalStyles.modalTitle}>Betrag bearbeiten</Text>
-    </View>}
-    contentStyle={{paddingHorizontal: 0}}
-    >
+      headerComponent={
+        <View style={modalStyles.headerContainer}>
+          <View style={modalStyles.modalHeader}>
+            <Text onPress={onClose} style={modalStyles.modalCloseButton}>
+              x
+            </Text>
+          </View>
+          <Text style={modalStyles.modalTitle}>Betrag bearbeiten</Text>
+        </View>
+      }
+      contentStyle={{paddingHorizontal: 0}}>
       {image && (
-       <View style={modalStyles.imageContainer}>
-       <Image style={modalStyles.image} src={image}/>
-     </View>
-    )}
+        <View style={modalStyles.imageContainer}>
+          <Image style={modalStyles.image} src={image} />
+        </View>
+      )}
     </ModalComponent>
-  )
+  );
 };
 
 export default ReceiptImageModal;
 
 const modalStyles = StyleSheet.create({
-    headerContainer: {
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
+  headerContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   modalHeader: {
     height: 80,
     justifyContent: 'center',
@@ -61,7 +65,7 @@ const modalStyles = StyleSheet.create({
     color: '#454d66',
     fontWeight: '700',
     flex: 1,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   imageContainer: {
     flex: 1,
@@ -73,4 +77,4 @@ const modalStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-})
+});

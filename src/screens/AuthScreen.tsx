@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable react-native/no-inline-styles */
 import React, {ReactNode, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
@@ -16,7 +18,7 @@ type FormSchema = z.infer<typeof formSchema>;
 
 const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const {setIsLoggedIn, setUserDetails} = useAuth();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -24,26 +26,25 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
   const [mode, setMode] = useState<'login' | 'forgot' | 'register'>('login');
 
   async function handleSubmit(values: FormSchema) {
-    setError("");
+    setError('');
     setLoading(true);
     try {
       if (mode === 'login') {
-        const { data: userDetails, error } = await userService.login({
+        const {data: userDetails, error: loginError} = await userService.login({
           username: values.username!,
           password: values.password!,
         });
-        if (error) {
-          setError(error);
+        if (loginError) {
+          setError(loginError);
           setLoading(false);
           return;
         }
         setUserDetails(userDetails);
         setIsLoggedIn(true);
-        setError("");
+        setError('');
         onSubmit?.(userDetails);
       }
     } catch (err) {
-      
     } finally {
       setLoading(false);
     }
@@ -111,7 +112,9 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
           onPress={form.handleSubmit(handleSubmit)}>
           <Text style={styles.formButtonText}>
             <>
-              {loading ? "Loading..." : (
+              {loading ? (
+                'Loading...'
+              ) : (
                 <>
                   {mode === 'login' && <>Login</>}
                   {mode === 'forgot' && <>Send</>}
@@ -124,9 +127,13 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
 
         <View style={styles.formInfo}>
           {error && (
-            <Text style={[styles.formInfoText, {
-              color: "red"
-            }]}>
+            <Text
+              style={[
+                styles.formInfoText,
+                {
+                  color: 'red',
+                },
+              ]}>
               {error}
             </Text>
           )}
@@ -198,7 +205,7 @@ function FormItem({
           }}
           value={value}
           style={styles.formInput}
-          onChangeText={value => onChange?.(value)}
+          onChangeText={valueText => onChange?.(valueText)}
           {...(type === 'password' && !showRawText
             ? {
                 secureTextEntry: true,

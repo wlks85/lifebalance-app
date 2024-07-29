@@ -1,10 +1,11 @@
+/* eslint-disable react-native/no-inline-styles */
 //@ts-nocheck
-import React, {ReactElement, useEffect, useState} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AddReceiptModal from '../../modals/AddReciptModal';
 import receiptService from '../../../services/ReceiptService';
-import { formatAmount } from '../../../utils';
+import {formatAmount} from '../../../utils';
 
 export interface IReceipt {
   title?: string;
@@ -17,154 +18,188 @@ export interface IReceipt {
   logo: string;
 }
 
-
-const ReceiptStatus = ({status, amount})=>{
-  if(status === '0') return <Text style={{color: 'green'}}>{amount} erstattet</Text>
-  if(status === '1') return <Text style={{color: 'red'}}>Abgelehnt</Text>
-  return <Text>Wird geprüft …</Text>
-}
+const ReceiptStatus = ({status, amount}) => {
+  if (status === '0') {
+    return <Text style={{color: 'green'}}>{amount} erstattet</Text>;
+  }
+  if (status === '1') {
+    return <Text style={{color: 'red'}}>Abgelehnt</Text>;
+  }
+  return <Text>Wird geprüft …</Text>;
+};
 
 interface ReceiptItemProps {
   receipt: IReceipt;
-  onItemClicked?: (item: IReceipt)=>void;
+  onItemClicked?: (item: IReceipt) => void;
   disabled?: boolean;
   showEditBtn?: boolean;
-  onEditBtnPress?: ()=>void;
+  onEditBtnPress?: () => void;
   showAmount?: boolean;
 }
 
-
-const ReceiptItem = ({ receipt,onItemClicked, disabled = false, showEditBtn, onEditBtnPress, showAmount }: ReceiptItemProps) => {
+const ReceiptItem = ({
+  receipt,
+  onItemClicked,
+  disabled = false,
+  showEditBtn,
+  onEditBtnPress,
+  showAmount,
+}: ReceiptItemProps) => {
   const [showAddReceiptModal, setShowAddReceiptModal] = useState(false);
   const [receiptDetails, setReceiptDetails] = useState(receipt);
-  const onEditBtnPressHandler = ()=>{
+  const onEditBtnPressHandler = () => {
     onEditBtnPress?.();
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     setReceiptDetails(receipt);
-  }, [receipt])
+  }, [receipt]);
 
-  useEffect(()=>{
-    if(!disabled && !receipt?.providerName){
-      try{
-        receiptService.getReceiptDetails(receipt?.nid).then((data)=>{
+  useEffect(() => {
+    if (!disabled && !receipt?.providerName) {
+      try {
+        receiptService.getReceiptDetails(receipt?.nid).then(data => {
           setReceiptDetails(data);
-        })
-      }catch(err){
-        console.log("inside receipt item", err);
+        });
+      } catch (err) {
+        console.log('inside receipt item', err);
       }
     }
-  }, [receipt])
+  }, [disabled, receipt]);
   // console.log("a", disabled);
-  
-    return (
-      <TouchableOpacity style={styles.receipt} onPress={()=> {
-        console.log("clicked");
-        onItemClicked(receiptDetails)
+
+  return (
+    <TouchableOpacity
+      style={styles.receipt}
+      onPress={() => {
+        console.log('clicked');
+        onItemClicked(receiptDetails);
       }}
       // disabled={disabled}
-      >
-        <View style={styles.receiptLogo}><Text style={styles.logoText}>{receiptDetails?.logo || "GF"}</Text></View>
-        <View style={styles.receiptInfo}>
-          <View style={styles.receiptCompanyInfo}>
-            <Text style={styles.receiptCompanyText}>{receiptDetails?.providerName}</Text>
-            {showAmount && receiptDetails?.amount !== 'NaN' && <Text style={[styles.receiptCompanyText, {fontWeight: 'bold'}]}>{formatAmount(receiptDetails?.amount === undefined ? 0 : receiptDetails?.amount  / 100)} </Text>}
-          </View>
-          <View style={styles.receiptDateInfo}>
-            { !showAmount ?
-              <Text style={styles.date}>{receiptDetails?.postCode || '1234'}・Yoga-Kurs</Text>
-              :
-              <Text style={styles.date}>{receiptDetails?.postCode || '1234'}・{ReceiptStatus({status: receiptDetails?.status, amount: formatAmount(receiptDetails?.amount === undefined ? 0 : receiptDetails?.amount  / 100)})}</Text>
-            }
-          </View>
+    >
+      <View style={styles.receiptLogo}>
+        <Text style={styles.logoText}>{receiptDetails?.logo || 'GF'}</Text>
+      </View>
+      <View style={styles.receiptInfo}>
+        <View style={styles.receiptCompanyInfo}>
+          <Text style={styles.receiptCompanyText}>
+            {receiptDetails?.providerName}
+          </Text>
+          {showAmount && receiptDetails?.amount !== 'NaN' && (
+            <Text style={[styles.receiptCompanyText, {fontWeight: 'bold'}]}>
+              {formatAmount(
+                receiptDetails?.amount === undefined
+                  ? 0
+                  : receiptDetails?.amount / 100,
+              )}{' '}
+            </Text>
+          )}
         </View>
-        {
-          showEditBtn &&
-          <TouchableOpacity onPress={onEditBtnPressHandler}>
-              <Text>
-                <Icon name="pencil" size={25} color="#454d66" />
-              </Text>
-          </TouchableOpacity>
-        }
-        <AddReceiptModal 
+        <View style={styles.receiptDateInfo}>
+          {!showAmount ? (
+            <Text style={styles.date}>
+              {receiptDetails?.postCode || '1234'}・Yoga-Kurs
+            </Text>
+          ) : (
+            <Text style={styles.date}>
+              {receiptDetails?.postCode || '1234'}・
+              {ReceiptStatus({
+                status: receiptDetails?.status,
+                amount: formatAmount(
+                  receiptDetails?.amount === undefined
+                    ? 0
+                    : receiptDetails?.amount / 100,
+                ),
+              })}
+            </Text>
+          )}
+        </View>
+      </View>
+      {showEditBtn && (
+        <TouchableOpacity onPress={onEditBtnPressHandler}>
+          <Text>
+            <Icon name="pencil" size={25} color="#454d66" />
+          </Text>
+        </TouchableOpacity>
+      )}
+      <AddReceiptModal
         visible={showAddReceiptModal}
-        onClose={()=>setShowAddReceiptModal(false)} 
-        defaultValue={receiptDetails} 
-        onAction={()=>{}}
-        />
-      </TouchableOpacity>
-    );
-}
+        onClose={() => setShowAddReceiptModal(false)}
+        defaultValue={receiptDetails}
+        onAction={() => {}}
+      />
+    </TouchableOpacity>
+  );
+};
 
 export default ReceiptItem;
 
 const styles = StyleSheet.create({
-    receipt: {
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'row',
-      gap: 10,
-      paddingVertical: 25,
-      borderBottomColor: "#f0f0f0",
-      borderBottomWidth: 1,
-      minHeight: 80,
-      paddingHorizontal: 16,
-      alignItems: 'center',
-      backgroundColor: 'white',
-      borderRadius: 8
-    },
-    receiptInfo: {
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 10
-    },
-    receiptLogo: {
-      width: 50,
-      height: 50,
-      padding: 10,
-      backgroundColor: '#454d66',
-      color: '#fffffff',
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 50,
-    },
-    logoText: {
-      color: '#ffffff',
-      fontSize: 20,
-      fontWeight: '600',
-    },
-    receiptCompanyText: {
-      color: '#454d66',
-      fontSize: 18,
-      lineHeight: 24,
-      fontFamily: '"OpenSans-Regular", "Open Sans"',
-    },
-    receiptCompanyInfo: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    receiptAmountText: {
-      fontSize: 21,
-      fontWeight: '700',
-      lineHeight: 24,
-      color: '#454d66',
-    },
-    receiptDateInfo: {
-      paddingTop: 0,
-      paddingRight: 0,
-      display: 'flex',
-      flexDirection: 'row',
-      gap: 2,
-    },
-    date: {
-      fontFamily: '"OpenSans-Regular", "sans-serif"',
-      fontSize: 15,
-      fontWeight: '400',
-      lineHeight: 16,
-      color: '#454d66'
-    },
-  });
+  receipt: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    paddingVertical: 25,
+    borderBottomColor: '#f0f0f0',
+    borderBottomWidth: 1,
+    minHeight: 80,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 8,
+  },
+  receiptInfo: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 10,
+  },
+  receiptLogo: {
+    width: 50,
+    height: 50,
+    padding: 10,
+    backgroundColor: '#454d66',
+    color: '#fffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+  },
+  logoText: {
+    color: '#ffffff',
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  receiptCompanyText: {
+    color: '#454d66',
+    fontSize: 18,
+    lineHeight: 24,
+    fontFamily: '"OpenSans-Regular", "Open Sans"',
+  },
+  receiptCompanyInfo: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  receiptAmountText: {
+    fontSize: 21,
+    fontWeight: '700',
+    lineHeight: 24,
+    color: '#454d66',
+  },
+  receiptDateInfo: {
+    paddingTop: 0,
+    paddingRight: 0,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 2,
+  },
+  date: {
+    fontFamily: '"OpenSans-Regular", "sans-serif"',
+    fontSize: 15,
+    fontWeight: '400',
+    lineHeight: 16,
+    color: '#454d66',
+  },
+});

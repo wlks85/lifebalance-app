@@ -1,8 +1,14 @@
 //@ts-nocheck
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, SectionList, FlatList, Button } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
-import { useAppContext } from '../context';
+import React, {useCallback, useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  SectionList,
+} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconAnt from 'react-native-vector-icons/AntDesign';
@@ -12,46 +18,45 @@ import AddReceiptModal from '../components/modals/AddReciptModal';
 import receiptService from '../services/ReceiptService';
 
 interface HeaderProps {
-  goBack: ()=>void;
+  goBack: () => void;
 }
 
-const Header = ({goBack}: HeaderProps)=>{
+const Header = ({goBack}: HeaderProps) => {
   return (
     <View style={styles.headerContainer}>
-                  <IconAnt
-                    onPress={goBack}
-                    style={styles.headerButtons}
-                    name={'arrowleft'}
-                    color={'#454d66'}
-                    size={25}
-                  />
+      <IconAnt
+        onPress={goBack}
+        style={styles.headerButtons}
+        name={'arrowleft'}
+        color={'#454d66'}
+        size={25}
+      />
 
-              <Text style={styles.headerTitle}>Dienstleistung</Text>
+      <Text style={styles.headerTitle}>Dienstleistung</Text>
 
-                  <IconAnt
-                    onPress={goBack}
-                    style={styles.headerButtons}
-                    name={'search1'}
-                    color={'#454d66'}
-                    size={25}
-                  />
-      </View>
-  )
-}
+      <IconAnt
+        onPress={goBack}
+        style={styles.headerButtons}
+        name={'search1'}
+        color={'#454d66'}
+        size={25}
+      />
+    </View>
+  );
+};
 
-const SectionWrapper = ({ section,onSelectedItem, openAddReceiptModal }) => (
+const SectionWrapper = ({section, onSelectedItem, openAddReceiptModal}) => (
   <View style={styles.sectionWrapper}>
-    <TouchableOpacity 
-    style={styles.addReceiptBtnContainer}
-    onPress={()=>openAddReceiptModal()}
-    >
-            <View style={styles.addReceiptTitle}>
-                <Icon name='plus' size={15} />
-                <Text style={styles.textStyle}>Neue Dienstleistung </Text>
-            </View>
-            <View>
-            <Icon name='chevron-right' size={15}  />
-            </View>
+    <TouchableOpacity
+      style={styles.addReceiptBtnContainer}
+      onPress={() => openAddReceiptModal()}>
+      <View style={styles.addReceiptTitle}>
+        <Icon name="plus" size={15} />
+        <Text style={styles.textStyle}>Neue Dienstleistung </Text>
+      </View>
+      <View>
+        <Icon name="chevron-right" size={15} />
+      </View>
     </TouchableOpacity>
     <View style={styles.sectionTitle}>
       <Text style={styles.sectionTitleText}>{section.title}</Text>
@@ -59,23 +64,28 @@ const SectionWrapper = ({ section,onSelectedItem, openAddReceiptModal }) => (
 
     <View style={styles.card}>
       {section?.data?.map(item => (
-        <ReceiptItem key={item?.uuid} onItemClicked={onSelectedItem} receipt={item} disabled={false} />
+        <ReceiptItem
+          key={item?.uuid}
+          onItemClicked={onSelectedItem}
+          receipt={item}
+          disabled={false}
+        />
       ))}
     </View>
   </View>
 );
-const ListComponent = ({ data = [] }) => {
+const ListComponent = ({data = []}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [createReceiptVisible, setCreateReceiptVisible] = useState(false);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
-  const openModal = (receipt) => {
+  const openModal = receipt => {
     setSelectedReceipt(receipt);
     setModalVisible(true);
   };
 
-  const openAddReceiptModal = ()=>{
+  const openAddReceiptModal = () => {
     setCreateReceiptVisible(true);
-  }
+  };
 
   const closeModal = () => {
     setModalVisible(false);
@@ -86,9 +96,15 @@ const ListComponent = ({ data = [] }) => {
     <SafeAreaView style={styles.container}>
       <SectionList
         sections={data}
-        keyExtractor={(item) => item.uuid.toString()}
-        renderItem={() => null}  // No need to render items here, they will be rendered in the wrapper
-        renderSectionHeader={({ section }) => <SectionWrapper onSelectedItem={openModal} section={section} openAddReceiptModal={openAddReceiptModal} />}
+        keyExtractor={item => item.uuid.toString()}
+        renderItem={() => null} // No need to render items here, they will be rendered in the wrapper
+        renderSectionHeader={({section}) => (
+          <SectionWrapper
+            onSelectedItem={openModal}
+            section={section}
+            openAddReceiptModal={openAddReceiptModal}
+          />
+        )}
       />
 
       <ReceiptModal
@@ -97,32 +113,26 @@ const ListComponent = ({ data = [] }) => {
         onClose={closeModal}
       />
 
-      <AddReceiptModal
-        onClose={closeModal}
-        visible={createReceiptVisible}
-      />
+      <AddReceiptModal onClose={closeModal} visible={createReceiptVisible} />
     </SafeAreaView>
   );
 };
 
-
 const ReceiptScreen = () => {
-  const [receiptData, setReceiptData]= useState([]);
+  const [receiptData, setReceiptData] = useState([]);
 
   const fetchReceipts = useCallback(() => {
     receiptService.getReceipts().then(data => {
-      setReceiptData([{ title: "Zuletzt verwendet", data: data || [] }]);
+      setReceiptData([{title: 'Zuletzt verwendet', data: data || []}]);
     });
   }, []);
 
   useFocusEffect(
     useCallback(() => {
       fetchReceipts();
-    }, [fetchReceipts])
+    }, [fetchReceipts]),
   );
 
-
-  const { user } = useAppContext();
   return (
     <Layout Header={Header}>
       <SafeAreaView style={styles.container}>
@@ -141,7 +151,7 @@ const styles = StyleSheet.create({
     height: 80,
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans"',
     paddingVertical: 15,
-    // backgroundColor: 
+    // backgroundColor:
   },
   headerButtons: {
     fontWeight: '100',
@@ -167,12 +177,12 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 10,
-    shadowOffset: { width: 0, height: 5 },
-    overflow: 'scroll'
+    shadowOffset: {width: 0, height: 5},
+    overflow: 'scroll',
   },
   sectionWrapper: {
     display: 'flex',
-    gap: 10
+    gap: 10,
   },
   sectionTitle: {
     lineHeight: 24,
@@ -196,26 +206,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 72,
     padding: 24,
-  backgroundColor: '#ffffff',
-  boxSizing: 'border-box',
-  color: '#454d66',
-  borderRadius: 8,
+    backgroundColor: '#ffffff',
+    boxSizing: 'border-box',
+    color: '#454d66',
+    borderRadius: 8,
   },
 
   addReceiptTitle: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10
+    gap: 10,
   },
 
   textStyle: {
-  fontSize: 15,
-  fontWeight: '600',
-  color: '#454d66'
-  }
-
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#454d66',
+  },
 });
-
 
 export default ReceiptScreen;

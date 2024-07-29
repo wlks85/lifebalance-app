@@ -1,25 +1,34 @@
+/* eslint-disable react-native/no-inline-styles */
 //@ts-nocheck
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView, SectionList, Modal,Image } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useAppContext } from '../context';
+import React, {useCallback, useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  SectionList,
+  Modal,
+  Image,
+} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
-import { formatDate, formatAmount } from '../utils';
+import {formatDate, formatAmount} from '../utils';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import { ReceiptService } from '../services';
+import {ReceiptService} from '../services';
 import ReceiptItem from '../components/modules/receipt/ReceiptItem';
 
-const ModalComponent = ({visible, onClose, children,})=> (
-  <Modal
-    animationType='slide'
-    visible={visible}
-    onRequestClose={onClose}
-  >
+const ModalComponent = ({visible, onClose, children}) => (
+  <Modal animationType="slide" visible={visible} onRequestClose={onClose}>
     <View style={modalStyles.modalContainer}>
       <View style={modalStyles.modalHeader}>
-        <AntIcon name="close" onPress={onClose} style={modalStyles.modalCloseButton} />
+        <AntIcon
+          name="close"
+          onPress={onClose}
+          style={modalStyles.modalCloseButton}
+        />
       </View>
       <View style={modalStyles.modalContent}>
         {children}
@@ -32,94 +41,135 @@ const ModalComponent = ({visible, onClose, children,})=> (
   </Modal>
 );
 
-
-const ReceiptImageModal = ({receipt, visible,onClose}) => (
-  <ModalComponent
-    visible={visible}
-    onClose={onClose}
-  >
-    {
-      receipt && (<>
+const ReceiptImageModal = ({receipt, visible, onClose}) => (
+  <ModalComponent visible={visible} onClose={onClose}>
+    {receipt && (
+      <>
         <View style={{flex: 1}}>
-          <Image style={{flex: 1, width: '100%',height: '100%',}} src={receipt?.image}/>
+          <Image
+            style={{flex: 1, width: '100%', height: '100%'}}
+            src={receipt?.image}
+          />
         </View>
-      </>)
-    }
+      </>
+    )}
   </ModalComponent>
 );
 
-const ReceiptModal = ({ receipt, visible, onClose,onAction }) => {
+const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   return (
-    <ModalComponent
-      onClose={onClose}
-      visible={visible}
-    >
+    <ModalComponent onClose={onClose} visible={visible}>
       {receipt && (
-      <View style={{padding: 20,}}>
-        <Text style={modalStyles.receiptCompanyText}>{receipt.providerName}</Text>
-        <Text style={modalStyles.receiptAmountText}>{formatAmount(Number(receipt.amount)/100)}</Text>
-        <View style={modalStyles.receiptDetailsCard}>
-          <View style={modalStyles.cardItem}>
-            <View style={modalStyles.cardItemIcon}>
-              <Icon size={30} name="piggy-bank"></Icon>
+        <View style={{padding: 20}}>
+          <Text style={modalStyles.receiptCompanyText}>
+            {receipt.providerName}
+          </Text>
+          <Text style={modalStyles.receiptAmountText}>
+            {formatAmount(Number(receipt.amount) / 100)}
+          </Text>
+          <View style={modalStyles.receiptDetailsCard}>
+            <View style={modalStyles.cardItem}>
+              <View style={modalStyles.cardItemIcon}>
+                <Icon size={30} name="piggy-bank" />
+              </View>
+              <View style={modalStyles.cardItemContent}>
+                <Text style={modalStyles.receiptDetailsItemLabel}>
+                  Erstatteter Betrag
+                </Text>
+                {receipt?.status === '0' && (
+                  <Text
+                    style={[
+                      modalStyles.receiptDetailsItemValue,
+                      {color: '#309975'},
+                    ]}>
+                    {formatAmount(Number(receipt?.amount) / 100)}
+                  </Text>
+                )}
+                {receipt?.status === '1' && (
+                  <View style={modalStyles.rejectedStatusContainer}>
+                    <Text
+                      style={[
+                        modalStyles.receiptDetailsItemValue,
+                        {color: '#a9040e'},
+                      ]}>
+                      Abgelehnt
+                    </Text>
+                    <Icon color="#454d66" name="question-circle" size={15} />
+                  </View>
+                )}
+                {receipt?.status === '2' && (
+                  <Text style={[modalStyles.receiptDetailsItemValue]}>
+                    In Prüfung
+                  </Text>
+                )}
+              </View>
             </View>
-            <View style={modalStyles.cardItemContent}>
-              <Text style={modalStyles.receiptDetailsItemLabel}>Erstatteter Betrag</Text>
-              {receipt?.status === '0' && <Text style={[modalStyles.receiptDetailsItemValue, {color: '#309975'}]}>{formatAmount(Number(receipt?.amount)/100)}</Text>}
-              { receipt?.status === '1' &&
-                <View style={modalStyles.rejectedStatusContainer}>
-                <Text style={[modalStyles.receiptDetailsItemValue, {color: '#a9040e'}]}>Abgelehnt</Text>
-                <Icon color="#454d66" name="question-circle" size={15} />
-              </View>}
-              {receipt?.status === '2' && <Text style={[modalStyles.receiptDetailsItemValue]}>In Prüfung</Text>}
+
+            <View style={modalStyles.cardItem}>
+              <View style={modalStyles.cardItemIcon}>
+                <Icon size={30} name="calendar-alt" />
+              </View>
+              <View style={modalStyles.cardItemContent}>
+                <Text style={modalStyles.receiptDetailsItemLabel}>
+                  Eingereicht
+                </Text>
+                <Text style={modalStyles.receiptDetailsItemValue}>
+                  {formatDate(receipt?.date ? receipt?.date : new Date())}
+                </Text>
+              </View>
             </View>
+
+            <View style={modalStyles.cardItem}>
+              <View style={modalStyles.cardItemIcon}>
+                <Icon size={30} name="map-marker-alt" />
+              </View>
+              <View style={modalStyles.cardItemContent}>
+                <Text style={modalStyles.receiptDetailsItemLabel}>
+                  PLZ des Dienstleisters
+                </Text>
+                <Text style={modalStyles.receiptDetailsItemValue}>
+                  {receipt?.postCode}
+                </Text>
+              </View>
+            </View>
+
+            <View style={modalStyles.cardItem}>
+              <View style={modalStyles.cardItemIcon}>
+                <Icon size={30} name="project-diagram" />
+              </View>
+              <View style={modalStyles.cardItemContent}>
+                <Text style={modalStyles.receiptDetailsItemLabel}>
+                  Kategore
+                </Text>
+                <Text style={modalStyles.receiptDetailsItemValue}>
+                  Yoga-Kurs
+                </Text>
+              </View>
+            </View>
+
+            <TouchableOpacity
+              style={modalStyles.cardItem}
+              onPress={() => onAction(receipt)}>
+              <View style={modalStyles.cardItemIcon}>
+                <FAIcon size={30} name="file-text-o" />
+              </View>
+              <View style={{...modalStyles.cardItemContentRow}}>
+                <Text style={{fontSize: 17, fontWeight: '400'}}>
+                  Beleg ansehen
+                </Text>
+                <FAIcon
+                  size={20}
+                  name="chevron-right"
+                  style={{paddingRight: 15}}
+                />
+              </View>
+            </TouchableOpacity>
           </View>
-          
-          <View style={modalStyles.cardItem}>
-            <View style={modalStyles.cardItemIcon}>
-              <Icon size={30} name="calendar-alt"></Icon>
-            </View>
-            <View style={modalStyles.cardItemContent}>
-              <Text style={modalStyles.receiptDetailsItemLabel}>Eingereicht</Text>
-              <Text style={modalStyles.receiptDetailsItemValue}>{formatDate(receipt?.date ? receipt?.date : new Date())}</Text>
-            </View>
-          </View>
-  
-          <View style={modalStyles.cardItem}>
-            <View style={modalStyles.cardItemIcon}>
-              <Icon size={30} name="map-marker-alt"></Icon>
-            </View>
-            <View style={modalStyles.cardItemContent}>
-              <Text style={modalStyles.receiptDetailsItemLabel}>PLZ des Dienstleisters</Text>
-              <Text style={modalStyles.receiptDetailsItemValue}>{receipt?.postCode}</Text>
-            </View>
-          </View>
-  
-          <View style={modalStyles.cardItem}>
-            <View style={modalStyles.cardItemIcon}>
-              <Icon size={30} name="project-diagram"></Icon>
-            </View>
-            <View style={modalStyles.cardItemContent}>
-              <Text style={modalStyles.receiptDetailsItemLabel}>Kategore</Text>
-              <Text style={modalStyles.receiptDetailsItemValue}>Yoga-Kurs</Text>
-            </View>
-          </View>
-  
-          <TouchableOpacity style={modalStyles.cardItem} onPress={()=>onAction(receipt)}>
-            <View style={modalStyles.cardItemIcon}>
-              <FAIcon size={30} name="file-text-o"></FAIcon>
-            </View>
-            <View style={{...modalStyles.cardItemContentRow}}>
-              <Text style={{fontSize: 17,fontWeight: '400'}} >Beleg ansehen</Text>
-              <FAIcon size={20} name="chevron-right" style={{paddingRight: 15,}} ></FAIcon>
-            </View>
-          </TouchableOpacity>
         </View>
-      </View>
-    )}
+      )}
     </ModalComponent>
   );
-}
+};
 
 const modalStyles = StyleSheet.create({
   modalContainer: {
@@ -130,7 +180,7 @@ const modalStyles = StyleSheet.create({
     flexDirection: 'row',
     height: 80,
     backgroundColor: '#ffffff',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   modalCloseButton: {
     fontSize: 27,
@@ -174,7 +224,7 @@ const modalStyles = StyleSheet.create({
     shadowColor: 'rgba(0, 0, 0, 0.7)',
     shadowOpacity: 0.1,
     shadowRadius: 25,
-    shadowOffset: { width: 0, height: 5 },
+    shadowOffset: {width: 0, height: 5},
     overflow: 'scroll',
     elevation: 5,
   },
@@ -182,7 +232,7 @@ const modalStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 15,
-    borderBottomColor: "#f0f0f0",
+    borderBottomColor: '#f0f0f0',
     borderBottomWidth: 1,
     minHeight: 80,
     padding: 2,
@@ -224,20 +274,19 @@ const modalStyles = StyleSheet.create({
   rejectedStatusContainer: {
     display: 'flex',
     flexDirection: 'row',
-    gap: 10
-  }
-})
+    gap: 10,
+  },
+});
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
   card: {
     backgroundColor: '#ffffff',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 2,
-    shadowOffset: { width: 0, height: 5 },
+    shadowOffset: {width: 0, height: 5},
     overflow: 'scroll',
   },
   receipt: {
@@ -245,11 +294,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     paddingVertical: 15,
-    borderBottomColor: "#f0f0f0",
+    borderBottomColor: '#f0f0f0',
     borderBottomWidth: 1,
     minHeight: 80,
     padding: 6,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   receiptInfo: {
     flex: 1,
@@ -323,10 +372,9 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontSize: 19,
   },
-
 });
 
-const SectionWrapper = ({ section,onSelectedItem }) => (
+const SectionWrapper = ({section, onSelectedItem}) => (
   <View style={styles.sectionWrapper}>
     <View style={styles.sectionTitle}>
       <Text style={styles.sectionTitleText}>{section.title}</Text>
@@ -334,17 +382,22 @@ const SectionWrapper = ({ section,onSelectedItem }) => (
 
     <View style={styles.card}>
       {section.data.map(item => (
-        <ReceiptItem key={item.uuid} onItemClicked={onSelectedItem} receipt={item} showAmount={true} />
+        <ReceiptItem
+          key={item.uuid}
+          onItemClicked={onSelectedItem}
+          receipt={item}
+          showAmount={true}
+        />
       ))}
     </View>
   </View>
 );
-const ListComponent = ({ data = [] }) => {
+const ListComponent = ({data = []}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
   const [imageSelectedReceipt, setImageSelectedReceipt] = useState(null);
   const [imageVisible, setImageVisible] = useState(false);
-  const openModal = (receipt) => {
+  const openModal = receipt => {
     setSelectedReceipt(receipt);
     setModalVisible(true);
   };
@@ -354,23 +407,25 @@ const ListComponent = ({ data = [] }) => {
     setSelectedReceipt(null);
   };
 
-  const closeImageModal = ()=> {
+  const closeImageModal = () => {
     setImageSelectedReceipt(null);
     setImageVisible(false);
-  }
+  };
 
-  const onReceiptImageDisplay = (receipt)=> {
+  const onReceiptImageDisplay = receipt => {
     setImageVisible(true);
-    setImageSelectedReceipt(receipt)
-  }
+    setImageSelectedReceipt(receipt);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <SectionList
         sections={data || []}
-        keyExtractor={(item) => item.uuid.toString()}
-        renderItem={() => null}  // No need to render items here, they will be rendered in the wrapper
-        renderSectionHeader={({ section }) => <SectionWrapper onSelectedItem={openModal} section={section} />}
+        keyExtractor={item => item.uuid.toString()}
+        renderItem={() => null} // No need to render items here, they will be rendered in the wrapper
+        renderSectionHeader={({section}) => (
+          <SectionWrapper onSelectedItem={openModal} section={section} />
+        )}
       />
       <ReceiptModal
         visible={modalVisible}
@@ -387,35 +442,28 @@ const ListComponent = ({ data = [] }) => {
   );
 };
 
-
 const ArchivedReceiptsScreen = () => {
-  const navigation = useNavigation();
   const [receipts, setReceipts] = useState([]);
 
   const fetchReceipts = useCallback(() => {
-    ReceiptService.getArchivedReceipts()
-    .then((receipts)=> {
-      setReceipts(receipts);
-    })
+    ReceiptService.getArchivedReceipts().then(arReceipts => {
+      setReceipts(arReceipts);
+    });
   }, []);
 
   useFocusEffect(
     useCallback(() => {
       fetchReceipts();
-    }, [fetchReceipts])
+    }, [fetchReceipts]),
   );
 
-  const { user } = useAppContext();
-
-
   return (
-    <Layout title='Belagarchiv'>
+    <Layout title="Belagarchiv">
       <SafeAreaView style={styles.container}>
         <ListComponent data={receipts || []} />
       </SafeAreaView>
     </Layout>
   );
 };
-
 
 export default ArchivedReceiptsScreen;

@@ -1,29 +1,33 @@
 //@ts-nocheck
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 import ModalComponent from '../Modal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ReceiptOverview from '../modules/receipt/ReceiptOverview';
 
-
-
-const ReceiptOverviewModal = ({ receipt, visible, onClose,onAction }) => {
-
+const ReceiptOverviewModal = ({receipt, visible, onClose}) => {
   return (
     <ModalComponent
       onClose={onClose}
       visible={visible}
-      headerComponent={<View style={modalStyles.headerContainer}>
-        <View style={modalStyles.modalHeader}><Text onPress={onClose} style={modalStyles.modalCloseButton}>x</Text></View>
-        <Text style={modalStyles.modalTitle}>Übersicht</Text>
-        <View style={modalStyles.modalHeader}>
-            <Text><Icon name='question' size={20}/></Text>
+      headerComponent={
+        <View style={modalStyles.headerContainer}>
+          <View style={modalStyles.modalHeader}>
+            <Text onPress={onClose} style={modalStyles.modalCloseButton}>
+              x
+            </Text>
+          </View>
+          <Text style={modalStyles.modalTitle}>Übersicht</Text>
+          <View style={modalStyles.modalHeader}>
+            <Text>
+              <Icon name="question" size={20} />
+            </Text>
+          </View>
         </View>
-    </View>}
-    >
+      }>
       <ReceiptOverview receipt={receipt} />
     </ModalComponent>
-  )
+  );
 };
 
 export default ReceiptOverviewModal;
@@ -34,13 +38,13 @@ const modalStyles = StyleSheet.create({
     justifyContent: 'space-between',
     flex: 1,
   },
-    headerContainer: {
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
+  headerContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   modalHeader: {
     height: 80,
     justifyContent: 'center',
@@ -58,7 +62,7 @@ const modalStyles = StyleSheet.create({
   modalTitle: {
     fontSize: 24,
     color: '#454d66',
-    fontWeight: '700'
+    fontWeight: '700',
   },
 
   receiptDetails: {
@@ -66,35 +70,35 @@ const modalStyles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 50
+    gap: 50,
   },
   title: {
     fontSize: 18,
     fontWeight: '700',
     color: '#454d66',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif'
+    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
   },
   amount: {
     color: '#454d66',
     fontSize: 48,
     fontWeight: '700',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif'    
+    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
   },
   amountsSection: {
     display: 'flex',
     alignItems: 'center',
-    gap: 5
+    gap: 5,
   },
   amountInfo: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif'
+    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
   },
   amountInfoText: {
     fontSize: 16,
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif'
+    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
   },
   refundAmount: {
     fontSize: 18,
@@ -108,22 +112,22 @@ const modalStyles = StyleSheet.create({
     fontWeight: '700',
   },
   btnContainer: {
-    paddingBottom: 25
+    paddingBottom: 25,
   },
   furtherBtn: {
     backgroundColor: '#454d66',
     display: 'flex',
     alignItems: 'center',
     paddingVertical: 15,
-    borderRadius: 32
+    borderRadius: 32,
   },
   btnText: {
     color: 'white',
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
     fontSize: 18,
-    fontWeight: '700'
+    fontWeight: '700',
   },
-  photoBtnContainer:{
+  photoBtnContainer: {
     backgroundColor: '#f8f6f4',
     height: 270,
     width: '100%',
@@ -134,7 +138,7 @@ const modalStyles = StyleSheet.create({
     borderRadius: 8,
     display: 'flex',
     justifyContent: 'center',
-    gap: 16
+    gap: 16,
   },
   takeOrUploadPhotoBtn: {
     display: 'flex',
@@ -150,6 +154,6 @@ const modalStyles = StyleSheet.create({
     color: '#454d66',
     fontSize: 16,
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
-    fontWeight: '700'
-  }
-})
+    fontWeight: '700',
+  },
+});

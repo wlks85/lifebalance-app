@@ -1,33 +1,47 @@
 //@ts-nocheck
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Button, Pressable, TouchableOpacity } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import ModalComponent from '../Modal';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import AddReceiptForm from '../forms/AddReceipt';
-import { ScrollView } from 'react-native-gesture-handler';
-import { IReceipt } from '../modules/receipt/ReceiptItem';
+import {IReceipt} from '../modules/receipt/ReceiptItem';
 
 interface AddReceiptModalProps {
   visible: boolean;
-  onClose: ()=>void;
-  onAction: (values: Partial<IReceipt>)=>void;
+  onClose: () => void;
+  onAction: (values: Partial<IReceipt>) => void;
   defaultValue?: IReceipt;
 }
 
-const AddReceiptModal = ({ visible, onClose, onAction, defaultValue }: AddReceiptModalProps) => (
-    <ModalComponent
-      onClose={onClose}
-      visible={visible}
-      headerComponent={<View style={modalStyles.headerContainer}>
-        <View style={modalStyles.modalHeader}><Text onPress={onClose} style={modalStyles.modalCloseButton}>x</Text></View>
-        <Text style={modalStyles.modalTitle}>{defaultValue ? 'Dienstleistung bearbeiten' : 'Gezahlter Betrag'}</Text>
-    </View>}
-    >
-       <View style={modalStyles.container}>
-           <AddReceiptForm onClose={onClose} defaultValue={defaultValue} onSubmit={(values)=>onAction(values)} />
-       </View>
-    </ModalComponent>
-  );
+const AddReceiptModal = ({
+  visible,
+  onClose,
+  onAction,
+  defaultValue,
+}: AddReceiptModalProps) => (
+  <ModalComponent
+    onClose={onClose}
+    visible={visible}
+    headerComponent={
+      <View style={modalStyles.headerContainer}>
+        <View style={modalStyles.modalHeader}>
+          <Text onPress={onClose} style={modalStyles.modalCloseButton}>
+            x
+          </Text>
+        </View>
+        <Text style={modalStyles.modalTitle}>
+          {defaultValue ? 'Dienstleistung bearbeiten' : 'Gezahlter Betrag'}
+        </Text>
+      </View>
+    }>
+    <View style={modalStyles.container}>
+      <AddReceiptForm
+        onClose={onClose}
+        defaultValue={defaultValue}
+        onSubmit={values => onAction(values)}
+      />
+    </View>
+  </ModalComponent>
+);
 
 export default AddReceiptModal;
 
@@ -38,12 +52,12 @@ const modalStyles = StyleSheet.create({
     flex: 1,
   },
   headerContainer: {
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   modalHeader: {
     height: 80,
     justifyContent: 'center',
@@ -63,7 +77,7 @@ const modalStyles = StyleSheet.create({
     color: '#454d66',
     fontWeight: '700',
     textAlign: 'center',
-    flex: 1
+    flex: 1,
   },
 
   receiptDetails: {
@@ -71,35 +85,35 @@ const modalStyles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 50
+    gap: 50,
   },
   title: {
     fontSize: 18,
     fontWeight: '700',
     color: '#454d66',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif'
+    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
   },
   amount: {
     color: '#454d66',
     fontSize: 48,
     fontWeight: '700',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif'    
+    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
   },
   amountsSection: {
     display: 'flex',
     alignItems: 'center',
-    gap: 5
+    gap: 5,
   },
   amountInfo: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif'
+    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
   },
   amountInfoText: {
     fontSize: 16,
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif'
+    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
   },
   refundAmount: {
     fontSize: 18,
@@ -113,19 +127,19 @@ const modalStyles = StyleSheet.create({
     fontWeight: '700',
   },
   btnContainer: {
-    paddingBottom: 25
+    paddingBottom: 25,
   },
   furtherBtn: {
     backgroundColor: '#454d66',
     display: 'flex',
     alignItems: 'center',
     paddingVertical: 15,
-    borderRadius: 32
+    borderRadius: 32,
   },
   btnText: {
     color: 'white',
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
     fontSize: 18,
-    fontWeight: '700'
-  }
-})
+    fontWeight: '700',
+  },
+});

@@ -10,10 +10,6 @@ class UserService {
   }
 
   async getUserDetails(id?: string) {
-    // this.client.get(this.path,)
-    // .then((data)=> {
-
-    // })
     return id ? {id: id, username: 'johndoe', name: 'John Doe'} : null;
   }
 
@@ -44,7 +40,9 @@ class UserService {
       const res = await this.client.get(
         '/lbp/mobile-app/rest-service/v1.0/ep/node.json/?parameters[type]=account',
       );
-      if (!res) throw new Error('Invalid credentials');
+      if (!res) {
+        throw new Error('Invalid credentials');
+      }
       if (res[0]?.nid) {
         const userDetails = await this.client.get(
           `/lbp/mobile-app/rest-service/v1.0/ep/node/${res[0]?.nid}.json`,

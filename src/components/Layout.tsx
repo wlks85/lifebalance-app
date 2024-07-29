@@ -1,6 +1,7 @@
+/* eslint-disable react-native/no-inline-styles */
 //@ts-nocheck
 import {useNavigation} from '@react-navigation/native';
-import React, { PropsWithChildren, ReactElement, ReactNode } from 'react';
+import React, {PropsWithChildren} from 'react';
 
 import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -47,10 +48,9 @@ const Layout = ({
               <Text style={styles.header}>{title}</Text>
             </View>
           </View>
-        )
-        :
-        <Header goBack={goBack} />
-      }
+        ) : (
+          <Header goBack={goBack} />
+        )}
         <View style={styles.wrapper}>{children}</View>
       </View>
     </SafeAreaView>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(255,255,255,0)',
     paddingLeft: 25,
-    paddingRight: 25
+    paddingRight: 25,
   },
   headerContainer: {
     display: 'flex',

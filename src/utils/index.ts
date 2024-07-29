@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 export * from './local-storage';
 
 export function getRandomCompanyName(length) {
@@ -55,15 +56,15 @@ export const formatAmount = amount => {
   }).format(amount);
 };
 
-export const generateReceiptTitle = ()=> {
+export const generateReceiptTitle = () => {
   const timestamp = Math.floor(Date.now() / 1000);
   const randomNumber = Math.floor(100000 + Math.random() * 900000);
   const receiptString = `Posted Receipt #R${timestamp}${randomNumber}`;
   return receiptString;
-}
+};
 
-export const formatDateAndTime = (date) => {
-  const pad = (num) => String(num).padStart(2, '0');
+export const formatDateAndTime = date => {
+  const pad = num => String(num).padStart(2, '0');
 
   const day = pad(date.getDate());
   const month = pad(date.getMonth() + 1);
@@ -77,11 +78,23 @@ export const formatDateAndTime = (date) => {
 };
 
 export function formatDataMonthWise(data) {
-  const monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni", 
-                      "Juli", "August", "September", "Oktober", "November", "Dezember"];
+  const monthNames = [
+    'Januar',
+    'Februar',
+    'März',
+    'April',
+    'Mai',
+    'Juni',
+    'Juli',
+    'August',
+    'September',
+    'Oktober',
+    'November',
+    'Dezember',
+  ];
   function getMonthName(timestamp) {
-      const date = new Date(parseInt(timestamp) * 1000);
-      return monthNames[date.getMonth()];
+    const date = new Date(parseInt(timestamp) * 1000);
+    return monthNames[date.getMonth()];
   }
 
   const grouped = {};
@@ -90,34 +103,45 @@ export function formatDataMonthWise(data) {
   const sevenDaysAgo = currentDate.setDate(currentDate.getDate() - 7) / 1000;
 
   data.forEach(obj => {
-      const createdTimestamp = parseInt(obj.created);
-      const monthName = getMonthName(createdTimestamp);
+    const createdTimestamp = parseInt(obj.created);
+    const monthName = getMonthName(createdTimestamp);
 
-      if (createdTimestamp >= sevenDaysAgo) {
-          last7Days.push(obj);
-      }
+    if (createdTimestamp >= sevenDaysAgo) {
+      last7Days.push(obj);
+    }
 
-      if (!grouped[monthName]) {
-          grouped[monthName] = [];
-      }
-      grouped[monthName].push(obj);
+    if (!grouped[monthName]) {
+      grouped[monthName] = [];
+    }
+    grouped[monthName].push(obj);
   });
 
-  const result = Object.keys(grouped).map(monthName =>grouped[monthName]?.length && ({
-      title: monthName,
-      data: grouped[monthName]
-  }));
+  const result = Object.keys(grouped).map(
+    monthName =>
+      grouped[monthName]?.length && {
+        title: monthName,
+        data: grouped[monthName],
+      },
+  );
 
-  result.sort((a, b) => monthNames.indexOf(a.title) - monthNames.indexOf(b.title));
+  result.sort(
+    (a, b) => monthNames.indexOf(a.title) - monthNames.indexOf(b.title),
+  );
 
-  if(last7Days.length){
+  if (last7Days.length) {
     result.unshift({
-      title: "Letzte 7 Tage",
-      data: last7Days
-  });
+      title: 'Letzte 7 Tage',
+      data: last7Days,
+    });
   }
 
   return result;
 }
 
-export default {formatAmount, formatDate, generateReceiptTitle, formatDateAndTime, formatDataMonthWise};
+export default {
+  formatAmount,
+  formatDate,
+  generateReceiptTitle,
+  formatDateAndTime,
+  formatDataMonthWise,
+};
