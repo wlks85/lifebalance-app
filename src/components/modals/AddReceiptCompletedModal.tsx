@@ -5,8 +5,6 @@ import {View, Text, StyleSheet, ImageBackground} from 'react-native';
 import ModalComponent from '../Modal';
 import NextButton from '../ui/NextButton';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import {useNavigation} from '@react-navigation/native';
-import {useTranslation} from 'react-i18next';
 
 interface AddReceiptCompletedProps {
   visible: boolean;
