@@ -165,7 +165,6 @@ class ReceiptService {
   }
 
   async uploadReceiptImage(body) {
-    console.log('triggering upload image ==>', {body});
     const modifiedBody = {
       title: 'Posted File',
       type: {

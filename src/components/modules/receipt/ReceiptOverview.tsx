@@ -15,7 +15,7 @@ import AddReceiptCompleted from '../../modals/AddReceiptCompletedModal';
 import receiptService from '../../../services/ReceiptService';
 import {useAuth} from '../../../providers/auth-provider';
 
-const ReceiptOverview = ({receipt}) => {
+const ReceiptOverview = ({receipt, onClose}) => {
   const [receiptInfo, setReceiptInfo] = useState(receipt);
   const [showAddReceiptModal, setShowAddReceiptModal] = useState(false);
   const [showEditAmountModal, setShowEditAmountModal] = useState(false);
@@ -24,18 +24,25 @@ const ReceiptOverview = ({receipt}) => {
   const [loading, setLoading] = useState(false);
   const {userDetails} = useAuth();
 
+  const onReceiptAdditionCompleted = () => {
+    setShowCompletedModal(false);
+    setShowAddReceiptModal(false);
+    setShowEditAmountModal(false);
+    setShowReceiptImageModal(false);
+    onClose();
+  };
+
   const handleSubmitReceipt = async () => {
     try {
       setLoading(true);
-      await receiptService.addReceipt({
-        ...receiptInfo,
-        owner: userDetails?.field_bank_account_owner.und[0]?.value,
-        iban: userDetails?.field_bank_iban.und[0]?.value,
-      });
+      // await receiptService.addReceipt({
+      //   ...receiptInfo,
+      //   owner: userDetails?.field_bank_account_owner.und[0]?.value,
+      //   iban: userDetails?.field_bank_iban.und[0]?.value,
+      // });
       setShowCompletedModal(true);
       setLoading(false);
     } catch (err) {
-      console.log(err);
       alert(err?.message ?? 'Something went wrong');
       setLoading(false);
     }
@@ -61,7 +68,7 @@ const ReceiptOverview = ({receipt}) => {
                 subtitle: receiptInfo?.amount,
               }}
               showEditBtn={true}
-              onItemClicked={() => console.log('item clicked')}
+              onItemClicked={() => {}}
               onEditBtnPress={() => setShowEditAmountModal(true)}
             />
           </FieldLabel>
@@ -74,7 +81,7 @@ const ReceiptOverview = ({receipt}) => {
                 subtitle: 'Foto',
               }}
               showEditBtn={true}
-              onItemClicked={() => console.log('item clicked')}
+              onItemClicked={() => {}}
               onEditBtnPress={() => setShowReceiptImageModal(true)}
             />
           </FieldLabel>
@@ -99,7 +106,6 @@ const ReceiptOverview = ({receipt}) => {
           onClose={() => setShowAddReceiptModal(false)}
           defaultValue={receiptInfo}
           onAction={(values: Partial<IReceipt>) => {
-            console.log('re over ===> ', values);
             setReceiptInfo(preValue => ({
               ...preValue,
               ...values,
@@ -128,7 +134,7 @@ const ReceiptOverview = ({receipt}) => {
 
         <AddReceiptCompleted
           visible={showCompletedModal}
-          onClose={() => setShowCompletedModal(false)}
+          onClose={onReceiptAdditionCompleted}
         />
       </View>
     </ScrollView>

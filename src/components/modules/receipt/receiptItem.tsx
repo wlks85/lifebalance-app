@@ -61,18 +61,14 @@ const ReceiptItem = ({
         receiptService.getReceiptDetails(receipt?.nid).then(data => {
           setReceiptDetails(data);
         });
-      } catch (err) {
-        console.log('inside receipt item', err);
-      }
+      } catch (err) {}
     }
   }, [disabled, receipt]);
-  // console.log("a", disabled);
 
   return (
     <TouchableOpacity
       style={styles.receipt}
       onPress={() => {
-        console.log('clicked');
         onItemClicked(receiptDetails);
       }}
       // disabled={disabled}

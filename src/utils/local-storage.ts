@@ -32,7 +32,6 @@ export class LocalStorage {
       return {data, isValid: true};
     } catch (err) {
       if (err instanceof Error) {
-        console.warn(err.message);
         switch (err.name) {
           case 'NotFoundError':
             return {data: null};

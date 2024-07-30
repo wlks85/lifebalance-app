@@ -35,11 +35,7 @@ const providerInfoSchema = z.object({
 
 type ServiceCategorySchema = z.infer<typeof providerInfoSchema>;
 
-const AddReceiptForm = ({
-  onClose,
-  defaultValue,
-  onSubmit,
-}: AddReceiptFormProps) => {
+const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
   const [showModal, setShowModal] = useState(false);
   const [showReceiptModal, setShowReceiptModal] = useState(false);
   const [serviceCategories, setServiceCategories] = useState([]);
@@ -68,6 +64,8 @@ const AddReceiptForm = ({
 
   const onReceiptModalClose = () => {
     setShowReceiptModal(false);
+    onClose();
+    console.log("Closing receipt");
   };
 
   const handleCreateReceipt = async () => {
@@ -79,6 +77,7 @@ const AddReceiptForm = ({
   const handleUpdateService = async (values: ServiceCategorySchema) => {
     onSubmit?.(values);
     onClose?.();
+    setShowReceiptModal(false);
   };
   useEffect(() => {
     if (serviceCategories.length) {
@@ -88,8 +87,8 @@ const AddReceiptForm = ({
     }
   }, [serviceCategories, setError, setValue]);
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}>
-      <SafeAreaView style={{height: '100%'}}>
+    <SafeAreaView style={{height: '100%'}}>
+      <ScrollView contentContainerStyle={{flexGrow: 1}}>
         <View style={formStyle.container}>
           <View>
             <Controller
@@ -150,14 +149,13 @@ const AddReceiptForm = ({
         <ServiceCategoryModal
           visible={showModal}
           onClose={closeModal}
-          onAction={() => console.log('modal action')}
           setServiceCategories={setServiceCategories}
           services={serviceCategories}
         />
         <ReceiptModal
           visible={showReceiptModal}
           onClose={onReceiptModalClose}
-          onAction={() => console.log('receipt modal action')}
+          onAction={() => {}}
           receipt={{
             amount: '00',
             amount_paid: '00',
@@ -166,8 +164,8 @@ const AddReceiptForm = ({
             postCode: watch('postCode'),
           }}
         />
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -179,4 +177,4 @@ const formStyle = StyleSheet.create({
   },
 });
 
-export default AddReceiptForm;
+export default AddReceipt;

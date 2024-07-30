@@ -14,10 +14,9 @@ interface AddReceiptCompletedProps {
 }
 
 const AddReceiptCompleted = ({visible, onClose}: AddReceiptCompletedProps) => {
-  const navigation = useNavigation();
-  const {t} = useTranslation();
+  // const navigation = useNavigation();
+  // const {t} = useTranslation();
   const handleClose = () => {
-    navigation.navigate(t('navigation.home'));
     onClose?.();
   };
   return (

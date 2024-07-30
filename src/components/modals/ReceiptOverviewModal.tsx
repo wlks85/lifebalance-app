@@ -25,7 +25,7 @@ const ReceiptOverviewModal = ({receipt, visible, onClose}) => {
           </View>
         </View>
       }>
-      <ReceiptOverview receipt={receipt} />
+      <ReceiptOverview receipt={receipt} onClose={onClose} />
     </ModalComponent>
   );
 };

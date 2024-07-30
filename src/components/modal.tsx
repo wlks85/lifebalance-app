@@ -8,14 +8,26 @@ const ModalComponent = ({
   children,
   headerComponent,
   contentStyle = {},
-}) => (
-  <Modal animationType="slide" visible={visible} onRequestClose={onClose}>
-    <View style={modalStyles.modalContainer}>
-      <View style={modalStyles.modalHeaderContainer}>{headerComponent}</View>
-      <View style={[modalStyles.modalContent, contentStyle]}>{children}</View>
-    </View>
-  </Modal>
-);
+}) => {
+  const handleOnClose = () => {
+    console.log('closing modal');
+    onClose();
+  };
+  return (
+    <Modal
+      animationType="slide"
+      visible={visible}
+      onDismiss={handleOnClose}
+      onRequestClose={handleOnClose}>
+      <View
+        onPress={() => console.log('Modal Pressed')}
+        style={modalStyles.modalContainer}>
+        <View style={modalStyles.modalHeaderContainer}>{headerComponent}</View>
+        <View style={[modalStyles.modalContent, contentStyle]}>{children}</View>
+      </View>
+    </Modal>
+  );
+};
 
 export default ModalComponent;
 

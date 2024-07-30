@@ -46,9 +46,7 @@ export class RestClient extends BaseClient {
               credentialsText,
             )}`;
           }
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
 
         const {data: csrfToken} = await axios.get(
           `${API_BASE_URL}/services/session/token`,
@@ -89,14 +87,6 @@ export class RestClient extends BaseClient {
   }
 
   private _handleError(error: any): void {
-    // Handle error as needed
-    if (error.response) {
-      console.error('Server responded with a status:', error.response.status);
-    } else if (error.request) {
-      console.error('No response received:', error.request);
-    } else {
-      console.error('Error setting up request:', error.message);
-    }
     throw error;
   }
 }

@@ -50,7 +50,6 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
       setFid(uploadResult?.fid); // TO-DO: change it to actual property
       setShowOverviewModal(true);
     } catch (err) {
-      console.log(err);
       alert(err.message);
     }
   };
@@ -67,11 +66,9 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
         filename: result?.assets[0]?.fileName,
         base64: result?.assets[0]?.base64,
       });
-      console.log('photo upload result: ', uploadResult);
       setFid(uploadResult?.fid); // TO-DO: change it to actual property
       setShowOverviewModal(true);
     } catch (err) {
-      console.log(err);
       alert(err.message);
     }
   };
@@ -182,8 +179,10 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                 image: image?.assets[0]?.uri,
               }}
               visible={showOverviewModal}
-              onClose={() => setShowOverviewModal(false)}
-              onAction={() => console.log()}
+              onClose={() => {
+                setShowOverviewModal(false);
+                onClose();
+              }}
             />
           </View>
         </View>
