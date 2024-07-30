@@ -35,11 +35,11 @@ const ReceiptOverview = ({receipt, onClose}) => {
   const handleSubmitReceipt = async () => {
     try {
       setLoading(true);
-      // await receiptService.addReceipt({
-      //   ...receiptInfo,
-      //   owner: userDetails?.field_bank_account_owner.und[0]?.value,
-      //   iban: userDetails?.field_bank_iban.und[0]?.value,
-      // });
+      await receiptService.addReceipt({
+        ...receiptInfo,
+        owner: userDetails?.field_bank_account_owner.und[0]?.value,
+        iban: userDetails?.field_bank_iban.und[0]?.value,
+      });
       setShowCompletedModal(true);
       setLoading(false);
     } catch (err) {
