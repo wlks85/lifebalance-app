@@ -36,16 +36,16 @@ const MainNavigation = () => {
           tabBarIcon: ({color, size, focused}) => {
             let iconName: string;
             switch (route.params?.title) {
-              case 'home':
+              case t('navigation.home'):
                 iconName = focused ? 'home' : 'home';
                 break;
-              case 'receipt':
+              case t('navigation.receipt'):
                 iconName = focused ? 'file-text' : 'file-text-o';
                 break;
-              case 'archive':
+              case t('navigation.archive'):
                 iconName = focused ? 'folder' : 'folder-o';
                 break;
-              case 'user':
+              case t('navigation.profile'):
                 iconName = focused ? 'user' : 'user-o';
                 break;
               default:

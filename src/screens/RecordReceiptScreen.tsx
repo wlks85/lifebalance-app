@@ -91,7 +91,6 @@ const ListComponent = ({data = []}) => {
     setModalVisible(false);
     setSelectedReceipt(null);
     setCreateReceiptVisible(false);
-    console.log('Closing Add Receipt modal');
   };
   return (
     <SafeAreaView style={styles.container}>

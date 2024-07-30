@@ -1,24 +1,20 @@
 //@ts-nocheck
-import {useNavigation, useNavigationState} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useTranslation} from 'react-i18next';
 
 const BankBalance = ({user, hasNavigation = true}: any) => {
   const {navigate} = useNavigation();
-  const routes = useNavigationState(state => state.routes);
+  const {t} = useTranslation();
   const formatBalance = value => {
     return `${value}`.replace('.', ',') + ' EUR';
   };
 
   const navigateTo = () => {
-    const profileRoute = routes.find(
-      route => route.params?.title === 'profile',
-    );
-    if (profileRoute) {
-      navigate({key: profileRoute.key});
-    }
+    navigate(t('navigation.profile'));
   };
 
   return hasNavigation ? (

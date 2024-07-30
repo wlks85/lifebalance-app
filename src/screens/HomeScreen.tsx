@@ -11,7 +11,7 @@ import {
   SafeAreaView,
   ImageBackground,
 } from 'react-native';
-import {useNavigation, useNavigationState} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import BankBalanceComponent from '../components/profile/BankBalanceComponent';
@@ -22,13 +22,8 @@ const RenderNavigation = () => {
   const show = true;
   const navigation = useNavigation();
   const {t} = useTranslation();
-  const routes = useNavigationState(states => states.routes);
-
   const navigateToX = path => {
-    const profileRoute = routes.find(route => route.params?.title === path);
-    if (profileRoute) {
-      navigation.navigate({key: profileRoute.key});
-    }
+    navigation.navigate(path);
   };
 
   return (
@@ -36,7 +31,7 @@ const RenderNavigation = () => {
       <View style={styles.navigationCard}>
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigateToX('receipt')}>
+          onPress={() => navigateToX(t('navigation.receipt'))}>
           <Text style={styles.menuText}>{t('navigation.receipt')}</Text>
           <Icon
             style={styles.menuIcon}
@@ -47,8 +42,8 @@ const RenderNavigation = () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigateToX('archive')}>
-          <Text style={styles.menuText}>Archive</Text>
+          onPress={() => navigateToX(t('navigation.archive'))}>
+          <Text style={styles.menuText}>{t('navigation.archive')}</Text>
           <Icon
             style={styles.menuIcon}
             name="folder-o"
@@ -58,8 +53,8 @@ const RenderNavigation = () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigateToX('profile')}>
-          <Text style={styles.menuText}>Profile</Text>
+          onPress={() => navigateToX(t('navigation.profile'))}>
+          <Text style={styles.menuText}>{t('navigation.profile')}</Text>
           <Icon
             style={styles.menuIcon}
             name="user-o"

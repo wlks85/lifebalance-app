@@ -10,7 +10,6 @@ const ModalComponent = ({
   contentStyle = {},
 }) => {
   const handleOnClose = () => {
-    console.log('closing modal');
     onClose();
   };
   return (
@@ -19,9 +18,7 @@ const ModalComponent = ({
       visible={visible}
       onDismiss={handleOnClose}
       onRequestClose={handleOnClose}>
-      <View
-        onPress={() => console.log('Modal Pressed')}
-        style={modalStyles.modalContainer}>
+      <View style={modalStyles.modalContainer}>
         <View style={modalStyles.modalHeaderContainer}>{headerComponent}</View>
         <View style={[modalStyles.modalContent, contentStyle]}>{children}</View>
       </View>
