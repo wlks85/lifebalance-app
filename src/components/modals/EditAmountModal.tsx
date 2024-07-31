@@ -4,6 +4,8 @@ import ModalComponent from '../Modal';
 import {TextInput} from 'react-native-gesture-handler';
 import {IReceipt} from '../modules/receipt/ReceiptCard';
 import {useAuth} from '../../providers/auth-provider';
+import {ModalStyles} from '../../styles';
+import IconAnt from 'react-native-vector-icons/AntDesign';
 
 interface EditAmountModalProps {
   receipt: Partial<IReceipt>;
@@ -34,14 +36,16 @@ const EditAmountModal = ({
       onClose={onClose}
       visible={visible}
       headerComponent={
-        <View style={modalStyles.headerContainer}>
-          <View style={modalStyles.modalHeader}>
-            <Text onPress={onClose} style={modalStyles.modalCloseButton}>
-              x
-            </Text>
-          </View>
+        <>
+          <IconAnt
+            onPress={onClose}
+            style={modalStyles.headerButtons}
+            name={'arrowleft'}
+            color={'#454d66'}
+            size={25}
+          />
           <Text style={modalStyles.modalTitle}>Betrag bearbeiten</Text>
-        </View>
+        </>
       }>
       {receipt && (
         <View style={modalStyles.container}>
@@ -222,4 +226,5 @@ const modalStyles = StyleSheet.create({
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
     fontWeight: '700',
   },
+  ...ModalStyles,
 });

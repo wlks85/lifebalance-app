@@ -5,6 +5,8 @@ import {View, Text, StyleSheet, ImageBackground} from 'react-native';
 import ModalComponent from '../Modal';
 import NextButton from '../ui/NextButton';
 import Icon from 'react-native-vector-icons/FontAwesome6';
+import IconAnt from 'react-native-vector-icons/AntDesign';
+import {ModalStyles} from '../../styles';
 
 interface AddReceiptCompletedProps {
   visible: boolean;
@@ -22,13 +24,15 @@ const AddReceiptCompleted = ({visible, onClose}: AddReceiptCompletedProps) => {
       onClose={onClose}
       visible={visible}
       headerComponent={
-        <View style={modalStyles.headerContainer}>
-          <View style={modalStyles.modalHeader}>
-            <Text onPress={handleClose} style={modalStyles.modalCloseButton}>
-              x
-            </Text>
-          </View>
-        </View>
+        <>
+          <IconAnt
+            onPress={handleClose}
+            style={modalStyles.headerButtons}
+            name={'close'}
+            color={'#454d66'}
+            size={25}
+          />
+        </>
       }>
       <View style={modalStyles.container}>
         <View style={modalStyles.messageContainer}>
@@ -133,4 +137,5 @@ const modalStyles = StyleSheet.create({
     color: '#454d66',
     textAlign: 'center',
   },
+  ...ModalStyles,
 });

@@ -6,7 +6,8 @@ import ModalComponent from '../Modal';
 import {ScrollView} from 'react-native-gesture-handler';
 import NextButton from '../ui/NextButton';
 import {ReceiptService} from '../../services';
-
+import IconAnt from 'react-native-vector-icons/AntDesign';
+import {ModalStyles} from '../../styles';
 interface IServiceCategory {
   id: number;
   title: string;
@@ -46,14 +47,16 @@ const ServiceCategoryModal = ({
       onClose={onClose}
       visible={visible}
       headerComponent={
-        <View style={modalStyles.headerContainer}>
-          <View style={modalStyles.modalHeader}>
-            <Text onPress={onClose} style={modalStyles.modalCloseButton}>
-              x
-            </Text>
-          </View>
+        <>
+          <IconAnt
+            onPress={onClose}
+            style={modalStyles.headerButtons}
+            name={'arrowleft'}
+            color={'#454d66'}
+            size={25}
+          />
           <Text style={modalStyles.modalTitle}>Kategorie wählen</Text>
-        </View>
+        </>
       }>
       <View style={modalStyles.container}>
         <View
@@ -167,4 +170,5 @@ const modalStyles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingTop: 25,
   },
+  ...ModalStyles,
 });

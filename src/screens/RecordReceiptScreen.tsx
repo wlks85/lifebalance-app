@@ -7,6 +7,7 @@ import {
   StyleSheet,
   SafeAreaView,
   SectionList,
+  ActivityIndicator,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
@@ -45,19 +46,8 @@ const Header = ({goBack}: HeaderProps) => {
   );
 };
 
-const SectionWrapper = ({section, onSelectedItem, openAddReceiptModal}) => (
+const SectionWrapper = ({section, onSelectedItem}) => (
   <View style={styles.sectionWrapper}>
-    <TouchableOpacity
-      style={styles.addReceiptBtnContainer}
-      onPress={() => openAddReceiptModal()}>
-      <View style={styles.addReceiptTitle}>
-        <Icon name="plus" size={15} />
-        <Text style={styles.textStyle}>Neue Dienstleistung </Text>
-      </View>
-      <View>
-        <Icon name="chevron-right" size={15} />
-      </View>
-    </TouchableOpacity>
     <View style={styles.sectionTitle}>
       <Text style={styles.sectionTitleText}>{section.title}</Text>
     </View>
@@ -74,57 +64,68 @@ const SectionWrapper = ({section, onSelectedItem, openAddReceiptModal}) => (
     </View>
   </View>
 );
-const ListComponent = ({data = []}) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [createReceiptVisible, setCreateReceiptVisible] = useState(false);
-  const [selectedReceipt, setSelectedReceipt] = useState(null);
-  const openModal = receipt => {
-    setSelectedReceipt(receipt);
-    setModalVisible(true);
+const ListComponent = ({data = [], isLoading, onReceiptSelected}) => {
+  const previewSelected = receipt => {
+    onReceiptSelected(receipt);
   };
 
-  const openAddReceiptModal = () => {
-    setCreateReceiptVisible(true);
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-    setSelectedReceipt(null);
-    setCreateReceiptVisible(false);
-  };
   return (
     <SafeAreaView style={styles.container}>
-      <SectionList
-        sections={data}
-        keyExtractor={item => item.uuid.toString()}
-        renderItem={() => null} // No need to render items here, they will be rendered in the wrapper
-        renderSectionHeader={({section}) => (
-          <SectionWrapper
-            onSelectedItem={openModal}
-            section={section}
-            openAddReceiptModal={openAddReceiptModal}
-          />
-        )}
-      />
-
-      <ReceiptModal
-        visible={modalVisible}
-        receipt={selectedReceipt}
-        onClose={closeModal}
-      />
-
-      <AddReceiptModal onClose={closeModal} visible={createReceiptVisible} />
+      {isLoading && <ActivityIndicator size="large" />}
+      {!isLoading && (
+        <SectionList
+          sections={data}
+          keyExtractor={item => item.uuid.toString()}
+          renderItem={() => null}
+          renderSectionHeader={({section}) => (
+            <SectionWrapper
+              onSelectedItem={previewSelected}
+              section={section}
+            />
+          )}
+        />
+      )}
     </SafeAreaView>
   );
 };
 
 const ReceiptScreen = () => {
   const [receiptData, setReceiptData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [createReceiptVisible, setCreateReceiptVisible] = useState(false);
+  const [previewModalVisible, setPreviewModalVisible] = useState(false);
+  const [selectedReceipt, setSelectedReceipt] = useState(null);
+
+  const openAddReceiptModal = () => {
+    setCreateReceiptVisible(true);
+  };
+
+  const closeAddReceiptModal = () => {
+    setCreateReceiptVisible(false);
+    fetchReceipts();
+  };
+
+  const closePreviewReceiptModal = () => {
+    setPreviewModalVisible(false);
+    setSelectedReceipt(null);
+  };
+
+  const onReceiptSelected = receipt => {
+    setSelectedReceipt(receipt);
+    setPreviewModalVisible(true);
+  };
 
   const fetchReceipts = useCallback(() => {
-    receiptService.getReceipts().then(data => {
-      setReceiptData([{title: 'Zuletzt verwendet', data: data || []}]);
-    });
+    setIsLoading(true);
+    receiptService
+      .getReceipts()
+      .then(data => {
+        setIsLoading(false);
+        setReceiptData([{title: 'Zuletzt verwendet', data: data || []}]);
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   useFocusEffect(
@@ -135,7 +136,33 @@ const ReceiptScreen = () => {
 
   return (
     <Layout Header={Header}>
-      <ListComponent data={receiptData || []} />
+      <TouchableOpacity
+        style={styles.addReceiptBtnContainer}
+        onPress={() => openAddReceiptModal()}>
+        <View style={styles.addReceiptTitle}>
+          <Icon name="plus" size={15} />
+          <Text style={styles.textStyle}>Neue Dienstleistung </Text>
+        </View>
+        <View>
+          <Icon name="chevron-right" size={15} />
+        </View>
+      </TouchableOpacity>
+      <ListComponent
+        data={receiptData || []}
+        isLoading={isLoading}
+        onReceiptSelected={onReceiptSelected}
+      />
+      {selectedReceipt && (
+        <ReceiptModal
+          visible={previewModalVisible}
+          receipt={selectedReceipt}
+          onClose={closePreviewReceiptModal}
+        />
+      )}
+      <AddReceiptModal
+        onClose={closeAddReceiptModal}
+        visible={createReceiptVisible}
+      />
     </Layout>
   );
 };

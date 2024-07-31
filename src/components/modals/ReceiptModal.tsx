@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
+  Image,
+  Alert,
 } from 'react-native';
 import ModalComponent from '../Modal';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -21,6 +23,77 @@ import ReceiptCard from '../modules/receipt/ReceiptCard';
 import receiptService from '../../services/ReceiptService';
 import {useAuth} from '../../providers/auth-provider';
 import {generateReceiptTitle} from '../../utils';
+import AppActivityIndicator from '../AppActivityIndicator';
+import {ModalStyles} from '../../styles';
+
+const ReceiptModalHeader = ({onClose}) => {
+  return (
+    <>
+      <IconAnt
+        onPress={onClose}
+        style={modalStyles.headerButtons}
+        name={'arrowleft'}
+        color={'#454d66'}
+        size={25}
+      />
+      <Text style={modalStyles.modalTitle}>Qualität überprüfen</Text>
+    </>
+  );
+};
+
+const ReceiptImageModal = ({
+  receipt,
+  image,
+  visible,
+  onClose,
+  buttonText = '',
+  onNext,
+}) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleBtnClick = async () => {
+    //upload to remote and return data;
+    try {
+      setLoading(true);
+      const uploadResult = await receiptService.uploadReceiptImage({
+        filename: image?.assets[0]?.fileName,
+        base64: image?.assets[0]?.base64,
+      });
+      onNext(uploadResult);
+      setLoading(false);
+    } catch (error) {
+      Alert(error.message);
+      setLoading(false);
+    }
+  };
+  return (
+    <ModalComponent
+      headerComponent={<ReceiptModalHeader onClose={onClose} />}
+      visible={visible}
+      onClose={onClose}
+      contentStyle={{paddingHorizontal: 0}}>
+      {receipt && (
+        <>
+          {loading && <AppActivityIndicator isLoading={loading} size="large" />}
+          <View style={{flex: 1, gap: 10}}>
+            <Image
+              style={{flex: 1, width: '100%', height: '100%'}}
+              src={receipt?.image}
+            />
+
+            <View style={{padding: 25}}>
+              <TouchableOpacity
+                onPress={handleBtnClick}
+                style={{...modalStyles.furtherBtn}}>
+                <Text style={modalStyles.btnText}>{buttonText}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </>
+      )}
+    </ModalComponent>
+  );
+};
 
 const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   const [showPhotoModal, setShowPhotoModal] = useState(false);
@@ -29,6 +102,9 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   const [fid, setFid] = useState(null);
   const [amount, setAmount] = useState('0,00 €');
   const {userDetails} = useAuth();
+  const [imageVisible, setImageVisible] = useState(false);
+  const [imagePreviewModalButtonText, setImagePreviewModalButtonText] =
+    useState('Use Photo');
   const handleFurther = () => {
     setShowPhotoModal(true);
   };
@@ -42,16 +118,8 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
     const result = await launchCamera({...ImageLibConfig, cameraType: 'back'});
     setImage(result);
     onAction?.(amount);
-    try {
-      const uploadResult = await receiptService.uploadReceiptImage({
-        filename: result?.assets[0]?.fileName,
-        base64: result?.assets[0]?.base64,
-      });
-      setFid(uploadResult?.fid); // TO-DO: change it to actual property
-      setShowOverviewModal(true);
-    } catch (err) {
-      alert(err.message);
-    }
+    setImageVisible(true);
+    setImagePreviewModalButtonText('Use Photo');
   };
 
   const handleOpenGallery = async () => {
@@ -62,14 +130,25 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
       }
       setImage(result);
       onAction?.(amount);
-      const uploadResult = await receiptService.uploadReceiptImage({
-        filename: result?.assets[0]?.fileName,
-        base64: result?.assets[0]?.base64,
-      });
-      setFid(uploadResult?.fid); // TO-DO: change it to actual property
-      setShowOverviewModal(true);
+      // const uploadResult = await receiptService.uploadReceiptImage({
+      //   filename: result?.assets[0]?.fileName,
+      //   base64: result?.assets[0]?.base64,
+      // });
+      // setFid(uploadResult?.fid); // TO-DO: change it to actual property
+      // setShowOverviewModal(true);
+      setImagePreviewModalButtonText('Choose Photo');
+      setImageVisible(true);
     } catch (err) {
       alert(err.message);
+    }
+  };
+
+  const onNext = (step, data = null) => {
+    if (step === 'preview') {
+      setShowOverviewModal(true);
+      if (data) {
+        setFid(data?.fid);
+      }
     }
   };
 
@@ -81,19 +160,16 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
       onClose={onClose}
       visible={visible}
       headerComponent={
-        <View style={modalStyles.headerContainer}>
-          <View style={modalStyles.modalHeader}>
-            <Text onPress={onClose} style={modalStyles.modalCloseButton}>
-              x
-            </Text>
-          </View>
+        <>
+          <IconAnt
+            onPress={onClose}
+            style={modalStyles.headerButtons}
+            name={'arrowleft'}
+            color={'#454d66'}
+            size={25}
+          />
           <Text style={modalStyles.modalTitle}>Gezahlter Betrag</Text>
-          <View style={modalStyles.modalHeader}>
-            <Text>
-              <Icon name="question" size={20} />
-            </Text>
-          </View>
-        </View>
+        </>
       }>
       {receipt && (
         <View style={modalStyles.container}>
@@ -143,6 +219,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
             <Modal
               visible={showPhotoModal}
               transparent={true}
+              onDismiss={() => setImageVisible(false)}
               animationType="slide">
               <Pressable
                 style={{backgroundColor: 'rgba(0, 0, 0, 0.15)', flex: 1}}
@@ -169,6 +246,17 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                 </TouchableWithoutFeedback>
               </Pressable>
             </Modal>
+
+            <ReceiptImageModal
+              visible={imageVisible}
+              receipt={{...receipt, image: image?.assets[0]?.uri}}
+              onClose={() => setImageVisible(false)}
+              buttonText={imagePreviewModalButtonText}
+              image={image}
+              onNext={data => {
+                onNext('preview', data);
+              }}
+            />
 
             <ReceiptOverviewModal
               receipt={{
@@ -318,4 +406,5 @@ const modalStyles = StyleSheet.create({
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
     fontWeight: '700',
   },
+  ...ModalStyles,
 });

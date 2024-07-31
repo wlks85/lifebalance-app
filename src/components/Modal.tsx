@@ -36,19 +36,10 @@ const modalStyles = StyleSheet.create({
   modalHeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingRight: 25,
-    paddingLeft: 25,
-    paddingTop: 15,
-    paddingBottom: 17,
-  },
-  modalHeader: {
     height: 80,
-    justifyContent: 'center',
-  },
-  modalCloseButton: {
-    fontSize: 25,
+    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans"',
+    paddingHorizontal: 25,
   },
   modalContent: {
     flex: 1,

@@ -1,9 +1,10 @@
 //@ts-nocheck
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet} from 'react-native';
 import ModalComponent from '../Modal';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import ReceiptOverview from '../modules/receipt/ReceiptOverview';
+import IconAnt from 'react-native-vector-icons/AntDesign';
+import {ModalStyles} from '../../styles';
 
 const ReceiptOverviewModal = ({receipt, visible, onClose}) => {
   return (
@@ -11,19 +12,16 @@ const ReceiptOverviewModal = ({receipt, visible, onClose}) => {
       onClose={onClose}
       visible={visible}
       headerComponent={
-        <View style={modalStyles.headerContainer}>
-          <View style={modalStyles.modalHeader}>
-            <Text onPress={onClose} style={modalStyles.modalCloseButton}>
-              x
-            </Text>
-          </View>
+        <>
+          <IconAnt
+            onPress={onClose}
+            style={modalStyles.headerButtons}
+            name={'arrowleft'}
+            color={'#454d66'}
+            size={25}
+          />
           <Text style={modalStyles.modalTitle}>Übersicht</Text>
-          <View style={modalStyles.modalHeader}>
-            <Text>
-              <Icon name="question" size={20} />
-            </Text>
-          </View>
-        </View>
+        </>
       }>
       <ReceiptOverview receipt={receipt} onClose={onClose} />
     </ModalComponent>
@@ -156,4 +154,5 @@ const modalStyles = StyleSheet.create({
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
     fontWeight: '700',
   },
+  ...ModalStyles,
 });

@@ -4,6 +4,8 @@ import {View, Text, StyleSheet} from 'react-native';
 import ModalComponent from '../Modal';
 import AddReceiptForm from '../forms/AddReceipt';
 import {IReceipt} from '../modules/receipt/ReceiptItem';
+import IconAnt from 'react-native-vector-icons/AntDesign';
+import {ModalStyles} from '../../styles';
 
 interface AddReceiptModalProps {
   visible: boolean;
@@ -22,16 +24,18 @@ const AddReceiptModal = ({
     onClose={onClose}
     visible={visible}
     headerComponent={
-      <View style={modalStyles.headerContainer}>
-        <View style={modalStyles.modalHeader}>
-          <Text onPress={onClose} style={modalStyles.modalCloseButton}>
-            x
-          </Text>
-        </View>
+      <>
+        <IconAnt
+          onPress={onClose}
+          style={modalStyles.headerButtons}
+          name={'arrowleft'}
+          color={'#454d66'}
+          size={25}
+        />
         <Text style={modalStyles.modalTitle}>
           {defaultValue ? 'Dienstleistung bearbeiten' : 'Gezahlter Betrag'}
         </Text>
-      </View>
+      </>
     }>
     <View style={modalStyles.container}>
       <AddReceiptForm
@@ -51,33 +55,12 @@ const modalStyles = StyleSheet.create({
     justifyContent: 'space-between',
     flex: 1,
   },
-  headerContainer: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  modalHeader: {
-    height: 80,
-    justifyContent: 'center',
-  },
-  modalCloseButton: {
-    fontSize: 25,
-  },
-  modalContent: {
-    flex: 1,
-    width: '100%',
-    borderRadius: 0, // No border radius to make it full screen
-    paddingRight: 25,
-    paddingLeft: 25,
-  },
   modalTitle: {
-    fontSize: 24,
+    textAlign: 'center',
+    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans",',
     color: '#454d66',
     fontWeight: '700',
-    textAlign: 'center',
-    flex: 1,
+    fontSize: 22,
   },
 
   receiptDetails: {
@@ -142,4 +125,5 @@ const modalStyles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
   },
+  ...ModalStyles,
 });
