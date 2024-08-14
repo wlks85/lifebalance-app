@@ -5,11 +5,13 @@ import {ThemeProvider} from './theme';
 import AppLoginScreen from './screens/AuthScreen';
 import Providers from './providers';
 import {LocalStorage} from './utils';
+// import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    // SplashScreen.hide();
     (async () => {
       const {data: userDetails} = await LocalStorage.get(
         'auth.credentials.details',
