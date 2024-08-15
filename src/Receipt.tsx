@@ -12,7 +12,13 @@ const App = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    SplashScreen.hide();
+    setTimeout(()=> {
+      SplashScreen.hide();
+    }, 3000);
+    console.log("Splashscreen hide");
+  }, []);
+
+  useEffect(() => {
     (async () => {
       const {data: userDetails} = await LocalStorage.get(
         'auth.credentials.details',
