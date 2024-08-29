@@ -1,4 +1,4 @@
-package com.receipt
+package de.lifebalanceplus.app
 
 import android.os.Bundle
 import com.facebook.react.ReactActivity
