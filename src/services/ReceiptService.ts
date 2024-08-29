@@ -24,17 +24,17 @@ class ReceiptService {
     this.__client = new RestClient();
   }
 
-  async getArchivedReceipts() {
+  async getArchivedReceipts(pageNumber: number = 0) {
     const result = await this.__client.get(
-      '/lbp/mobile-app/rest-service/v1.0/ep/node.json?parameters[type]=receipt&page=0',
+      `/lbp/mobile-app/rest-service/v1.0/ep/node.json?parameters[type]=receipt&page=${pageNumber}`,
     );
     const decoratedData = formatDataMonthWise(result);
     return decoratedData;
   }
 
-  async getReceipts() {
+  async getReceipts(pageNumber: number = 0) {
     const result = await this.__client.get(
-      '/lbp/mobile-app/rest-service/v1.0/ep/node.json?parameters[type]=receipt&page=0',
+      `/lbp/mobile-app/rest-service/v1.0/ep/node.json?parameters[type]=receipt&page=${pageNumber}`,
     );
     return result;
   }

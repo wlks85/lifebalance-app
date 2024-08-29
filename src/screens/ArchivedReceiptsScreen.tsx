@@ -10,10 +10,11 @@ import {
   SectionList,
   Modal,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
-import {formatDate, formatAmount} from '../utils';
+import {formatDate, formatAmount, mergeDataByTitle} from '../utils';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import AntIcon from 'react-native-vector-icons/AntDesign';
@@ -392,7 +393,7 @@ const SectionWrapper = ({section, onSelectedItem}) => (
     </View>
   </View>
 );
-const ListComponent = ({data = []}) => {
+const ListComponent = ({data = [], onEndReached, isLoading}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
   const [imageSelectedReceipt, setImageSelectedReceipt] = useState(null);
@@ -419,14 +420,19 @@ const ListComponent = ({data = []}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <SectionList
-        sections={data || []}
-        keyExtractor={item => item.uuid.toString()}
-        renderItem={() => null} // No need to render items here, they will be rendered in the wrapper
-        renderSectionHeader={({section}) => (
-          <SectionWrapper onSelectedItem={openModal} section={section} />
-        )}
-      />
+      {isLoading && <ActivityIndicator size="large" />}
+      {!isLoading && (
+        <SectionList
+          onEndReachedThreshold={0.5}
+          onEndReached={onEndReached}
+          sections={data || []}
+          keyExtractor={item => item.uuid.toString()}
+          renderItem={() => null} // No need to render items here, they will be rendered in the wrapper
+          renderSectionHeader={({section}) => (
+            <SectionWrapper onSelectedItem={openModal} section={section} />
+          )}
+        />
+      )}
       <ReceiptModal
         visible={modalVisible}
         receipt={selectedReceipt}
@@ -444,12 +450,35 @@ const ListComponent = ({data = []}) => {
 
 const ArchivedReceiptsScreen = () => {
   const [receipts, setReceipts] = useState([]);
+  const [page, setPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchReceipts = useCallback(() => {
-    ReceiptService.getArchivedReceipts().then(arReceipts => {
-      setReceipts(arReceipts);
-    });
+    setIsLoading(true);
+    ReceiptService.getArchivedReceipts(0)
+      .then(arReceipts => {
+        setReceipts(arReceipts);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
   }, []);
+
+  const fetchMore = async () => {
+    try {
+      const result = await ReceiptService.getArchivedReceipts(page + 1);
+      if (result.length) {
+        const paginatedData = mergeDataByTitle(receipts, result);
+        setReceipts(paginatedData);
+        setPage(pre => pre + 1);
+      }
+    } catch (err) {
+      console.log(err);
+      // eslint-disable-next-line no-alert
+      alert(err);
+    }
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -460,7 +489,11 @@ const ArchivedReceiptsScreen = () => {
   return (
     <Layout title="Belagarchiv">
       <SafeAreaView style={styles.container}>
-        <ListComponent data={receipts || []} />
+        <ListComponent
+          data={receipts || []}
+          onEndReached={fetchMore}
+          isLoading={isLoading}
+        />
       </SafeAreaView>
     </Layout>
   );
