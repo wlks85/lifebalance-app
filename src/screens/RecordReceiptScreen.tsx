@@ -64,7 +64,12 @@ const SectionWrapper = ({section, onSelectedItem}) => (
     </View>
   </View>
 );
-const ListComponent = ({data = [], isLoading, onReceiptSelected}) => {
+const ListComponent = ({
+  data = [],
+  isLoading,
+  onReceiptSelected,
+  onEndReached,
+}) => {
   const previewSelected = receipt => {
     onReceiptSelected(receipt);
   };
@@ -74,6 +79,8 @@ const ListComponent = ({data = [], isLoading, onReceiptSelected}) => {
       {isLoading && <ActivityIndicator size="large" />}
       {!isLoading && (
         <SectionList
+          onEndReachedThreshold={0.5}
+          onEndReached={onEndReached}
           sections={data}
           keyExtractor={item => item.uuid.toString()}
           renderItem={() => null}
@@ -95,6 +102,7 @@ const ReceiptScreen = () => {
   const [createReceiptVisible, setCreateReceiptVisible] = useState(false);
   const [previewModalVisible, setPreviewModalVisible] = useState(false);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
+  const [page, setPage] = useState(0);
 
   const openAddReceiptModal = () => {
     setCreateReceiptVisible(true);
@@ -118,7 +126,7 @@ const ReceiptScreen = () => {
   const fetchReceipts = useCallback(() => {
     setIsLoading(true);
     receiptService
-      .getReceipts()
+      .getReceipts(0)
       .then(data => {
         setIsLoading(false);
         setReceiptData([{title: 'Zuletzt verwendet', data: data || []}]);
@@ -127,6 +135,25 @@ const ReceiptScreen = () => {
         setIsLoading(false);
       });
   }, []);
+
+  const fetchMore = async () => {
+    try {
+      const result = await receiptService.getReceipts(page + 1);
+      if (result.length) {
+        setReceiptData(preValue => [
+          {
+            title: 'Zuletzt verwendet',
+            data: [...preValue[0].data, ...result] || [],
+          },
+        ]);
+        setPage(pre => pre + 1);
+      }
+    } catch (err) {
+      console.log(err);
+      // eslint-disable-next-line no-alert
+      alert(err);
+    }
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -151,6 +178,7 @@ const ReceiptScreen = () => {
         data={receiptData || []}
         isLoading={isLoading}
         onReceiptSelected={onReceiptSelected}
+        onEndReached={fetchMore}
       />
       {selectedReceipt && (
         <ReceiptModal

@@ -77,21 +77,22 @@ export const formatDateAndTime = date => {
   return `${day}.${month}.${year} - ${hours}:${minutes}:${seconds}`;
 };
 
+const monthNames = [
+  'Januar',
+  'Februar',
+  'März',
+  'April',
+  'Mai',
+  'Juni',
+  'Juli',
+  'August',
+  'September',
+  'Oktober',
+  'November',
+  'Dezember',
+];
+
 export function formatDataMonthWise(data) {
-  const monthNames = [
-    'Januar',
-    'Februar',
-    'März',
-    'April',
-    'Mai',
-    'Juni',
-    'Juli',
-    'August',
-    'September',
-    'Oktober',
-    'November',
-    'Dezember',
-  ];
   function getMonthName(timestamp) {
     const date = new Date(parseInt(timestamp) * 1000);
     return monthNames[date.getMonth()];
@@ -138,10 +139,53 @@ export function formatDataMonthWise(data) {
   return result;
 }
 
+interface Item {
+  title: string;
+  data: any[];
+}
+
+export function mergeDataByTitle(array1: Item[], array2: Item[]): Item[] {
+  const mergedMap: Map<string, any[]> = new Map();
+
+  const mergeIntoMap = (array: Item[]) => {
+    array.forEach(item => {
+      if (mergedMap.has(item.title)) {
+        mergedMap.set(item.title, mergedMap.get(item.title)!.concat(item.data));
+      } else {
+        mergedMap.set(item.title, item.data);
+      }
+    });
+  };
+
+  mergeIntoMap(array1);
+  mergeIntoMap(array2);
+
+  const mergedArray: Item[] = Array.from(mergedMap, ([title, data]) => ({
+    title,
+    data,
+  }));
+
+  const last7Days = mergedArray.filter(item => item.title === 'Letzte 7 Tage');
+
+  mergedArray.sort(
+    (a, b) => monthNames.indexOf(a.title) - monthNames.indexOf(b.title),
+  );
+
+  if (last7Days.length) {
+    mergedArray.unshift({
+      title: 'Letzte 7 Tage',
+      data: last7Days,
+    });
+  }
+
+  return mergedArray;
+}
+
 export default {
   formatAmount,
   formatDate,
   generateReceiptTitle,
   formatDateAndTime,
   formatDataMonthWise,
+  mergeDataByTitle,
 };
