@@ -10,6 +10,10 @@
 		<string>AntDesign.ttf</string>
 		<string>FontAwesome5.ttf</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+ 	<string>$(PRODUCT_NAME) would like access to your photo gallery</string>
+	<key>NSCameraUsageDescription</key>
+ 	<string>$(PRODUCT_NAME) would like to use your camera</string>
 	<key>CFBundleDisplayName</key>
 	<string>Receipt</string>
 	<key>CFBundleExecutable</key>
