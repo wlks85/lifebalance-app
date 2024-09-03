@@ -56,8 +56,8 @@ const ReceiptImageModal = ({
     try {
       setLoading(true);
       const uploadResult = await receiptService.uploadReceiptImage({
-        filename: image?.assets[0]?.fileName,
-        base64: image?.assets[0]?.base64,
+        filename: image?.assets?.[0]?.fileName,
+        base64: image?.assets?.[0]?.base64,
       });
       onNext(uploadResult);
       setLoading(false);
@@ -115,11 +115,20 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   };
 
   const handleOpenCamera = async () => {
-    const result = await launchCamera({...ImageLibConfig, cameraType: 'back'});
-    setImage(result);
-    onAction?.(amount);
-    setImageVisible(true);
-    setImagePreviewModalButtonText('Use Photo');
+    try {
+      const result = await launchCamera({
+        ...ImageLibConfig,
+        cameraType: 'back',
+      });
+      setImage(result);
+      console.log(result);
+      onAction?.(amount);
+      setImageVisible(true);
+      setImagePreviewModalButtonText('Use Photo');
+    } catch (err) {
+      alert(err.message);
+      console.log('open camera error', err);
+    }
   };
 
   const handleOpenGallery = async () => {
@@ -157,6 +166,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   }, [receipt?.amount]);
   return (
     <ModalComponent
+      transparent={true}
       onClose={onClose}
       visible={visible}
       headerComponent={
@@ -171,7 +181,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
           <Text style={modalStyles.modalTitle}>Gezahlter Betrag</Text>
         </>
       }>
-      {receipt && (
+      {!!receipt && (
         <View style={modalStyles.container}>
           <View style={modalStyles.receiptDetails}>
             <ReceiptCard receipt={receipt} />
@@ -249,7 +259,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
 
             <ReceiptImageModal
               visible={imageVisible}
-              receipt={{...receipt, image: image?.assets[0]?.uri}}
+              receipt={{...receipt, image: image?.assets?.[0]?.uri}}
               onClose={() => setImageVisible(false)}
               buttonText={imagePreviewModalButtonText}
               image={image}
@@ -264,7 +274,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                 amount,
                 fid,
                 title: generateReceiptTitle(),
-                image: image?.assets[0]?.uri,
+                image: image?.assets?.[0]?.uri,
               }}
               visible={showOverviewModal}
               onClose={() => {

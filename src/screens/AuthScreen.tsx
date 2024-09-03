@@ -211,7 +211,10 @@ function FormItem({
                 secureTextEntry: true,
                 textContentType: 'password',
               }
-            : {})}
+            : {
+                secureTextEntry: false,
+                // textContentType: 'text',
+              })}
         />
         {type === 'password' && (
           <Pressable
@@ -276,8 +279,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
     backgroundColor: '#fff',
     height: 48,
-    paddingTop: 4,
-    paddingBottom: 4,
+    // paddingTop: 4,
+    // paddingBottom: 4,
     paddingLeft: 16,
     paddingRight: 16,
     borderRadius: 4,
@@ -286,12 +289,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#d7d7d7',
     position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
   },
   formInput: {
     fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
     color: '#454d66',
     fontSize: 15,
     textDecorationLine: 'none',
+    // backgroundColor:'red',
+    height: '100%',
   },
   formFocused: {
     borderColor: '#309975',

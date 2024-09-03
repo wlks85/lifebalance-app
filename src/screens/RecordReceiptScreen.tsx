@@ -167,11 +167,11 @@ const ReceiptScreen = () => {
         style={styles.addReceiptBtnContainer}
         onPress={() => openAddReceiptModal()}>
         <View style={styles.addReceiptTitle}>
-          <Icon name="plus" size={15} />
+          <IconAnt name="plus" size={25} color={'#454d66'} />
           <Text style={styles.textStyle}>Neue Dienstleistung </Text>
         </View>
         <View>
-          <Icon name="chevron-right" size={15} />
+          <IconAnt name="right" size={25} color={'#454d66'} />
         </View>
       </TouchableOpacity>
       <ListComponent
