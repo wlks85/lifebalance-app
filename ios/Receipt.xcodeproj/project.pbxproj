@@ -11,12 +11,10 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		4E8EB08A2C09032D00B24087 /* hermes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E8EB0892C09032D00B24087 /* hermes.xcframework */; };
-		4E8EB08C2C09034600B24087 /* libReact-hermes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E8EB08B2C09034600B24087 /* libReact-hermes.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		C5C1A2E7D50F26D4C8A58868 /* libPods-Receipt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CB5EF6E44ABA2A50D005413 /* libPods-Receipt.a */; };
+		C7C8AC0970844DF98362B16A /* libPods-Receipt-ReceiptTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A883FECE720C56F1C988F5 /* libPods-Receipt-ReceiptTests.a */; };
 		CA54000018A35A5235BF8260 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = BA459800A52BD4603C4E0CBD /* PrivacyInfo.xcprivacy */; };
-		D4A18847C93189E421688A0B /* libPods-Receipt-ReceiptTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F79D314F3103F37215BBD5 /* libPods-Receipt-ReceiptTests.a */; };
-		E9B95A4B775392B35E1A004E /* libPods-Receipt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81C81E86BD6223C36A88EC90 /* libPods-Receipt.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,17 +38,15 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Receipt/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Receipt/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = Receipt/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		4E8EB0892C09032D00B24087 /* hermes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = hermes.xcframework; path = "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework"; sourceTree = "<group>"; };
-		4E8EB08B2C09034600B24087 /* libReact-hermes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-hermes.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6534D8B1DAC9784A99835D43 /* Pods-Receipt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Receipt.debug.xcconfig"; path = "Target Support Files/Pods-Receipt/Pods-Receipt.debug.xcconfig"; sourceTree = "<group>"; };
+		20F058D1B436F6F6E01158FF /* Pods-Receipt-ReceiptTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Receipt-ReceiptTests.release.xcconfig"; path = "Target Support Files/Pods-Receipt-ReceiptTests/Pods-Receipt-ReceiptTests.release.xcconfig"; sourceTree = "<group>"; };
+		36537894832DA43CE6A01AC8 /* Pods-Receipt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Receipt.debug.xcconfig"; path = "Target Support Files/Pods-Receipt/Pods-Receipt.debug.xcconfig"; sourceTree = "<group>"; };
+		42D9ECE59FBA499689B461C9 /* Pods-Receipt-ReceiptTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Receipt-ReceiptTests.debug.xcconfig"; path = "Target Support Files/Pods-Receipt-ReceiptTests/Pods-Receipt-ReceiptTests.debug.xcconfig"; sourceTree = "<group>"; };
+		51A883FECE720C56F1C988F5 /* libPods-Receipt-ReceiptTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Receipt-ReceiptTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Receipt/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		81C81E86BD6223C36A88EC90 /* libPods-Receipt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Receipt.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		90B78325B6D1596DE4AB70D1 /* Pods-Receipt-ReceiptTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Receipt-ReceiptTests.release.xcconfig"; path = "Target Support Files/Pods-Receipt-ReceiptTests/Pods-Receipt-ReceiptTests.release.xcconfig"; sourceTree = "<group>"; };
+		8CB5EF6E44ABA2A50D005413 /* libPods-Receipt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Receipt.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA459800A52BD4603C4E0CBD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Receipt/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		D6F060C668827F74CDAA0B92 /* Pods-Receipt-ReceiptTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Receipt-ReceiptTests.debug.xcconfig"; path = "Target Support Files/Pods-Receipt-ReceiptTests/Pods-Receipt-ReceiptTests.debug.xcconfig"; sourceTree = "<group>"; };
-		DEE0DC44AF3416E8CBF43F73 /* Pods-Receipt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Receipt.release.xcconfig"; path = "Target Support Files/Pods-Receipt/Pods-Receipt.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F9F79D314F3103F37215BBD5 /* libPods-Receipt-ReceiptTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Receipt-ReceiptTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4794EB8050262796096808E /* Pods-Receipt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Receipt.release.xcconfig"; path = "Target Support Files/Pods-Receipt/Pods-Receipt.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4A18847C93189E421688A0B /* libPods-Receipt-ReceiptTests.a in Frameworks */,
+				C7C8AC0970844DF98362B16A /* libPods-Receipt-ReceiptTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,9 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4E8EB08C2C09034600B24087 /* libReact-hermes.a in Frameworks */,
-				4E8EB08A2C09032D00B24087 /* hermes.xcframework in Frameworks */,
-				E9B95A4B775392B35E1A004E /* libPods-Receipt.a in Frameworks */,
+				C5C1A2E7D50F26D4C8A58868 /* libPods-Receipt.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,11 +104,9 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4E8EB08B2C09034600B24087 /* libReact-hermes.a */,
-				4E8EB0892C09032D00B24087 /* hermes.xcframework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				81C81E86BD6223C36A88EC90 /* libPods-Receipt.a */,
-				F9F79D314F3103F37215BBD5 /* libPods-Receipt-ReceiptTests.a */,
+				8CB5EF6E44ABA2A50D005413 /* libPods-Receipt.a */,
+				51A883FECE720C56F1C988F5 /* libPods-Receipt-ReceiptTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -161,10 +153,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6534D8B1DAC9784A99835D43 /* Pods-Receipt.debug.xcconfig */,
-				DEE0DC44AF3416E8CBF43F73 /* Pods-Receipt.release.xcconfig */,
-				D6F060C668827F74CDAA0B92 /* Pods-Receipt-ReceiptTests.debug.xcconfig */,
-				90B78325B6D1596DE4AB70D1 /* Pods-Receipt-ReceiptTests.release.xcconfig */,
+				36537894832DA43CE6A01AC8 /* Pods-Receipt.debug.xcconfig */,
+				F4794EB8050262796096808E /* Pods-Receipt.release.xcconfig */,
+				42D9ECE59FBA499689B461C9 /* Pods-Receipt-ReceiptTests.debug.xcconfig */,
+				20F058D1B436F6F6E01158FF /* Pods-Receipt-ReceiptTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -176,11 +168,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ReceiptTests" */;
 			buildPhases = (
-				C2220ABB740A76F6639BC53D /* [CP] Check Pods Manifest.lock */,
+				D06B226E591073B2352926A5 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				FEDEBA7A14EA7040B67DA14F /* [CP] Copy Pods Resources */,
+				6124A71DBCA7D0D34A8211E4 /* [CP] Embed Pods Frameworks */,
+				4A9653CBAADD3924B98007D6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -196,12 +189,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Receipt" */;
 			buildPhases = (
-				4322FC475F63AFB57C89430C /* [CP] Check Pods Manifest.lock */,
+				168FD59C5CDFD8F54BD2A496 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				FF71E66F3A640A7EB78AE50F /* [CP] Copy Pods Resources */,
+				31C8984B613F5BF42B580C16 /* [CP] Embed Pods Frameworks */,
+				EB304DB47CEC16FAB3FFF727 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -285,7 +279,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		4322FC475F63AFB57C89430C /* [CP] Check Pods Manifest.lock */ = {
+		168FD59C5CDFD8F54BD2A496 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -307,7 +301,58 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C2220ABB740A76F6639BC53D /* [CP] Check Pods Manifest.lock */ = {
+		31C8984B613F5BF42B580C16 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Receipt/Pods-Receipt-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Receipt/Pods-Receipt-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Receipt/Pods-Receipt-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4A9653CBAADD3924B98007D6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Receipt-ReceiptTests/Pods-Receipt-ReceiptTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Receipt-ReceiptTests/Pods-Receipt-ReceiptTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Receipt-ReceiptTests/Pods-Receipt-ReceiptTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6124A71DBCA7D0D34A8211E4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Receipt-ReceiptTests/Pods-Receipt-ReceiptTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Receipt-ReceiptTests/Pods-Receipt-ReceiptTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Receipt-ReceiptTests/Pods-Receipt-ReceiptTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D06B226E591073B2352926A5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -329,24 +374,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FEDEBA7A14EA7040B67DA14F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Receipt-ReceiptTests/Pods-Receipt-ReceiptTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Receipt-ReceiptTests/Pods-Receipt-ReceiptTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Receipt-ReceiptTests/Pods-Receipt-ReceiptTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FF71E66F3A640A7EB78AE50F /* [CP] Copy Pods Resources */ = {
+		EB304DB47CEC16FAB3FFF727 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -396,7 +424,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6F060C668827F74CDAA0B92 /* Pods-Receipt-ReceiptTests.debug.xcconfig */;
+			baseConfigurationReference = 42D9ECE59FBA499689B461C9 /* Pods-Receipt-ReceiptTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -415,7 +443,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = de.lifebalanceplus.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Receipt.app/Receipt";
 			};
@@ -423,7 +451,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 90B78325B6D1596DE4AB70D1 /* Pods-Receipt-ReceiptTests.release.xcconfig */;
+			baseConfigurationReference = 20F058D1B436F6F6E01158FF /* Pods-Receipt-ReceiptTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -439,7 +467,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = de.lifebalanceplus.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Receipt.app/Receipt";
 			};
@@ -447,11 +475,15 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6534D8B1DAC9784A99835D43 /* Pods-Receipt.debug.xcconfig */;
+			baseConfigurationReference = 36537894832DA43CE6A01AC8 /* Pods-Receipt.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WXNK365Q77;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Receipt/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -464,8 +496,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = Receipt;
+				PRODUCT_BUNDLE_IDENTIFIER = de.lifebalanceplus.app;
+				PRODUCT_NAME = LifebalancePlus;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "lifebalanceplus Appstore";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -474,11 +508,16 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DEE0DC44AF3416E8CBF43F73 /* Pods-Receipt.release.xcconfig */;
+			baseConfigurationReference = F4794EB8050262796096808E /* Pods-Receipt.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WXNK365Q77;
 				INFOPLIST_FILE = Receipt/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -490,8 +529,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = Receipt;
+				PRODUCT_BUNDLE_IDENTIFIER = de.lifebalanceplus.app;
+				PRODUCT_NAME = LifebalancePlus;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "lifebalanceplus Appstore";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
