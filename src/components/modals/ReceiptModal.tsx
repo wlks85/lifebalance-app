@@ -166,6 +166,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   }, [receipt?.amount]);
   return (
     <ModalComponent
+      transparent={true}
       onClose={onClose}
       visible={visible}
       headerComponent={

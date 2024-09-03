@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {ScrollView, SafeAreaView, View, StyleSheet} from 'react-native';
+import {ScrollView, View, StyleSheet} from 'react-native';
 import FieldLabel from '../ui/FieldLabel';
 import FieldError from '../ui/FieldError';
 import Input from '../ui/Input';
@@ -86,85 +86,85 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
     }
   }, [serviceCategories, setError, setValue]);
   return (
-    <SafeAreaView style={{height: '100%'}}>
-      <ScrollView contentContainerStyle={{flexGrow: 1}}>
-        <View style={formStyle.container}>
-          <View>
-            <Controller
-              name="providerName"
-              control={control}
-              render={({field}) => (
-                <FieldLabel label={'Name des Dienstleisters'}>
-                  <FieldError error={errors.providerName?.message}>
-                    <Input
-                      inputType="text"
-                      onChange={field.onChange}
-                      onBlur={field.onBlur}
-                      value={field.value}
-                      error={!!errors.providerName?.message}
-                    />
-                  </FieldError>
-                </FieldLabel>
-              )}
-            />
+    // <SafeAreaView style={{flex: 1}}>
+    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+      <View style={formStyle.container}>
+        <View>
+          <Controller
+            name="providerName"
+            control={control}
+            render={({field}) => (
+              <FieldLabel label={'Name des Dienstleisters'}>
+                <FieldError error={errors.providerName?.message}>
+                  <Input
+                    inputType="text"
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    value={field.value}
+                    error={!!errors.providerName?.message}
+                  />
+                </FieldError>
+              </FieldLabel>
+            )}
+          />
 
-            <Controller
-              name="postCode"
-              control={control}
-              render={({field}) => (
-                <FieldLabel label={'PLZ des Dienstleisters'}>
-                  <FieldError error={errors.postCode?.message}>
-                    <Input
-                      inputType="text"
-                      onChange={field.onChange}
-                      onBlur={field.onBlur}
-                      value={field.value}
-                      error={!!errors.postCode?.message}
-                    />
-                  </FieldError>
-                </FieldLabel>
-              )}
-            />
+          <Controller
+            name="postCode"
+            control={control}
+            render={({field}) => (
+              <FieldLabel label={'PLZ des Dienstleisters'}>
+                <FieldError error={errors.postCode?.message}>
+                  <Input
+                    inputType="text"
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    value={field.value}
+                    error={!!errors.postCode?.message}
+                  />
+                </FieldError>
+              </FieldLabel>
+            )}
+          />
 
-            <ServiceCategory
-              error={errors?.serviceCategory?.message}
-              serviceCategories={serviceCategories}
-              onPress={() => setShowModal(true)}
-            />
-          </View>
-
-          {!defaultValue ? (
-            <NextButton
-              title={'Weiter'}
-              onPress={handleSubmit(handleCreateReceipt)}
-            />
-          ) : (
-            <NextButton
-              title={'Übernehmen'}
-              onPress={handleSubmit(handleUpdateService)}
-            />
-          )}
+          <ServiceCategory
+            error={errors?.serviceCategory?.message}
+            serviceCategories={serviceCategories}
+            onPress={() => setShowModal(true)}
+          />
         </View>
-        <ServiceCategoryModal
-          visible={showModal}
-          onClose={closeModal}
-          setServiceCategories={setServiceCategories}
-          services={serviceCategories}
-        />
-        <ReceiptModal
-          visible={showReceiptModal}
-          onClose={onReceiptModalClose}
-          onAction={() => {}}
-          receipt={{
-            amount: '00',
-            amount_paid: '00',
-            providerName: watch('providerName') || 'Default Name',
-            logo: 'GF',
-            postCode: watch('postCode'),
-          }}
-        />
-      </ScrollView>
-    </SafeAreaView>
+
+        {!defaultValue ? (
+          <NextButton
+            title={'Weiter'}
+            onPress={handleSubmit(handleCreateReceipt)}
+          />
+        ) : (
+          <NextButton
+            title={'Übernehmen'}
+            onPress={handleSubmit(handleUpdateService)}
+          />
+        )}
+      </View>
+      <ServiceCategoryModal
+        visible={showModal}
+        onClose={closeModal}
+        setServiceCategories={setServiceCategories}
+        services={serviceCategories}
+      />
+      <ReceiptModal
+        visible={showReceiptModal}
+        onClose={onReceiptModalClose}
+        onAction={() => {}}
+        receipt={{
+          amount: '',
+          amount_paid: '00',
+          providerName: watch('providerName') || 'Default Name',
+          logo: 'GF',
+          postCode: watch('postCode'),
+        }}
+      />
+    </ScrollView>
+    // </SafeAreaView>
   );
 };
 

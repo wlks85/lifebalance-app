@@ -1,6 +1,6 @@
 //@ts-nocheck
 import React from 'react';
-import {View, Modal, StyleSheet} from 'react-native';
+import {View, Modal, StyleSheet, SafeAreaView} from 'react-native';
 
 const ModalComponent = ({
   visible,
@@ -8,20 +8,28 @@ const ModalComponent = ({
   children,
   headerComponent,
   contentStyle = {},
+  transparent = false,
 }) => {
   const handleOnClose = () => {
     onClose();
   };
   return (
     <Modal
+      transparent={transparent}
       animationType="slide"
       visible={visible}
       onDismiss={handleOnClose}
       onRequestClose={handleOnClose}>
-      <View style={modalStyles.modalContainer}>
-        <View style={modalStyles.modalHeaderContainer}>{headerComponent}</View>
-        <View style={[modalStyles.modalContent, contentStyle]}>{children}</View>
-      </View>
+      <SafeAreaView style={{flex: 1}}>
+        <View style={modalStyles.modalContainer}>
+          <View style={modalStyles.modalHeaderContainer}>
+            {headerComponent}
+          </View>
+          <View style={[modalStyles.modalContent, contentStyle]}>
+            {children}
+          </View>
+        </View>
+      </SafeAreaView>
     </Modal>
   );
 };
