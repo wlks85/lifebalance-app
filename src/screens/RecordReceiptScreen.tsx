@@ -7,7 +7,6 @@ import {
   StyleSheet,
   SafeAreaView,
   SectionList,
-  ActivityIndicator,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
@@ -16,6 +15,7 @@ import ReceiptItem from '../components/modules/receipt/ReceiptItem';
 import ReceiptModal from '../components/modals/ReceiptModal';
 import AddReceiptModal from '../components/modals/AddReciptModal';
 import receiptService from '../services/ReceiptService';
+import AppActivityIndicator from '../components/AppActivityIndicator';
 
 interface HeaderProps {
   goBack: () => void;
@@ -74,8 +74,8 @@ const ListComponent = ({
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {isLoading && <ActivityIndicator size="large" />}
+    <SafeAreaView style={{flex: 1}}>
+      {isLoading && <AppActivityIndicator size="large" isLoading={isLoading} />}
       {!isLoading && (
         <SectionList
           onEndReachedThreshold={0.5}

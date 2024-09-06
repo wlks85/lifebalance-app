@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
   wrapper: {
     display: 'flex',
     flexGrow: 1,
-    paddingBottom: 90,
   },
 });
 
