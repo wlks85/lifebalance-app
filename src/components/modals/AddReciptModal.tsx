@@ -6,7 +6,7 @@ import AddReceiptForm from '../forms/AddReceipt';
 import {IReceipt} from '../modules/receipt/ReceiptItem';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import {ModalStyles} from '../../styles';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 interface AddReceiptModalProps {
   visible: boolean;
@@ -36,7 +36,7 @@ const AddReceiptModal = ({
             size={25}
           />
           <Text style={modalStyles.modalTitle}>
-            {defaultValue ? 'Dienstleistung bearbeiten' : 'Gezahlter Betrag'}
+            {defaultValue ? t('editService') : t('Amount paid')}
           </Text>
         </>
       }>
@@ -48,7 +48,7 @@ const AddReceiptModal = ({
         />
       </View>
     </ModalComponent>
-  )
+  );
 };
 
 export default AddReceiptModal;

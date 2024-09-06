@@ -1,5 +1,6 @@
 //@ts-nocheck
 import React from 'react';
+import {useTranslation} from 'react-i18next';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 export interface IReceipt {
@@ -17,6 +18,7 @@ interface ReceiptCardProps {
 }
 
 const ReceiptCard = ({receipt}: ReceiptCardProps) => {
+  const {t} = useTranslation();
   return (
     <TouchableOpacity style={styles.receipt} disabled={true}>
       <View style={styles.receiptLogo}>
@@ -30,7 +32,7 @@ const ReceiptCard = ({receipt}: ReceiptCardProps) => {
         </View>
         <View style={styles.receiptDateInfo}>
           <Text style={styles.date}>
-            {receipt?.postCode || '1234'}・Yoga-Kurs
+            {receipt?.postCode || '1234'}・{t('Yoga class')}
           </Text>
         </View>
       </View>

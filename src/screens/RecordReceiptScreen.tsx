@@ -16,12 +16,14 @@ import ReceiptModal from '../components/modals/ReceiptModal';
 import AddReceiptModal from '../components/modals/AddReciptModal';
 import receiptService from '../services/ReceiptService';
 import AppActivityIndicator from '../components/AppActivityIndicator';
+import {useTranslation} from 'react-i18next';
 
 interface HeaderProps {
   goBack: () => void;
 }
 
 const Header = ({goBack}: HeaderProps) => {
+  const {t} = useTranslation();
   return (
     <View style={styles.headerContainer}>
       <IconAnt
@@ -32,7 +34,7 @@ const Header = ({goBack}: HeaderProps) => {
         size={25}
       />
 
-      <Text style={styles.headerTitle}>Dienstleistung</Text>
+      <Text style={styles.headerTitle}>{t('service')}</Text>
 
       <IconAnt
         onPress={goBack}
@@ -96,6 +98,7 @@ const ListComponent = ({
 };
 
 const ReceiptScreen = () => {
+  const {t} = useTranslation();
   const [receiptData, setReceiptData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [createReceiptVisible, setCreateReceiptVisible] = useState(false);
@@ -128,12 +131,12 @@ const ReceiptScreen = () => {
       .getReceipts(0)
       .then(data => {
         setIsLoading(false);
-        setReceiptData([{title: 'Zuletzt verwendet', data: data || []}]);
+        setReceiptData([{title: t('Last used'), data: data || []}]);
       })
       .catch(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [t]);
 
   const fetchMore = async () => {
     try {
@@ -141,7 +144,7 @@ const ReceiptScreen = () => {
       if (result.length) {
         setReceiptData(preValue => [
           {
-            title: 'Zuletzt verwendet',
+            title: t('Last used'),
             data: [...preValue[0].data, ...result] || [],
           },
         ]);
@@ -167,7 +170,7 @@ const ReceiptScreen = () => {
         onPress={() => openAddReceiptModal()}>
         <View style={styles.addReceiptTitle}>
           <IconAnt name="plus" size={25} color={'#454d66'} />
-          <Text style={styles.textStyle}>Neue Dienstleistung </Text>
+          <Text style={styles.textStyle}>{t('New service')} </Text>
         </View>
         <View>
           <IconAnt name="right" size={25} color={'#454d66'} />

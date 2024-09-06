@@ -14,8 +14,10 @@ import ReceiptImageModal from '../../modals/ReceiptImageModal';
 import AddReceiptCompleted from '../../modals/AddReceiptCompletedModal';
 import receiptService from '../../../services/ReceiptService';
 import {useAuth} from '../../../providers/auth-provider';
+import {useTranslation} from 'react-i18next';
 
 const ReceiptOverview = ({receipt, onClose}) => {
+  const {t} = useTranslation();
   const [receiptInfo, setReceiptInfo] = useState(receipt);
   const [showAddReceiptModal, setShowAddReceiptModal] = useState(false);
   const [showEditAmountModal, setShowEditAmountModal] = useState(false);
@@ -43,7 +45,7 @@ const ReceiptOverview = ({receipt, onClose}) => {
       setShowCompletedModal(true);
       setLoading(false);
     } catch (err) {
-      alert(err?.message ?? 'Something went wrong');
+      alert(err?.message ?? t('Something went wrong'));
       setLoading(false);
     }
   };
@@ -51,7 +53,7 @@ const ReceiptOverview = ({receipt, onClose}) => {
     <ScrollView contentContainerStyle={{width: '100%'}}>
       <View style={styles.container}>
         <View style={styles.overview}>
-          <FieldLabel label="Dienstleistung">
+          <FieldLabel label={t('service')}>
             <ReceiptItem
               receipt={receiptInfo}
               disabled={false}
@@ -60,7 +62,7 @@ const ReceiptOverview = ({receipt, onClose}) => {
             />
           </FieldLabel>
 
-          <FieldLabel label="Betrag inkl. MwSt.">
+          <FieldLabel label={`${t('Amount including VAT')}.`}>
             <ItemCard
               item={{
                 title: receiptInfo?.amount,
@@ -73,12 +75,12 @@ const ReceiptOverview = ({receipt, onClose}) => {
             />
           </FieldLabel>
 
-          <FieldLabel label="Beleg">
+          <FieldLabel label={t('document')}>
             <ItemCard
               item={{
                 title: receiptInfo?.title ?? '123-1234567-lbBeleg',
                 logo: <Icon name="file-text-o" size={20} />,
-                subtitle: 'Foto',
+                subtitle: t('photo'),
               }}
               showEditBtn={true}
               onItemClicked={() => {}}
@@ -88,14 +90,15 @@ const ReceiptOverview = ({receipt, onClose}) => {
 
           <View>
             <Text style={styles.confirmationText}>
-              Mit der Belegeinreichung bestätige ich, dass ich die angegebene
-              Leistung persönlich in Anspruch genommen habe.
+              {t(
+                'By submitting the receipt, I confirm that I have the information provided I used the service personally.',
+              )}
             </Text>
           </View>
         </View>
 
         <NextButton
-          title={!loading ? 'Beleg jetzt einreichen' : 'Loading...'}
+          title={!loading ? t('Submit proof now') : `${t('Loading')}...`}
           onPress={handleSubmitReceipt}
           buttonStyles={{backgroundColor: '#309975'}}
           disabled={loading}

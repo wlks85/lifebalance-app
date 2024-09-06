@@ -67,7 +67,7 @@ const AddReceiptCompleted = ({visible, onClose}: AddReceiptCompletedProps) => {
           </View>
         </View>
         <NextButton
-          title="Weiteren Beleg einreichen"
+          title={t('Submit further evidence')}
           buttonStyles={{backgroundColor: '#309975'}}
           onPress={handleClose}
         />
