@@ -6,6 +6,7 @@ import AddReceiptForm from '../forms/AddReceipt';
 import {IReceipt} from '../modules/receipt/ReceiptItem';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import {ModalStyles} from '../../styles';
+import { useTranslation } from 'react-i18next';
 
 interface AddReceiptModalProps {
   visible: boolean;
@@ -19,33 +20,36 @@ const AddReceiptModal = ({
   onClose,
   onAction,
   defaultValue,
-}: AddReceiptModalProps) => (
-  <ModalComponent
-    onClose={onClose}
-    visible={visible}
-    headerComponent={
-      <>
-        <IconAnt
-          onPress={onClose}
-          style={modalStyles.headerButtons}
-          name={'arrowleft'}
-          color={'#454d66'}
-          size={25}
+}: AddReceiptModalProps) => {
+  const {t} = useTranslation();
+  return (
+    <ModalComponent
+      onClose={onClose}
+      visible={visible}
+      headerComponent={
+        <>
+          <IconAnt
+            onPress={onClose}
+            style={modalStyles.headerButtons}
+            name={'arrowleft'}
+            color={'#454d66'}
+            size={25}
+          />
+          <Text style={modalStyles.modalTitle}>
+            {defaultValue ? 'Dienstleistung bearbeiten' : 'Gezahlter Betrag'}
+          </Text>
+        </>
+      }>
+      <View style={modalStyles.container}>
+        <AddReceiptForm
+          onClose={onClose}
+          defaultValue={defaultValue}
+          onSubmit={values => onAction(values)}
         />
-        <Text style={modalStyles.modalTitle}>
-          {defaultValue ? 'Dienstleistung bearbeiten' : 'Gezahlter Betrag'}
-        </Text>
-      </>
-    }>
-    <View style={modalStyles.container}>
-      <AddReceiptForm
-        onClose={onClose}
-        defaultValue={defaultValue}
-        onSubmit={values => onAction(values)}
-      />
-    </View>
-  </ModalComponent>
-);
+      </View>
+    </ModalComponent>
+  )
+};
 
 export default AddReceiptModal;
 

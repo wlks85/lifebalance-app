@@ -7,5 +7,8 @@
     "profile": "Profile",
     "user": "Profile"
   },
-  "loadingData": "Loading data"
+  "loadingData": "Loading data",
+  "thankYouMessage": "Thank you for your receipt!",
+  "receiptReceiptMessage": "We have received your receipt and will begin processing immediately.",
+  "editService": "Edit service"
 }

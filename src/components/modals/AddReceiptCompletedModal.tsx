@@ -7,6 +7,7 @@ import NextButton from '../ui/NextButton';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import {ModalStyles} from '../../styles';
+import {useTranslation} from 'react-i18next';
 
 interface AddReceiptCompletedProps {
   visible: boolean;
@@ -15,7 +16,7 @@ interface AddReceiptCompletedProps {
 
 const AddReceiptCompleted = ({visible, onClose}: AddReceiptCompletedProps) => {
   // const navigation = useNavigation();
-  // const {t} = useTranslation();
+  const {t} = useTranslation();
   const handleClose = () => {
     onClose?.();
   };
@@ -50,7 +51,7 @@ const AddReceiptCompleted = ({visible, onClose}: AddReceiptCompletedProps) => {
             </ImageBackground>
           </View>
           <View>
-            <Text style={modalStyles.title}>Vielen Dank für Ihren Beleg!</Text>
+            <Text style={modalStyles.title}>{t('thankYouMessage')}</Text>
           </View>
           <View style={modalStyles.ticImage}>
             <ImageBackground
@@ -61,8 +62,7 @@ const AddReceiptCompleted = ({visible, onClose}: AddReceiptCompletedProps) => {
           </View>
           <View>
             <Text style={modalStyles.subTitle}>
-              Wir haben Ihren Beleg erhalten und beginnen umgehend mit der
-              Prüfung.
+              {t('receiptReceiptMessage')}
             </Text>
           </View>
         </View>

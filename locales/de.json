@@ -7,5 +7,7 @@
     "profile": "Profil",
     "user": "Profil"
   },
-  "loadingData": "Lade daten"
+  "loadingData": "Lade daten",
+  "thankYouMessage": "Vielen Dank für Ihren Beleg!",
+  "receiptReceiptMessage": "Wir haben Ihren Beleg erhalten und beginnen umgehend mit der Prüfung."
 }
