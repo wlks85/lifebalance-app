@@ -15,7 +15,6 @@ interface AddReceiptCompletedProps {
 }
 
 const AddReceiptCompleted = ({visible, onClose}: AddReceiptCompletedProps) => {
-  // const navigation = useNavigation();
   const {t} = useTranslation();
   const handleClose = () => {
     onClose?.();
@@ -40,7 +39,7 @@ const AddReceiptCompleted = ({visible, onClose}: AddReceiptCompletedProps) => {
           <View style={modalStyles.ticImage}>
             <ImageBackground
               source={require('../../assets/normal_u13.png')}
-              style={{width: '96', height: '82'}}
+              style={{width: 96, height: 83}}
               resizeMode="contain">
               <Icon
                 style={modalStyles.ticIcon}
@@ -56,7 +55,7 @@ const AddReceiptCompleted = ({visible, onClose}: AddReceiptCompletedProps) => {
           <View style={modalStyles.ticImage}>
             <ImageBackground
               source={require('../../assets/normal_u2.png')}
-              style={{width: '66', height: '12'}}
+              style={{width: 66, height: 12}}
               resizeMode="contain"
             />
           </View>

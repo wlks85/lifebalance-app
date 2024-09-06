@@ -74,23 +74,25 @@ const ReceiptImageModal = ({
       visible={visible}
       onClose={onClose}
       contentStyle={{paddingHorizontal: 0}}>
-      {receipt && (
+      {!!receipt && (
         <>
           {loading && <AppActivityIndicator isLoading={loading} size="large" />}
-          <View style={{flex: 1, gap: 10}}>
-            <Image
-              style={{flex: 1, width: '100%', height: '100%'}}
-              src={receipt?.image}
-            />
+          {!loading && (
+            <View style={{flex: 1, gap: 10}}>
+              <Image
+                style={{flex: 1, width: '100%', height: '100%'}}
+                src={receipt?.image}
+              />
 
-            <View style={{padding: 25}}>
-              <TouchableOpacity
-                onPress={handleBtnClick}
-                style={{...modalStyles.furtherBtn}}>
-                <Text style={modalStyles.btnText}>{buttonText}</Text>
-              </TouchableOpacity>
+              <View style={{padding: 25}}>
+                <TouchableOpacity
+                  onPress={handleBtnClick}
+                  style={{...modalStyles.furtherBtn}}>
+                  <Text style={modalStyles.btnText}>{buttonText}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          )}
         </>
       )}
     </ModalComponent>
@@ -140,24 +142,24 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
       if (!result?.assets?.length) {
         return;
       }
-      setImage(result);
-      onAction?.(amount);
-      // const uploadResult = await receiptService.uploadReceiptImage({
-      //   filename: result?.assets[0]?.fileName,
-      //   base64: result?.assets[0]?.base64,
-      // });
-      // setFid(uploadResult?.fid); // TO-DO: change it to actual property
-      // setShowOverviewModal(true);
-      setImagePreviewModalButtonText('Choose Photo');
-      setImageVisible(true);
+      setShowPhotoModal(false);
+      setTimeout(() => {
+        setImage(result);
+        onAction?.(amount);
+        setImagePreviewModalButtonText('Choose Photo');
+        setImageVisible(true);
+      }, 500);
     } catch (err) {
       alert(err.message);
     }
   };
 
   const onNext = (step, data = null) => {
+    setImageVisible(false);
     if (step === 'preview') {
-      setShowOverviewModal(true);
+      setTimeout(() => {
+        setShowOverviewModal(true);
+      }, 100);
       if (data) {
         setFid(data?.fid);
       }
@@ -232,7 +234,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
             <Modal
               visible={showPhotoModal}
               transparent={true}
-              onDismiss={() => setImageVisible(false)}
+              // onDismiss={() => setImageVisible(false)}
               animationType="slide">
               <Pressable
                 style={{backgroundColor: 'rgba(0, 0, 0, 0.15)', flex: 1}}

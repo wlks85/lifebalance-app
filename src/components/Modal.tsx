@@ -38,7 +38,7 @@ export default ModalComponent;
 
 const modalStyles = StyleSheet.create({
   modalContainer: {
-    height: '105%',
+    flex: 1,
     backgroundColor: '#f8f6f4',
     paddingHorizontal: 25,
   },

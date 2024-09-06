@@ -28,10 +28,7 @@ const ReceiptOverview = ({receipt, onClose}) => {
 
   const onReceiptAdditionCompleted = () => {
     setShowCompletedModal(false);
-    setShowAddReceiptModal(false);
-    setShowEditAmountModal(false);
-    setShowReceiptImageModal(false);
-    onClose();
+    setTimeout(() => onClose(), 100);
   };
 
   const handleSubmitReceipt = async () => {
@@ -43,6 +40,9 @@ const ReceiptOverview = ({receipt, onClose}) => {
         iban: userDetails?.field_bank_iban.und[0]?.value,
       });
       setShowCompletedModal(true);
+      setShowAddReceiptModal(false);
+      setShowEditAmountModal(false);
+      setShowReceiptImageModal(false);
       setLoading(false);
     } catch (err) {
       alert(err?.message ?? t('Something went wrong'));
