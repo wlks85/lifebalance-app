@@ -7,10 +7,10 @@ export const ModalStyles = StyleSheet.create({
     fontStyle: 'normal',
   },
   modalTitle: {
-    width: '100%',
     fontSize: 24,
     color: '#454d66',
     fontWeight: '700',
     textAlign: 'center',
+    flex: 1,
   },
 });

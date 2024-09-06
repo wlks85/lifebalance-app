@@ -40,6 +40,7 @@ const modalStyles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     backgroundColor: '#f8f6f4',
+    paddingHorizontal: 25,
   },
   modalHeaderContainer: {
     display: 'flex',
@@ -47,14 +48,12 @@ const modalStyles = StyleSheet.create({
     alignItems: 'center',
     height: 80,
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans"',
-    paddingHorizontal: 25,
   },
   modalContent: {
     flex: 1,
     width: '100%',
     height: '100%',
     borderRadius: 0,
-    paddingHorizontal: 25,
   },
   modalTitle: {
     fontSize: 24,

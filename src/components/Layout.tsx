@@ -32,7 +32,7 @@ const Layout = ({
           <View style={styles.headerContainer}>
             {!noBackButton && (
               <>
-                <View style={styles.backButtonContainer}>
+                <View>
                   <Icon
                     onPress={goBack}
                     style={styles.backButton}
@@ -61,22 +61,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'rgba(255,255,255,0)',
-    paddingLeft: 25,
-    paddingRight: 25,
+    paddingHorizontal: 25,
   },
   headerContainer: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
     height: 80,
     fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans"',
-    paddingTop: 15,
-  },
-  backButtonContainer: {
-    height: 48,
-    justifyContent: 'center',
-    width: '20%',
-    display: 'flex',
-    flex: 1,
   },
   backButton: {
     fontWeight: '100',
@@ -87,7 +79,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     height: 48,
     justifyContent: 'center',
-    flex: 5,
+    flex: 1,
   },
   header: {
     textAlign: 'center',

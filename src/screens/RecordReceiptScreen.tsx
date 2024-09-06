@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import ReceiptItem from '../components/modules/receipt/ReceiptItem';
 import ReceiptModal from '../components/modals/ReceiptModal';

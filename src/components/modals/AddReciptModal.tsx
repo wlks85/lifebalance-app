@@ -55,14 +55,6 @@ const modalStyles = StyleSheet.create({
     justifyContent: 'space-between',
     flex: 1,
   },
-  modalTitle: {
-    textAlign: 'center',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans",',
-    color: '#454d66',
-    fontWeight: '700',
-    fontSize: 22,
-  },
-
   receiptDetails: {
     display: 'flex',
     flexDirection: 'column',

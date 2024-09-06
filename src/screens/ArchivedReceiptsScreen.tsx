@@ -23,22 +23,24 @@ import ReceiptItem from '../components/modules/receipt/ReceiptItem';
 
 const ModalComponent = ({visible, onClose, children}) => (
   <Modal animationType="slide" visible={visible} onRequestClose={onClose}>
-    <View style={modalStyles.modalContainer}>
-      <View style={modalStyles.modalHeader}>
-        <AntIcon
-          name="close"
-          onPress={onClose}
-          style={modalStyles.modalCloseButton}
-        />
-      </View>
-      <View style={modalStyles.modalContent}>
-        {children}
-        {/* <View style={{height: 30,width: '100%',
+    <SafeAreaView style={{flex: 1}}>
+      <View style={modalStyles.modalContainer}>
+        <View style={modalStyles.modalHeader}>
+          <AntIcon
+            name="close"
+            onPress={onClose}
+            style={modalStyles.modalCloseButton}
+          />
+        </View>
+        <View style={modalStyles.modalContent}>
+          {children}
+          {/* <View style={{height: 30,width: '100%',
           paddingBottom: 20,
           marginBottom: 100,
         }}></View> */}
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   </Modal>
 );
 
