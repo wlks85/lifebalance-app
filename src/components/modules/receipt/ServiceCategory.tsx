@@ -20,7 +20,7 @@ const ServiceCategory = ({
   const {t} = useTranslation();
   return (
     <Pressable onPress={onPress}>
-      <FieldLabel label={t('Name of the service provider')}>
+      <FieldLabel label={t('Service category')}>
         <FieldError error={error}>
           <View
             style={[

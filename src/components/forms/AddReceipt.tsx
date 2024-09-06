@@ -12,6 +12,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import ServiceCategoryModal from '../modals/ServiceCatModal';
 import ReceiptModal from '../modals/ReceiptModal';
 import {IReceipt} from '../modules/receipt/ReceiptItem';
+import {useTranslation} from 'react-i18next';
 
 interface AddReceiptFormProps {
   onClose: () => void;
@@ -39,7 +40,7 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
   const [showModal, setShowModal] = useState(false);
   const [showReceiptModal, setShowReceiptModal] = useState(false);
   const [serviceCategories, setServiceCategories] = useState([]);
-  // const [receipt, setReceipt] = useState<Partial<IReceipt>>(null);
+  const {t} = useTranslation();
   const {
     formState: {errors},
     handleSubmit,
@@ -86,7 +87,6 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
     }
   }, [serviceCategories, setError, setValue]);
   return (
-    // <SafeAreaView style={{flex: 1}}>
     <ScrollView contentContainerStyle={{flexGrow: 1}}>
       <View style={formStyle.container}>
         <View>
@@ -94,7 +94,7 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
             name="providerName"
             control={control}
             render={({field}) => (
-              <FieldLabel label={'Name des Dienstleisters'}>
+              <FieldLabel label={t('Name of the service provider')}>
                 <FieldError error={errors.providerName?.message}>
                   <Input
                     inputType="text"
@@ -112,7 +112,7 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
             name="postCode"
             control={control}
             render={({field}) => (
-              <FieldLabel label={'PLZ des Dienstleisters'}>
+              <FieldLabel label={t('Postal code of the service provider')}>
                 <FieldError error={errors.postCode?.message}>
                   <Input
                     inputType="text"
@@ -135,12 +135,12 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
 
         {!defaultValue ? (
           <NextButton
-            title={'Weiter'}
+            title={t('Further')}
             onPress={handleSubmit(handleCreateReceipt)}
           />
         ) : (
           <NextButton
-            title={'Übernehmen'}
+            title={t('Take over')}
             onPress={handleSubmit(handleUpdateService)}
           />
         )}
@@ -164,7 +164,6 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
         }}
       />
     </ScrollView>
-    // </SafeAreaView>
   );
 };
 
