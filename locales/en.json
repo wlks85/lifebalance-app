@@ -6,5 +6,6 @@
     "archive": "Archive",
     "profile": "Profile",
     "user": "Profile"
-  }
+  },
+  "loadingData": "Loading data"
 }

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useTransition} from 'react';
+import {useTranslation} from 'react-i18next';
 import {ActivityIndicator, Text, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 
@@ -20,11 +21,12 @@ const styles = StyleSheet.create({
 });
 
 const AppActivityIndicator = ({isLoading, size}) => {
+  const {t} = useTranslation();
   if (isLoading) {
     return (
       <View style={styles.loading}>
         <ActivityIndicator size={size} />
-        <Text style={styles.loadingMessage}>Loading data ...</Text>
+        <Text style={styles.loadingMessage}>{t('loadingData')} ...</Text>
       </View>
     );
   } else {
