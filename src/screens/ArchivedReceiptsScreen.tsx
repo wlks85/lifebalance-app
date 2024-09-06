@@ -10,7 +10,6 @@ import {
   SectionList,
   Modal,
   Image,
-  ActivityIndicator,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
@@ -20,6 +19,7 @@ import FAIcon from 'react-native-vector-icons/FontAwesome';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import {ReceiptService} from '../services';
 import ReceiptItem from '../components/modules/receipt/ReceiptItem';
+import AppActivityIndicator from '../components/AppActivityIndicator';
 
 const ModalComponent = ({visible, onClose, children}) => (
   <Modal animationType="slide" visible={visible} onRequestClose={onClose}>
@@ -421,8 +421,8 @@ const ListComponent = ({data = [], onEndReached, isLoading}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {isLoading && <ActivityIndicator size="large" />}
+    <SafeAreaView style={{flex: 1}}>
+      {isLoading && <AppActivityIndicator isLoading={isLoading} size="large" />}
       {!isLoading && (
         <SectionList
           onEndReachedThreshold={0.5}
@@ -490,13 +490,11 @@ const ArchivedReceiptsScreen = () => {
 
   return (
     <Layout title="Belagarchiv">
-      <SafeAreaView style={styles.container}>
-        <ListComponent
-          data={receipts || []}
-          onEndReached={fetchMore}
-          isLoading={isLoading}
-        />
-      </SafeAreaView>
+      <ListComponent
+        data={receipts || []}
+        onEndReached={fetchMore}
+        isLoading={isLoading}
+      />
     </Layout>
   );
 };
