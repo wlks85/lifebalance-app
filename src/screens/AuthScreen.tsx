@@ -9,13 +9,13 @@ import {
   TextInput,
   Pressable,
   Linking,
-  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useAuth} from '../providers/auth-provider';
 import userService from '../services/UserService';
+import {useTranslation} from 'react-i18next';
 
 const formSchema = z.object({
   username: z.string(),
@@ -25,6 +25,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
+  const {t} = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const {setIsLoggedIn, setUserDetails} = useAuth();
@@ -61,15 +62,15 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>
-          {mode === 'login' && <>Login</>}
-          {mode === 'forgot' && <>Forgot Password?</>}
-          {mode === 'register' && <>Register</>}
+          {mode === 'login' && <>{t('Login')}</>}
+          {mode === 'forgot' && <>{t('Forgot Password')}?</>}
+          {mode === 'register' && <>{t('Register')}</>}
         </Text>
       </View>
 
       <View style={styles.form}>
         {mode === 'forgot' ? (
-          <FormItem value="" onChange={() => {}} label="Email" />
+          <FormItem value="" onChange={() => {}} label={t('Email')} />
         ) : (
           <>
             <Controller
@@ -79,7 +80,7 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
                 <FormItem
                   label={
                     <View style={styles.formLabelHeader}>
-                      <Text style={styles.formLabel}>Username</Text>
+                      <Text style={styles.formLabel}>{t('Username')}</Text>
 
                       {mode === 'login' && (
                         <Text
@@ -88,7 +89,7 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
                             await Linking.openURL(url);
                           }}
                           style={[styles.formLabel, styles.formLabelPrimary]}>
-                          Forgot?
+                          {t('Forgot')}?
                         </Text>
                       )}
                     </View>
@@ -106,7 +107,7 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
               control={form.control}
               render={({field}) => (
                 <FormItem
-                  label="Password"
+                  label={t('Password')}
                   type="password"
                   error={form.formState.errors.password?.message}
                   onChange={field.onChange}
@@ -127,9 +128,9 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
                 'Loading...'
               ) : (
                 <>
-                  {mode === 'login' && <>Login</>}
-                  {mode === 'forgot' && <>Send</>}
-                  {mode === 'register' && <>Register</>}
+                  {mode === 'login' && <>{t('Login')}</>}
+                  {mode === 'forgot' && <>{t('Send')}</>}
+                  {mode === 'register' && <>{t('Register')}</>}
                 </>
               )}
             </>
@@ -150,7 +151,7 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
           )}
           {mode !== 'forgot' && (
             <Text style={styles.formInfoText}>
-              Sie haben noch kein lifebalancePlus-Konto?
+              {t("Don't have a lifebalancePlus account yet")}?
             </Text>
           )}
           {mode === 'login' && (
@@ -159,7 +160,7 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
               onPress={() =>
                 Linking.openURL('https://w3.lbplus.de/?q=user/register')
               }>
-              Registrieren Sie sich hier …
+              {t('Register here')}
             </Text>
           )}
           {mode === 'register' && (
@@ -168,14 +169,14 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
               onPress={() =>
                 Linking.openURL('https://w3.lbplus.de/?q=user/register')
               }>
-              Registrieren Sie sich hier …
+              {t('Register here')}
             </Text>
           )}
           {mode === 'forgot' && (
             <Text
               style={[styles.formInfoText, styles.formLabelPrimary]}
               onPress={() => setMode('login')}>
-              Back to Login
+              {t('Back to Login')}
             </Text>
           )}
         </View>

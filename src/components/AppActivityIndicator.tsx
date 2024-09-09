@@ -1,27 +1,32 @@
 import React from 'react';
-import {ActivityIndicator, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
+import {ActivityIndicator, Text, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   loading: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'black',
+    gap: 20,
+    flexGrow: 1,
     zIndex: 1,
     opacity: 0.5,
+  },
+  loadingMessage: {
+    color: '#000',
+    fontWeight: 500,
+    fontSize: 18,
   },
 });
 
 const AppActivityIndicator = ({isLoading, size}) => {
+  const {t} = useTranslation();
   if (isLoading) {
     return (
       <View style={styles.loading}>
         <ActivityIndicator size={size} />
+        <Text style={styles.loadingMessage}>{t('loadingData')} ...</Text>
       </View>
     );
   } else {

@@ -75,6 +75,7 @@ const RenderBalance = (userDetails: any) => {
 
 const HomeScreen = () => {
   const {userDetails} = useAuth();
+  const {t} = useTranslation();
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView style={styles.container}>
@@ -126,7 +127,7 @@ const HomeScreen = () => {
                   fontWeight: 700,
                   fontFamily: 'serif',
                 }}>
-                {userDetails?.name?.split('@')?.[0] || 'Not Found'}
+                {userDetails?.name?.split('@')?.[0] || t('Not Found')}
               </Text>
             </View>
           </View>

@@ -8,6 +8,7 @@ import NextButton from '../ui/NextButton';
 import {ReceiptService} from '../../services';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import {ModalStyles} from '../../styles';
+import {useTranslation} from 'react-i18next';
 interface IServiceCategory {
   id: number;
   title: string;
@@ -27,6 +28,7 @@ const ServiceCategoryModal = ({
   setServiceCategories,
   services,
 }: ServiceCategoryModalProps) => {
+  const {t} = useTranslation();
   const [categories, setCategories] = useState([]);
 
   const handleAddService = srvs => {
@@ -55,7 +57,7 @@ const ServiceCategoryModal = ({
             color={'#454d66'}
             size={25}
           />
-          <Text style={modalStyles.modalTitle}>Kategorie wählen</Text>
+          <Text style={modalStyles.modalTitle}>{t('Select category')}</Text>
         </>
       }>
       <View style={modalStyles.container}>

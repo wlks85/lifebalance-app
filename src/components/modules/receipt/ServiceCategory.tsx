@@ -4,6 +4,7 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import FieldLabel from '../../ui/FieldLabel';
 import FieldError from '../../ui/FieldError';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useTranslation} from 'react-i18next';
 
 interface ServiceCategoryProps {
   onPress: () => void;
@@ -16,9 +17,10 @@ const ServiceCategory = ({
   serviceCategories,
   error,
 }: ServiceCategoryProps) => {
+  const {t} = useTranslation();
   return (
     <Pressable onPress={onPress}>
-      <FieldLabel label={'Name des Dienstleisters'}>
+      <FieldLabel label={t('Service category')}>
         <FieldError error={error}>
           <View
             style={[
@@ -26,7 +28,7 @@ const ServiceCategory = ({
               error && {borderColor: 'red', borderWidth: 2},
             ]}>
             <Text style={[styles.catText, error && {color: 'red'}]}>
-              {serviceCategories?.[0]?.title ?? 'Bitte wählen'} …
+              {serviceCategories?.[0]?.title ?? t('Please choose')} …
             </Text>
             <Icon name="chevron-right" size={20} color={error && 'red'} />
           </View>

@@ -3,6 +3,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import ModalComponent from '../Modal';
+import {useTranslation} from 'react-i18next';
 
 interface EditAmountModalProps {
   image: string;
@@ -12,6 +13,7 @@ interface EditAmountModalProps {
 }
 
 const ReceiptImageModal = ({image, visible, onClose}: EditAmountModalProps) => {
+  const {t} = useTranslation();
   return (
     <ModalComponent
       onClose={onClose}
@@ -23,7 +25,7 @@ const ReceiptImageModal = ({image, visible, onClose}: EditAmountModalProps) => {
               x
             </Text>
           </View>
-          <Text style={modalStyles.modalTitle}>Betrag bearbeiten</Text>
+          <Text style={modalStyles.modalTitle}>{t('Edit amount')}</Text>
         </View>
       }
       contentStyle={{paddingHorizontal: 0}}>
