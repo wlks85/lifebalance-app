@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AddReceiptModal from '../../modals/AddReciptModal';
 import receiptService from '../../../services/ReceiptService';
 import {formatAmount} from '../../../utils';
+import {useTranslation} from 'react-i18next';
 
 export interface IReceipt {
   title?: string;
@@ -19,13 +20,18 @@ export interface IReceipt {
 }
 
 const ReceiptStatus = ({status, amount}) => {
+  const {t} = useTranslation();
   if (status === '0') {
-    return <Text style={{color: 'green'}}>{amount} erstattet</Text>;
+    return (
+      <Text style={{color: 'green'}}>
+        {amount} {t('reimbursed')}
+      </Text>
+    );
   }
   if (status === '1') {
-    return <Text style={{color: 'red'}}>Abgelehnt</Text>;
+    return <Text style={{color: 'red'}}>{t('Rejected')}</Text>;
   }
-  return <Text>Wird geprüft …</Text>;
+  return <Text>{t('Is checked')} …</Text>;
 };
 
 interface ReceiptItemProps {
@@ -45,6 +51,7 @@ const ReceiptItem = ({
   onEditBtnPress,
   showAmount,
 }: ReceiptItemProps) => {
+  const {t} = useTranslation();
   const [showAddReceiptModal, setShowAddReceiptModal] = useState(false);
   const [receiptDetails, setReceiptDetails] = useState(receipt);
   const onEditBtnPressHandler = () => {
@@ -94,7 +101,7 @@ const ReceiptItem = ({
         <View style={styles.receiptDateInfo}>
           {!showAmount ? (
             <Text style={styles.date}>
-              {receiptDetails?.postCode || '1234'}・Yoga-Kurs
+              {receiptDetails?.postCode || '1234'}・{t('Yoga-Kurs')}
             </Text>
           ) : (
             <Text style={styles.date}>

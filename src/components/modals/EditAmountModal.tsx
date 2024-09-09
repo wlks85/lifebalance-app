@@ -6,6 +6,7 @@ import {IReceipt} from '../modules/receipt/ReceiptCard';
 import {useAuth} from '../../providers/auth-provider';
 import {ModalStyles} from '../../styles';
 import IconAnt from 'react-native-vector-icons/AntDesign';
+import {useTranslation} from 'react-i18next';
 
 interface EditAmountModalProps {
   receipt: Partial<IReceipt>;
@@ -22,6 +23,7 @@ const EditAmountModal = ({
 }: EditAmountModalProps) => {
   const [amount, setAmount] = useState('0,00 €');
   const {userDetails} = useAuth();
+  const {t} = useTranslation();
 
   const handleEditAmount = () => {
     onAction?.(Number(amount));
@@ -44,7 +46,7 @@ const EditAmountModal = ({
             color={'#454d66'}
             size={25}
           />
-          <Text style={modalStyles.modalTitle}>Betrag bearbeiten</Text>
+          <Text style={modalStyles.modalTitle}>{t('Edit amount')}</Text>
         </>
       }>
       {receipt && (
@@ -53,7 +55,7 @@ const EditAmountModal = ({
             {/* <ReceiptItem receipt={receipt} disabled={true} /> */}
             <View>
               <Text style={modalStyles.title}>
-                Betrag des Belegs (inkl. MwSt.)
+                {t('Amount of the receipt')} ({t('VAT included')}.)
               </Text>
             </View>
             <View>
@@ -69,13 +71,13 @@ const EditAmountModal = ({
             <View style={modalStyles.amountsSection}>
               <View style={modalStyles.amountInfo}>
                 <Text style={modalStyles.amountInfoText}>
-                  Erstatteter Betrag:
+                  {t('Refunded amount')}:
                 </Text>
                 <Text style={modalStyles.refundAmount}>{amount} €</Text>
               </View>
               <View style={modalStyles.amountInfo}>
                 <Text style={modalStyles.amountInfoText}>
-                  Aktueller Kontostand:
+                  {t('Current account balance')}:
                 </Text>
                 <Text style={modalStyles.currentBalance}>
                   {userDetails?.field_balance_current?.und[0]?.value} €
@@ -87,7 +89,7 @@ const EditAmountModal = ({
             <TouchableOpacity
               onPress={handleEditAmount}
               style={modalStyles.furtherBtn}>
-              <Text style={modalStyles.btnText}>Übernehmen</Text>
+              <Text style={modalStyles.btnText}>{t('Take over')}</Text>
             </TouchableOpacity>
           </View>
         </View>

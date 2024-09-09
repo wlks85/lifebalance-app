@@ -25,8 +25,10 @@ import {useAuth} from '../../providers/auth-provider';
 import {generateReceiptTitle} from '../../utils';
 import AppActivityIndicator from '../AppActivityIndicator';
 import {ModalStyles} from '../../styles';
+import {useTranslation} from 'react-i18next';
 
 const ReceiptModalHeader = ({onClose}) => {
+  const {t} = useTranslation();
   return (
     <>
       <IconAnt
@@ -36,7 +38,7 @@ const ReceiptModalHeader = ({onClose}) => {
         color={'#454d66'}
         size={25}
       />
-      <Text style={modalStyles.modalTitle}>Qualität überprüfen</Text>
+      <Text style={modalStyles.modalTitle}>{t('Check quality')}</Text>
     </>
   );
 };
@@ -72,23 +74,25 @@ const ReceiptImageModal = ({
       visible={visible}
       onClose={onClose}
       contentStyle={{paddingHorizontal: 0}}>
-      {receipt && (
+      {!!receipt && (
         <>
           {loading && <AppActivityIndicator isLoading={loading} size="large" />}
-          <View style={{flex: 1, gap: 10}}>
-            <Image
-              style={{flex: 1, width: '100%', height: '100%'}}
-              src={receipt?.image}
-            />
+          {!loading && (
+            <View style={{flex: 1, gap: 10}}>
+              <Image
+                style={{flex: 1, width: '100%', height: '100%'}}
+                src={receipt?.image}
+              />
 
-            <View style={{padding: 25}}>
-              <TouchableOpacity
-                onPress={handleBtnClick}
-                style={{...modalStyles.furtherBtn}}>
-                <Text style={modalStyles.btnText}>{buttonText}</Text>
-              </TouchableOpacity>
+              <View style={{padding: 25}}>
+                <TouchableOpacity
+                  onPress={handleBtnClick}
+                  style={{...modalStyles.furtherBtn}}>
+                  <Text style={modalStyles.btnText}>{buttonText}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          )}
         </>
       )}
     </ModalComponent>
@@ -96,6 +100,7 @@ const ReceiptImageModal = ({
 };
 
 const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
+  const {t} = useTranslation();
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [showOverviewModal, setShowOverviewModal] = useState(false);
   const [image, setImage] = useState(null);
@@ -137,24 +142,24 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
       if (!result?.assets?.length) {
         return;
       }
-      setImage(result);
-      onAction?.(amount);
-      // const uploadResult = await receiptService.uploadReceiptImage({
-      //   filename: result?.assets[0]?.fileName,
-      //   base64: result?.assets[0]?.base64,
-      // });
-      // setFid(uploadResult?.fid); // TO-DO: change it to actual property
-      // setShowOverviewModal(true);
-      setImagePreviewModalButtonText('Choose Photo');
-      setImageVisible(true);
+      setShowPhotoModal(false);
+      setTimeout(() => {
+        setImage(result);
+        onAction?.(amount);
+        setImagePreviewModalButtonText('Choose Photo');
+        setImageVisible(true);
+      }, 500);
     } catch (err) {
       alert(err.message);
     }
   };
 
   const onNext = (step, data = null) => {
+    setImageVisible(false);
     if (step === 'preview') {
-      setShowOverviewModal(true);
+      setTimeout(() => {
+        setShowOverviewModal(true);
+      }, 100);
       if (data) {
         setFid(data?.fid);
       }
@@ -178,7 +183,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
             color={'#454d66'}
             size={25}
           />
-          <Text style={modalStyles.modalTitle}>Gezahlter Betrag</Text>
+          <Text style={modalStyles.modalTitle}>{t('Amount paid')}</Text>
         </>
       }>
       {!!receipt && (
@@ -187,7 +192,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
             <ReceiptCard receipt={receipt} />
             <View>
               <Text style={modalStyles.title}>
-                Betrag des Belegs (inkl. MwSt.)
+                {t('Amount of the receipt')} ({t('VAT included')}.)
               </Text>
             </View>
             <View>
@@ -203,7 +208,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
             <View style={modalStyles.amountsSection}>
               <View style={modalStyles.amountInfo}>
                 <Text style={modalStyles.amountInfoText}>
-                  Erstatteter Betrag:
+                  {t('Refunded amount')}:
                 </Text>
                 <Text style={modalStyles.refundAmount}>
                   {amount ? `${amount} €` : '0,00 €'}
@@ -211,7 +216,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               </View>
               <View style={modalStyles.amountInfo}>
                 <Text style={modalStyles.amountInfoText}>
-                  Aktueller Kontostand:
+                  {t('Current account balance')}:
                 </Text>
                 <Text style={modalStyles.currentBalance}>
                   {userDetails?.field_balance_current?.und[0]?.value} €
@@ -223,13 +228,13 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
             <TouchableOpacity
               onPress={handleFurther}
               style={modalStyles.furtherBtn}>
-              <Text style={modalStyles.btnText}>Weiter</Text>
+              <Text style={modalStyles.btnText}>{t('Further')}</Text>
             </TouchableOpacity>
 
             <Modal
               visible={showPhotoModal}
               transparent={true}
-              onDismiss={() => setImageVisible(false)}
+              // onDismiss={() => setImageVisible(false)}
               animationType="slide">
               <Pressable
                 style={{backgroundColor: 'rgba(0, 0, 0, 0.15)', flex: 1}}
@@ -240,7 +245,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                       style={modalStyles.takeOrUploadPhotoBtn}
                       onPress={handleOpenCamera}>
                       <Text style={modalStyles.photoBtnTitle}>
-                        Beleg fotografieren
+                        {t('Take a photo of the receipt')}
                       </Text>
                       <Icon name="camera" size={25} />
                     </TouchableOpacity>
@@ -248,7 +253,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                       style={modalStyles.takeOrUploadPhotoBtn}
                       onPress={handleOpenGallery}>
                       <Text style={modalStyles.photoBtnTitle}>
-                        Beleg hochladen
+                        {t('Upload receipt')}
                       </Text>
                       <IconAnt name="upload" size={25} />
                     </TouchableOpacity>

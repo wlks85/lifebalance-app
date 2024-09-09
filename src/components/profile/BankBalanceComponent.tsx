@@ -22,7 +22,7 @@ const BankBalance = ({user, hasNavigation = true}: any) => {
       <View style={styles.balanceCard}>
         <View style={styles.balanceHeader}>
           <View>
-            <Text style={styles.cardTitle}>Kontostand</Text>
+            <Text style={styles.cardTitle}>{t('Account balance')}</Text>
           </View>
           <View>
             <Icon name="credit-card" size={30} color={'#ffffff'} />
@@ -37,7 +37,7 @@ const BankBalance = ({user, hasNavigation = true}: any) => {
     <View style={styles.balanceCard}>
       <View style={styles.balanceHeader}>
         <View>
-          <Text style={styles.cardTitle}>Kontostand</Text>
+          <Text style={styles.cardTitle}>{t('Account balance')}</Text>
         </View>
         <View>
           <Icon name="credit-card" size={30} color={'#ffffff'} />

@@ -10,7 +10,6 @@ import {
   SectionList,
   Modal,
   Image,
-  ActivityIndicator,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
@@ -20,25 +19,29 @@ import FAIcon from 'react-native-vector-icons/FontAwesome';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import {ReceiptService} from '../services';
 import ReceiptItem from '../components/modules/receipt/ReceiptItem';
+import AppActivityIndicator from '../components/AppActivityIndicator';
+import {useTranslation} from 'react-i18next';
 
 const ModalComponent = ({visible, onClose, children}) => (
   <Modal animationType="slide" visible={visible} onRequestClose={onClose}>
-    <View style={modalStyles.modalContainer}>
-      <View style={modalStyles.modalHeader}>
-        <AntIcon
-          name="close"
-          onPress={onClose}
-          style={modalStyles.modalCloseButton}
-        />
-      </View>
-      <View style={modalStyles.modalContent}>
-        {children}
-        {/* <View style={{height: 30,width: '100%',
+    <SafeAreaView style={{flex: 1}}>
+      <View style={modalStyles.modalContainer}>
+        <View style={modalStyles.modalHeader}>
+          <AntIcon
+            name="close"
+            onPress={onClose}
+            style={modalStyles.modalCloseButton}
+          />
+        </View>
+        <View style={modalStyles.modalContent}>
+          {children}
+          {/* <View style={{height: 30,width: '100%',
           paddingBottom: 20,
           marginBottom: 100,
         }}></View> */}
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   </Modal>
 );
 
@@ -58,6 +61,7 @@ const ReceiptImageModal = ({receipt, visible, onClose}) => (
 );
 
 const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
+  const {t} = useTranslation();
   return (
     <ModalComponent onClose={onClose} visible={visible}>
       {receipt && (
@@ -75,7 +79,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               </View>
               <View style={modalStyles.cardItemContent}>
                 <Text style={modalStyles.receiptDetailsItemLabel}>
-                  Erstatteter Betrag
+                  {t('Refunded amount')}
                 </Text>
                 {receipt?.status === '0' && (
                   <Text
@@ -93,14 +97,14 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                         modalStyles.receiptDetailsItemValue,
                         {color: '#a9040e'},
                       ]}>
-                      Abgelehnt
+                      {t('Rejected')}
                     </Text>
                     <Icon color="#454d66" name="question-circle" size={15} />
                   </View>
                 )}
                 {receipt?.status === '2' && (
                   <Text style={[modalStyles.receiptDetailsItemValue]}>
-                    In Prüfung
+                    {t('Under examination')}
                   </Text>
                 )}
               </View>
@@ -112,7 +116,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               </View>
               <View style={modalStyles.cardItemContent}>
                 <Text style={modalStyles.receiptDetailsItemLabel}>
-                  Eingereicht
+                  {t('Submitted')}
                 </Text>
                 <Text style={modalStyles.receiptDetailsItemValue}>
                   {formatDate(receipt?.date ? receipt?.date : new Date())}
@@ -126,7 +130,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               </View>
               <View style={modalStyles.cardItemContent}>
                 <Text style={modalStyles.receiptDetailsItemLabel}>
-                  PLZ des Dienstleisters
+                  {t('Postal code of the service provider')}
                 </Text>
                 <Text style={modalStyles.receiptDetailsItemValue}>
                   {receipt?.postCode}
@@ -140,10 +144,10 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               </View>
               <View style={modalStyles.cardItemContent}>
                 <Text style={modalStyles.receiptDetailsItemLabel}>
-                  Kategore
+                  {t('category')}
                 </Text>
                 <Text style={modalStyles.receiptDetailsItemValue}>
-                  Yoga-Kurs
+                  {t('Yoga class')}
                 </Text>
               </View>
             </View>
@@ -156,7 +160,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               </View>
               <View style={{...modalStyles.cardItemContentRow}}>
                 <Text style={{fontSize: 17, fontWeight: '400'}}>
-                  Beleg ansehen
+                  {t('View receipt')}
                 </Text>
                 <FAIcon
                   size={20}
@@ -419,8 +423,8 @@ const ListComponent = ({data = [], onEndReached, isLoading}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {isLoading && <ActivityIndicator size="large" />}
+    <SafeAreaView style={{flex: 1}}>
+      {isLoading && <AppActivityIndicator isLoading={isLoading} size="large" />}
       {!isLoading && (
         <SectionList
           onEndReachedThreshold={0.5}
@@ -449,6 +453,7 @@ const ListComponent = ({data = [], onEndReached, isLoading}) => {
 };
 
 const ArchivedReceiptsScreen = () => {
+  const {t} = useTranslation();
   const [receipts, setReceipts] = useState([]);
   const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -487,14 +492,12 @@ const ArchivedReceiptsScreen = () => {
   );
 
   return (
-    <Layout title="Belagarchiv">
-      <SafeAreaView style={styles.container}>
-        <ListComponent
-          data={receipts || []}
-          onEndReached={fetchMore}
-          isLoading={isLoading}
-        />
-      </SafeAreaView>
+    <Layout title={t('Surface archive')}>
+      <ListComponent
+        data={receipts || []}
+        onEndReached={fetchMore}
+        isLoading={isLoading}
+      />
     </Layout>
   );
 };

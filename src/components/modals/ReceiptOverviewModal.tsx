@@ -5,8 +5,10 @@ import ModalComponent from '../Modal';
 import ReceiptOverview from '../modules/receipt/ReceiptOverview';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import {ModalStyles} from '../../styles';
+import {useTranslation} from 'react-i18next';
 
 const ReceiptOverviewModal = ({receipt, visible, onClose}) => {
+  const {t} = useTranslation();
   return (
     <ModalComponent
       onClose={onClose}
@@ -20,7 +22,7 @@ const ReceiptOverviewModal = ({receipt, visible, onClose}) => {
             color={'#454d66'}
             size={25}
           />
-          <Text style={modalStyles.modalTitle}>Übersicht</Text>
+          <Text style={modalStyles.modalTitle}>{t('Overview')}</Text>
         </>
       }>
       <ReceiptOverview receipt={receipt} onClose={onClose} />
