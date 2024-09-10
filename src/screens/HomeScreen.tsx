@@ -271,8 +271,7 @@ const styles = StyleSheet.create({
     color: '#454d66',
     marginLeft: 10,
     textAlign: 'center',
-    fontFamily:
-      '"FontAwesome6Pro-Light", "Font Awesome 6 Pro Light", "Font Awesome 6 Pro", sans-serif',
+    fontFamily: 'OpenSans-Bold',
   },
   menuIcon: {
     paddingTop: 26,

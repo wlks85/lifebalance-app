@@ -14,8 +14,8 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   loadingMessage: {
+    fontFamily: 'OpenSans-Bold',
     color: '#000',
-    fontWeight: 500,
     fontSize: 18,
   },
 });

@@ -16,12 +16,10 @@ const labelStyle = StyleSheet.create({
   container: {
     display: 'flex',
     gap: 10,
-    // flex: 1
   },
   label: {
     fontSize: 16,
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
-    fontWeight: '700',
+    fontFamily: 'OpenSans-Bold',
     color: '#454d66',
   },
 });

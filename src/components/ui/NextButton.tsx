@@ -41,9 +41,8 @@ const btnStyles = StyleSheet.create({
   },
   btnText: {
     color: 'white',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Bold',
     fontSize: 18,
-    fontWeight: '700',
   },
 });
 

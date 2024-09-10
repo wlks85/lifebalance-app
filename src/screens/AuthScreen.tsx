@@ -2,7 +2,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {ReactNode, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
-import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  SafeAreaView,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -52,122 +59,124 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
     }
   }
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>
-          {mode === 'login' && <>{t('Login')}</>}
-          {mode === 'forgot' && <>{t('Forgot Password')}?</>}
-          {mode === 'register' && <>{t('Register')}</>}
-        </Text>
-      </View>
-
-      <View style={styles.form}>
-        {mode === 'forgot' ? (
-          <FormItem value="" onChange={() => {}} label={t('Email')} />
-        ) : (
-          <>
-            <Controller
-              name="username"
-              control={form.control}
-              render={({field}) => (
-                <FormItem
-                  label={
-                    <View style={styles.formLabelHeader}>
-                      <Text style={styles.formLabel}>{t('Username')}</Text>
-
-                      {mode === 'login' && (
-                        <Text
-                          onPress={() => setMode('forgot')}
-                          style={[styles.formLabel, styles.formLabelPrimary]}>
-                          {t('Forgot')}?
-                        </Text>
-                      )}
-                    </View>
-                  }
-                  error={form.formState.errors.username?.message}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  value={field.value}
-                />
-              )}
-            />
-
-            <Controller
-              name="password"
-              control={form.control}
-              render={({field}) => (
-                <FormItem
-                  label={t('Password')}
-                  type="password"
-                  error={form.formState.errors.password?.message}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  value={field.value}
-                />
-              )}
-            />
-          </>
-        )}
-
-        <Pressable
-          style={styles.formButton}
-          onPress={form.handleSubmit(handleSubmit)}>
-          <Text style={styles.formButtonText}>
-            <>
-              {loading ? (
-                'Loading...'
-              ) : (
-                <>
-                  {mode === 'login' && <>{t('Login')}</>}
-                  {mode === 'forgot' && <>{t('Send')}</>}
-                  {mode === 'register' && <>{t('Register')}</>}
-                </>
-              )}
-            </>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>
+            {mode === 'login' && <>{t('Login')}</>}
+            {mode === 'forgot' && <>{t('Forgot Password')}?</>}
+            {mode === 'register' && <>{t('Register')}</>}
           </Text>
-        </Pressable>
+        </View>
 
-        <View style={styles.formInfo}>
-          {error && (
-            <Text
-              style={[
-                styles.formInfoText,
-                {
-                  color: 'red',
-                },
-              ]}>
-              {error}
-            </Text>
+        <View style={styles.form}>
+          {mode === 'forgot' ? (
+            <FormItem value="" onChange={() => {}} label={t('Email')} />
+          ) : (
+            <>
+              <Controller
+                name="username"
+                control={form.control}
+                render={({field}) => (
+                  <FormItem
+                    label={
+                      <View style={styles.formLabelHeader}>
+                        <Text style={styles.formLabel}>{t('Username')}</Text>
+
+                        {mode === 'login' && (
+                          <Text
+                            onPress={() => setMode('forgot')}
+                            style={[styles.formLabel, styles.formLabelPrimary]}>
+                            {t('Forgot')}?
+                          </Text>
+                        )}
+                      </View>
+                    }
+                    error={form.formState.errors.username?.message}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    value={field.value}
+                  />
+                )}
+              />
+
+              <Controller
+                name="password"
+                control={form.control}
+                render={({field}) => (
+                  <FormItem
+                    label={t('Password')}
+                    type="password"
+                    error={form.formState.errors.password?.message}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    value={field.value}
+                  />
+                )}
+              />
+            </>
           )}
-          {mode !== 'forgot' && (
-            <Text style={styles.formInfoText}>
-              {t("Don't have a lifebalancePlus account yet")}?
+
+          <Pressable
+            style={styles.formButton}
+            onPress={form.handleSubmit(handleSubmit)}>
+            <Text style={styles.formButtonText}>
+              <>
+                {loading ? (
+                  'Loading...'
+                ) : (
+                  <>
+                    {mode === 'login' && <>{t('Login')}</>}
+                    {mode === 'forgot' && <>{t('Send')}</>}
+                    {mode === 'register' && <>{t('Register')}</>}
+                  </>
+                )}
+              </>
             </Text>
-          )}
-          {mode === 'login' && (
-            <Text
-              style={[styles.formInfoText, styles.formLabelPrimary]}
-              onPress={() => ''}>
-              {t('Register here')} …
-            </Text>
-          )}
-          {mode === 'register' && (
-            <Text
-              style={[styles.formInfoText, styles.formLabelPrimary]}
-              onPress={() => setMode('login')}>
-              {t('Register here')} …
-            </Text>
-          )}
-          {mode === 'forgot' && (
-            <Text
-              style={[styles.formInfoText, styles.formLabelPrimary]}
-              onPress={() => setMode('login')}>
-              {t('Back to Login')}
-            </Text>
-          )}
+          </Pressable>
+
+          <View style={styles.formInfo}>
+            {error && (
+              <Text
+                style={[
+                  styles.formInfoText,
+                  {
+                    color: 'red',
+                  },
+                ]}>
+                {error}
+              </Text>
+            )}
+            {mode !== 'forgot' && (
+              <Text style={styles.formInfoText}>
+                {t("Don't have a lifebalancePlus account yet")}?
+              </Text>
+            )}
+            {mode === 'login' && (
+              <Text
+                style={[styles.formInfoText, styles.formLabelPrimary]}
+                onPress={() => ''}>
+                {t('Register here')} …
+              </Text>
+            )}
+            {mode === 'register' && (
+              <Text
+                style={[styles.formInfoText, styles.formLabelPrimary]}
+                onPress={() => setMode('login')}>
+                {t('Register here')} …
+              </Text>
+            )}
+            {mode === 'forgot' && (
+              <Text
+                style={[styles.formInfoText, styles.formLabelPrimary]}
+                onPress={() => setMode('login')}>
+                {t('Back to Login')}
+              </Text>
+            )}
+          </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -247,8 +256,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerText: {
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
-    fontWeight: '700',
+    fontFamily: 'OpenSans-Bold',
     color: '#454d66',
     fontSize: 16,
   },
@@ -262,8 +270,7 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   formLabel: {
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
-    fontWeight: '700',
+    fontFamily: 'OpenSans-Bold',
     color: '#454d66',
     textAlign: 'left',
     fontSize: 13,
@@ -295,7 +302,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   formInput: {
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Regular',
     color: '#454d66',
     fontSize: 15,
     textDecorationLine: 'none',
@@ -327,7 +334,7 @@ const styles = StyleSheet.create({
     marginTop: 11,
   },
   formButtonText: {
-    fontFamily: ' "OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
+    fontFamily: ' OpenSans-Bold',
     fontSize: 15,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
@@ -341,13 +348,13 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   formInfoText: {
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Regular',
     fontSize: 14,
     color: '#1e4251',
     marginTop: 4,
   },
   formMessage: {
-    fontFamily: ' "OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
+    fontFamily: ' OpenSans-Bold',
     fontSize: 13,
     color: 'salmon',
     fontWeight: '500',

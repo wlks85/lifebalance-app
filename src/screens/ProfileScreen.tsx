@@ -111,7 +111,7 @@ const BasicInformaton = ({user}) => {
 const bStyles = StyleSheet.create({
   name: {
     color: '#454d66',
-    fontWeight: '700',
+    fontFamily: 'OpenSans-Bold',
     fontSize: 17,
     paddingBottom: 8,
   },
@@ -119,6 +119,7 @@ const bStyles = StyleSheet.create({
     color: '#454d66',
     fontSize: 15,
     paddingBottom: 16,
+    fontFamily: 'OpenSans-Regular',
   },
   sectionLabel: {
     height: 56,
@@ -126,7 +127,7 @@ const bStyles = StyleSheet.create({
     paddingBottom: 8,
   },
   sectionText: {
-    fontWeight: '700',
+    fontFamily: 'OpenSans-Bold',
     lineHeight: 24,
     fontSize: 13,
   },
@@ -176,8 +177,7 @@ const styles = StyleSheet.create({
   menuText: {
     color: '#454d66',
     marginLeft: 10,
-    fontFamily:
-      '"FontAwesome6Pro-Light", "Font Awesome 6 Pro Light", "Font Awesome 6 Pro", sans-serif',
+    fontFamily: 'OpenSans-Regular',
     fontSize: 15,
   },
   menuIcon: {

@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
   confirmationText: {
     color: '#454d66',
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Regular',
   },
 });
 

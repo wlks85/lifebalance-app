@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 80,
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans"',
+    fontFamily: 'OpenSans-Bold',
   },
   backButton: {
     fontWeight: '100',
@@ -83,9 +83,8 @@ const styles = StyleSheet.create({
   },
   header: {
     textAlign: 'center',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans",',
+    fontFamily: 'OpenSans-Bold',
     color: '#454d66',
-    fontWeight: '700',
     fontSize: 22,
   },
   wrapper: {
