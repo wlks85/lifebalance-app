@@ -2,7 +2,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {ReactNode, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
-import {View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Linking,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -77,7 +84,10 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
 
                       {mode === 'login' && (
                         <Text
-                          onPress={() => setMode('forgot')}
+                          onPress={async () => {
+                            const url = 'https://w3.lbplus.de/user/password';
+                            await Linking.openURL(url);
+                          }}
                           style={[styles.formLabel, styles.formLabelPrimary]}>
                           {t('Forgot')}?
                         </Text>
@@ -147,15 +157,19 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
           {mode === 'login' && (
             <Text
               style={[styles.formInfoText, styles.formLabelPrimary]}
-              onPress={() => ''}>
-              {t('Register here')} …
+              onPress={() =>
+                Linking.openURL('https://w3.lbplus.de/?q=user/register')
+              }>
+              {t('Register here')}
             </Text>
           )}
           {mode === 'register' && (
             <Text
               style={[styles.formInfoText, styles.formLabelPrimary]}
-              onPress={() => setMode('login')}>
-              {t('Register here')} …
+              onPress={() =>
+                Linking.openURL('https://w3.lbplus.de/?q=user/register')
+              }>
+              {t('Register here')}
             </Text>
           )}
           {mode === 'forgot' && (
