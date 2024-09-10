@@ -2,14 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {ReactNode, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Linking,
-} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Pressable, Linking, SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -59,28 +52,29 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
     }
   }
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>
-          {mode === 'login' && <>{t('Login')}</>}
-          {mode === 'forgot' && <>{t('Forgot Password')}?</>}
-          {mode === 'register' && <>{t('Register')}</>}
-        </Text>
-      </View>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>
+            {mode === 'login' && <>{t('Login')}</>}
+            {mode === 'forgot' && <>{t('Forgot Password')}?</>}
+            {mode === 'register' && <>{t('Register')}</>}
+          </Text>
+        </View>
 
-      <View style={styles.form}>
-        {mode === 'forgot' ? (
-          <FormItem value="" onChange={() => {}} label={t('Email')} />
-        ) : (
-          <>
-            <Controller
-              name="username"
-              control={form.control}
-              render={({field}) => (
-                <FormItem
-                  label={
-                    <View style={styles.formLabelHeader}>
-                      <Text style={styles.formLabel}>{t('Username')}</Text>
+        <View style={styles.form}>
+          {mode === 'forgot' ? (
+            <FormItem value="" onChange={() => {}} label={t('Email')} />
+          ) : (
+            <>
+              <Controller
+                name="username"
+                control={form.control}
+                render={({field}) => (
+                  <FormItem
+                    label={
+                      <View style={styles.formLabelHeader}>
+                        <Text style={styles.formLabel}>{t('Username')}</Text>
 
                       {mode === 'login' && (
                         <Text
@@ -102,40 +96,40 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
               )}
             />
 
-            <Controller
-              name="password"
-              control={form.control}
-              render={({field}) => (
-                <FormItem
-                  label={t('Password')}
-                  type="password"
-                  error={form.formState.errors.password?.message}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  value={field.value}
-                />
-              )}
-            />
-          </>
-        )}
-
-        <Pressable
-          style={styles.formButton}
-          onPress={form.handleSubmit(handleSubmit)}>
-          <Text style={styles.formButtonText}>
-            <>
-              {loading ? (
-                'Loading...'
-              ) : (
-                <>
-                  {mode === 'login' && <>{t('Login')}</>}
-                  {mode === 'forgot' && <>{t('Send')}</>}
-                  {mode === 'register' && <>{t('Register')}</>}
-                </>
-              )}
+              <Controller
+                name="password"
+                control={form.control}
+                render={({field}) => (
+                  <FormItem
+                    label={t('Password')}
+                    type="password"
+                    error={form.formState.errors.password?.message}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    value={field.value}
+                  />
+                )}
+              />
             </>
-          </Text>
-        </Pressable>
+          )}
+
+          <Pressable
+            style={styles.formButton}
+            onPress={form.handleSubmit(handleSubmit)}>
+            <Text style={styles.formButtonText}>
+              <>
+                {loading ? (
+                  'Loading...'
+                ) : (
+                  <>
+                    {mode === 'login' && <>{t('Login')}</>}
+                    {mode === 'forgot' && <>{t('Send')}</>}
+                    {mode === 'register' && <>{t('Register')}</>}
+                  </>
+                )}
+              </>
+            </Text>
+          </Pressable>
 
         <View style={styles.formInfo}>
           {error && (
@@ -160,7 +154,7 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
               onPress={() =>
                 Linking.openURL('https://w3.lbplus.de/?q=user/register')
               }>
-              {t('Register here')}
+              {t('Register here')} …
             </Text>
           )}
           {mode === 'register' && (
@@ -169,7 +163,7 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
               onPress={() =>
                 Linking.openURL('https://w3.lbplus.de/?q=user/register')
               }>
-              {t('Register here')}
+              {t('Register here')} …
             </Text>
           )}
           {mode === 'forgot' && (
@@ -182,6 +176,7 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
         </View>
       </View>
     </View>
+    </SafeAreaView>
   );
 };
 
@@ -261,8 +256,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerText: {
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
-    fontWeight: '700',
+    fontFamily: 'OpenSans-Bold',
     color: '#454d66',
     fontSize: 16,
   },
@@ -276,8 +270,7 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   formLabel: {
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
-    fontWeight: '700',
+    fontFamily: 'OpenSans-Bold',
     color: '#454d66',
     textAlign: 'left',
     fontSize: 13,
@@ -309,7 +302,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   formInput: {
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Regular',
     color: '#454d66',
     fontSize: 15,
     textDecorationLine: 'none',
@@ -341,7 +334,7 @@ const styles = StyleSheet.create({
     marginTop: 11,
   },
   formButtonText: {
-    fontFamily: ' "OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
+    fontFamily: ' OpenSans-Bold',
     fontSize: 15,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
@@ -355,13 +348,13 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   formInfoText: {
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Regular',
     fontSize: 14,
     color: '#1e4251',
     marginTop: 4,
   },
   formMessage: {
-    fontFamily: ' "OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
+    fontFamily: ' OpenSans-Bold',
     fontSize: 13,
     color: 'salmon',
     fontWeight: '500',

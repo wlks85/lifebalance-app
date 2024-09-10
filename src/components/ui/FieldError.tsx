@@ -23,6 +23,6 @@ const errorStyle = StyleSheet.create({
   },
   error: {
     color: 'red',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Bold',
   },
 });
