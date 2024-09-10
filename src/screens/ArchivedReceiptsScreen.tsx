@@ -159,7 +159,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                 <FAIcon size={30} name="file-text-o" />
               </View>
               <View style={{...modalStyles.cardItemContentRow}}>
-                <Text style={{fontSize: 17, fontWeight: '400'}}>
+                <Text style={{fontSize: 17, fontFamily: 'OpenSans-Regular'}}>
                   {t('View receipt')}
                 </Text>
                 <FAIcon
@@ -209,7 +209,7 @@ const modalStyles = StyleSheet.create({
     paddingLeft: 0,
     paddingBottom: 8,
     paddingRight: 0,
-    fontWeight: 'bold',
+    fontFamily: 'OpenSans-Bold',
   },
   receiptAmountText: {
     fontSize: 55,
@@ -222,6 +222,7 @@ const modalStyles = StyleSheet.create({
     height: 97,
     flexGrow: 0,
     flexShrink: 0,
+    fontFamily: 'OpenSans-Bold',
   },
   receiptDetailsCard: {
     backgroundColor: '#ffffff',
@@ -261,7 +262,7 @@ const modalStyles = StyleSheet.create({
     alignItems: 'center',
   },
   receiptDetailsItemLabel: {
-    fontWeight: 'bold',
+    fontFamily: 'OpenSans-Bold',
     color: '#454d66',
     paddingTop: 16,
     paddingLeft: 0,
@@ -269,7 +270,7 @@ const modalStyles = StyleSheet.create({
     paddingRight: 0,
   },
   receiptDetailsItemValue: {
-    fontWeight: 'normal',
+    fontFamily: 'OpenSans-Regular',
     color: '#454d66',
     paddingTop: 0,
     paddingLeft: 0,
@@ -373,7 +374,7 @@ const styles = StyleSheet.create({
   },
   sectionTitleText: {
     color: '#454d66',
-    fontWeight: '700',
+    fontFamily: 'OpenSans-Bold',
     lineHeight: 24,
     fontSize: 19,
   },

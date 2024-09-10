@@ -76,6 +76,7 @@ const ListComponent = ({
   };
 
   return (
+    // eslint-disable-next-line react-native/no-inline-styles
     <SafeAreaView style={{flex: 1}}>
       {isLoading && <AppActivityIndicator size="large" isLoading={isLoading} />}
       {!isLoading && (
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 80,
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans"',
+    fontFamily: 'OpenSans-Bold',
     paddingVertical: 15,
     // backgroundColor:
   },
@@ -221,9 +222,8 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     textAlign: 'center',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans",',
+    fontFamily: 'OpenSans-Bold',
     color: '#454d66',
-    fontWeight: '700',
     fontSize: 22,
   },
   card: {
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   },
   sectionTitleText: {
     color: '#454d66',
-    fontWeight: '700',
+    fontFamily: 'OpenSans-Bold',
     lineHeight: 24,
     fontSize: 19,
   },
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
 
   textStyle: {
     fontSize: 15,
-    fontWeight: '600',
+    fontFamily: 'OpenSans-SemiBold',
     color: '#454d66',
   },
 });

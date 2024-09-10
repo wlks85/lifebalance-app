@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 //@ts-nocheck
 import React from 'react';
 import {View, Modal, StyleSheet, SafeAreaView} from 'react-native';
@@ -47,7 +48,7 @@ const modalStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 80,
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans"',
+    fontFamily: 'OpenSans-Bold',
   },
   modalContent: {
     flex: 1,

@@ -65,7 +65,7 @@ const modalStyles = StyleSheet.create({
   modalTitle: {
     fontSize: 24,
     color: '#454d66',
-    fontWeight: '700',
+    fontFamily: 'OpenSans-Bold',
     flex: 1,
     textAlign: 'center',
   },

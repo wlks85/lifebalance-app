@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   catText: {
     fontSize: 15,
     color: '#999999',
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Regular',
   },
 });
 

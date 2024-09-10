@@ -338,16 +338,14 @@ const modalStyles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: '700',
     color: '#454d66',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Bold',
   },
   amount: {
     width: '100%',
     color: '#454d66',
     fontSize: 48,
-    fontWeight: '700',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Bold',
   },
   amountsSection: {
     display: 'flex',
@@ -359,22 +357,20 @@ const modalStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Regular',
   },
   amountInfoText: {
     fontSize: 16,
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Regular',
   },
   refundAmount: {
     fontSize: 18,
-    fontFamily: '"OpenSans-Bold", "Open Sans", sans-serif',
-    fontWeight: '700',
+    fontFamily: 'OpenSans-Bold',
     color: 'green',
   },
   currentBalance: {
     fontSize: 18,
-    fontFamily: '"OpenSans-Bold", "Open Sans", sans-serif',
-    fontWeight: '700',
+    fontFamily: 'OpenSans-Bold',
   },
   btnContainer: {
     paddingBottom: 25,
@@ -388,9 +384,8 @@ const modalStyles = StyleSheet.create({
   },
   btnText: {
     color: 'white',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Bold',
     fontSize: 18,
-    fontWeight: '700',
   },
   photoBtnContainer: {
     backgroundColor: '#f8f6f4',
@@ -418,8 +413,7 @@ const modalStyles = StyleSheet.create({
     textAlign: 'center',
     color: '#454d66',
     fontSize: 16,
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
-    fontWeight: '700',
+    fontFamily: 'OpenSans-Bold',
   },
   ...ModalStyles,
 });

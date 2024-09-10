@@ -62,7 +62,6 @@ const modalStyles = StyleSheet.create({
   modalTitle: {
     fontSize: 24,
     color: '#454d66',
-    fontWeight: '700',
   },
 
   receiptDetails: {
@@ -76,13 +75,13 @@ const modalStyles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     color: '#454d66',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Bold',
   },
   amount: {
     color: '#454d66',
     fontSize: 48,
     fontWeight: '700',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Bold',
   },
   amountsSection: {
     display: 'flex',
@@ -94,11 +93,11 @@ const modalStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Regular',
   },
   amountInfoText: {
     fontSize: 16,
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Regular',
   },
   refundAmount: {
     fontSize: 18,
@@ -123,7 +122,7 @@ const modalStyles = StyleSheet.create({
   },
   btnText: {
     color: 'white',
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Bold',
     fontSize: 18,
     fontWeight: '700',
   },
@@ -153,7 +152,7 @@ const modalStyles = StyleSheet.create({
     textAlign: 'center',
     color: '#454d66',
     fontSize: 16,
-    fontFamily: '"OpenSans-Bold", "Open Sans Bold", "Open Sans", sans-serif',
+    fontFamily: 'OpenSans-Bold',
     fontWeight: '700',
   },
   ...ModalStyles,

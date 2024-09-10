@@ -85,12 +85,13 @@ const styles = StyleSheet.create({
   balanceText: {
     fontSize: 36,
     color: '#ffffff',
+    fontFamily: 'OpenSans-Regular',
   },
   cardTitle: {
     fontSize: 18,
     color: '#ffffff',
     marginBottom: 10,
-    fontWeight: 'bold',
+    fontFamily: 'OpenSans-Bold',
   },
 });
 

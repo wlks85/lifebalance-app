@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     color: '#454d66',
     fontSize: 18,
     lineHeight: 24,
-    fontFamily: '"OpenSans-Regular", "Open Sans"',
+    fontFamily: 'OpenSans-Regular',
   },
   itemTitleContainer: {
     display: 'flex',
@@ -114,9 +114,8 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   itemSubtitle: {
-    fontFamily: '"OpenSans-Regular", "sans-serif"',
+    fontFamily: 'OpenSans-Regular',
     fontSize: 15,
-    fontWeight: '400',
     lineHeight: 16,
     color: '#454d66',
   },

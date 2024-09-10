@@ -126,12 +126,11 @@ const modalStyles = StyleSheet.create({
   title: {
     fontSize: 24,
     color: '#454d66',
-    fontFamily: '"PTSerif-Regular", "PT Serif", sans-serif;',
-    fontWeight: '600',
+    fontFamily: 'PTSerif-Regular;',
     textAlign: 'center',
   },
   subTitle: {
-    fontFamily: '"OpenSans-Regular", "Open Sans", sans-serif;',
+    fontFamily: 'OpenSans-Regular;',
     fontSize: 15,
     color: '#454d66',
     textAlign: 'center',
