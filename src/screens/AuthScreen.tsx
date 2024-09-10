@@ -2,7 +2,15 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {ReactNode, useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
-import {View, Text, StyleSheet, TextInput, Pressable, Linking, SafeAreaView} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Linking,
+  SafeAreaView,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -76,25 +84,25 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
                       <View style={styles.formLabelHeader}>
                         <Text style={styles.formLabel}>{t('Username')}</Text>
 
-                      {mode === 'login' && (
-                        <Text
-                          onPress={async () => {
-                            const url = 'https://w3.lbplus.de/user/password';
-                            await Linking.openURL(url);
-                          }}
-                          style={[styles.formLabel, styles.formLabelPrimary]}>
-                          {t('Forgot')}?
-                        </Text>
-                      )}
-                    </View>
-                  }
-                  error={form.formState.errors.username?.message}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  value={field.value}
-                />
-              )}
-            />
+                        {mode === 'login' && (
+                          <Text
+                            onPress={async () => {
+                              const url = 'https://w3.lbplus.de/user/password';
+                              await Linking.openURL(url);
+                            }}
+                            style={[styles.formLabel, styles.formLabelPrimary]}>
+                            {t('Forgot')}?
+                          </Text>
+                        )}
+                      </View>
+                    }
+                    error={form.formState.errors.username?.message}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    value={field.value}
+                  />
+                )}
+              />
 
               <Controller
                 name="password"
@@ -131,51 +139,51 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
             </Text>
           </Pressable>
 
-        <View style={styles.formInfo}>
-          {error && (
-            <Text
-              style={[
-                styles.formInfoText,
-                {
-                  color: 'red',
-                },
-              ]}>
-              {error}
-            </Text>
-          )}
-          {mode !== 'forgot' && (
-            <Text style={styles.formInfoText}>
-              {t("Don't have a lifebalancePlus account yet")}?
-            </Text>
-          )}
-          {mode === 'login' && (
-            <Text
-              style={[styles.formInfoText, styles.formLabelPrimary]}
-              onPress={() =>
-                Linking.openURL('https://w3.lbplus.de/?q=user/register')
-              }>
-              {t('Register here')} …
-            </Text>
-          )}
-          {mode === 'register' && (
-            <Text
-              style={[styles.formInfoText, styles.formLabelPrimary]}
-              onPress={() =>
-                Linking.openURL('https://w3.lbplus.de/?q=user/register')
-              }>
-              {t('Register here')} …
-            </Text>
-          )}
-          {mode === 'forgot' && (
-            <Text
-              style={[styles.formInfoText, styles.formLabelPrimary]}
-              onPress={() => setMode('login')}>
-              {t('Back to Login')}
-            </Text>
-          )}
+          <View style={styles.formInfo}>
+            {error && (
+              <Text
+                style={[
+                  styles.formInfoText,
+                  {
+                    color: 'red',
+                  },
+                ]}>
+                {error}
+              </Text>
+            )}
+            {mode !== 'forgot' && (
+              <Text style={styles.formInfoText}>
+                {t("Don't have a lifebalancePlus account yet")}?
+              </Text>
+            )}
+            {mode === 'login' && (
+              <Text
+                style={[styles.formInfoText, styles.formLabelPrimary]}
+                onPress={() =>
+                  Linking.openURL('https://w3.lbplus.de/?q=user/register')
+                }>
+                {t('Register here')} …
+              </Text>
+            )}
+            {mode === 'register' && (
+              <Text
+                style={[styles.formInfoText, styles.formLabelPrimary]}
+                onPress={() =>
+                  Linking.openURL('https://w3.lbplus.de/?q=user/register')
+                }>
+                {t('Register here')} …
+              </Text>
+            )}
+            {mode === 'forgot' && (
+              <Text
+                style={[styles.formInfoText, styles.formLabelPrimary]}
+                onPress={() => setMode('login')}>
+                {t('Back to Login')}
+              </Text>
+            )}
+          </View>
         </View>
       </View>
-    </View>
     </SafeAreaView>
   );
 };

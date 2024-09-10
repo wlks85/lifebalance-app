@@ -76,6 +76,7 @@ const ListComponent = ({
   };
 
   return (
+    // eslint-disable-next-line react-native/no-inline-styles
     <SafeAreaView style={{flex: 1}}>
       {isLoading && <AppActivityIndicator size="large" isLoading={isLoading} />}
       {!isLoading && (

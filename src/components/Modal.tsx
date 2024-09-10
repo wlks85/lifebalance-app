@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 //@ts-nocheck
 import React from 'react';
 import {View, Modal, StyleSheet, SafeAreaView} from 'react-native';
