@@ -1,6 +1,6 @@
 import React, {ReactElement} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {Icons} from '../../icons';
 
 interface IItem {
   title: string;
@@ -29,7 +29,8 @@ const ItemCard = ({
       onPress={() => onItemClicked(item)}
       disabled={disabled}>
       <View style={styles.itemLogo}>
-        <Text style={styles.logoText}>{item.logo}</Text>
+        {/* <Text style={styles.logoText}>{item.logo}</Text> */}
+        {item.logo}
       </View>
       <View style={styles.itemInfo}>
         <View style={styles.itemTitleContainer}>
@@ -42,7 +43,7 @@ const ItemCard = ({
       {showEditBtn && (
         <TouchableOpacity onPress={onEditBtnPress}>
           <Text>
-            <Icon name="pencil" size={25} color="#454d66" />
+            <Icons name="pen-light" size={25} color="#454d66" />
           </Text>
         </TouchableOpacity>
       )}
@@ -76,12 +77,14 @@ const styles = StyleSheet.create({
   itemLogo: {
     width: 50,
     height: 50,
-    padding: 10,
+    paddingLeft: 10,
     backgroundColor: '#f8f6f4',
     color: '#fffffff',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
+    display: 'flex',
+    flexDirection: 'row',
   },
   logoText: {
     color: '#454d66',

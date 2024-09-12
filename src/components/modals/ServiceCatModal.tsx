@@ -6,9 +6,9 @@ import ModalComponent from '../Modal';
 import {ScrollView} from 'react-native-gesture-handler';
 import NextButton from '../ui/NextButton';
 import {ReceiptService} from '../../services';
-import IconAnt from 'react-native-vector-icons/AntDesign';
 import {ModalStyles} from '../../styles';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../icons';
 interface IServiceCategory {
   id: number;
   title: string;
@@ -50,10 +50,10 @@ const ServiceCategoryModal = ({
       visible={visible}
       headerComponent={
         <>
-          <IconAnt
+          <Icons
             onPress={onClose}
             style={modalStyles.headerButtons}
-            name={'arrowleft'}
+            name={'arrow-left-light'}
             color={'#454d66'}
             size={25}
           />

@@ -12,13 +12,13 @@ import {
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
-import IconAnt from 'react-native-vector-icons/AntDesign';
 import ReceiptItem from '../components/modules/receipt/ReceiptItem';
 import ReceiptModal from '../components/modals/ReceiptModal';
 import AddReceiptModal from '../components/modals/AddReciptModal';
 import receiptService from '../services/ReceiptService';
 import AppActivityIndicator from '../components/AppActivityIndicator';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../components/icons';
 
 interface HeaderProps {
   goBack: () => void;
@@ -28,20 +28,20 @@ const Header = ({goBack}: HeaderProps) => {
   const {t} = useTranslation();
   return (
     <View style={styles.headerContainer}>
-      <IconAnt
+      <Icons
         onPress={goBack}
         style={styles.headerButtons}
-        name={'arrowleft'}
+        name={'arrow-left-light'}
         color={'#454d66'}
         size={25}
       />
 
       <Text style={styles.headerTitle}>{t('service')}</Text>
 
-      <IconAnt
+      <Icons
         onPress={goBack}
         style={styles.headerButtons}
-        name={'search1'}
+        name={'search-light'}
         color={'#454d66'}
         size={25}
       />
@@ -173,11 +173,11 @@ const ReceiptScreen = () => {
         style={styles.addReceiptBtnContainer}
         onPress={() => openAddReceiptModal()}>
         <View style={styles.addReceiptTitle}>
-          <IconAnt name="plus" size={25} color={'#454d66'} />
+          <Icons name="plus-light" size={25} color={'#454d66'} />
           <Text style={styles.textStyle}>{t('New service')} </Text>
         </View>
         <View>
-          <IconAnt name="right" size={25} color={'#454d66'} />
+          <Icons name="angle-right-light" size={25} color={'#454d66'} />
         </View>
       </TouchableOpacity>
       {Platform.OS === 'ios' ? (

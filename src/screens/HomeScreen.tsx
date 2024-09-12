@@ -12,11 +12,11 @@ import {
   ImageBackground,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import BankBalanceComponent from '../components/profile/BankBalanceComponent';
 import {useTranslation} from 'react-i18next';
 import {useAuth} from '../providers/auth-provider';
+import {Icons} from '../components/icons';
 
 const RenderNavigation = () => {
   const show = true;
@@ -33,9 +33,9 @@ const RenderNavigation = () => {
           style={styles.menuItem}
           onPress={() => navigateToX(t('navigation.receipt'))}>
           <Text style={styles.menuText}>{t('navigation.receipt')}</Text>
-          <Icon
+          <Icons
             style={styles.menuIcon}
-            name="file-text-o"
+            name="receipt-light"
             size={30}
             color="#6200ee"
           />
@@ -44,9 +44,9 @@ const RenderNavigation = () => {
           style={styles.menuItem}
           onPress={() => navigateToX(t('navigation.archive'))}>
           <Text style={styles.menuText}>{t('navigation.archive')}</Text>
-          <Icon
+          <Icons
             style={styles.menuIcon}
-            name="folder-o"
+            name="folder-light"
             size={30}
             color="#6200ee"
           />
@@ -55,9 +55,9 @@ const RenderNavigation = () => {
           style={styles.menuItem}
           onPress={() => navigateToX(t('navigation.profile'))}>
           <Text style={styles.menuText}>{t('navigation.profile')}</Text>
-          <Icon
+          <Icons
             style={styles.menuIcon}
-            name="user-o"
+            name="user-light"
             size={30}
             color="#6200ee"
           />

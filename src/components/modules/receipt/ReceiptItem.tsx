@@ -2,11 +2,11 @@
 //@ts-nocheck
 import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import AddReceiptModal from '../../modals/AddReciptModal';
 import receiptService from '../../../services/ReceiptService';
 import {formatAmount} from '../../../utils';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../../icons';
 
 export interface IReceipt {
   title?: string;
@@ -120,9 +120,7 @@ const ReceiptItem = ({
       </View>
       {showEditBtn && (
         <TouchableOpacity onPress={onEditBtnPressHandler}>
-          <Text>
-            <Icon name="pencil" size={25} color="#454d66" />
-          </Text>
+          <Icons name="pen-light" size={25} color="#454d66" />
         </TouchableOpacity>
       )}
       <AddReceiptModal

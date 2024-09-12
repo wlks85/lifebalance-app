@@ -3,8 +3,8 @@ import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import FieldLabel from '../../ui/FieldLabel';
 import FieldError from '../../ui/FieldError';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../../icons';
 
 interface ServiceCategoryProps {
   onPress: () => void;
@@ -30,7 +30,7 @@ const ServiceCategory = ({
             <Text style={[styles.catText, error && {color: 'red'}]}>
               {serviceCategories?.[0]?.title ?? t('Please choose')} …
             </Text>
-            <Icon name="chevron-right" size={20} color={error && 'red'} />
+            <Icons name="angle-right-light" size={20} color={error && 'red'} />
           </View>
         </FieldError>
       </FieldLabel>

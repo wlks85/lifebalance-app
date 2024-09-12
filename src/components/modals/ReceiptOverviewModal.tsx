@@ -3,9 +3,9 @@ import React from 'react';
 import {Text, StyleSheet} from 'react-native';
 import ModalComponent from '../Modal';
 import ReceiptOverview from '../modules/receipt/ReceiptOverview';
-import IconAnt from 'react-native-vector-icons/AntDesign';
 import {ModalStyles} from '../../styles';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../icons';
 
 const ReceiptOverviewModal = ({receipt, visible, onClose}) => {
   const {t} = useTranslation();
@@ -15,10 +15,10 @@ const ReceiptOverviewModal = ({receipt, visible, onClose}) => {
       visible={visible}
       headerComponent={
         <>
-          <IconAnt
+          <Icons
             onPress={onClose}
             style={modalStyles.headerButtons}
-            name={'arrowleft'}
+            name={'arrow-left-light'}
             color={'#454d66'}
             size={25}
           />

@@ -5,8 +5,8 @@ import {TextInput} from 'react-native-gesture-handler';
 import {IReceipt} from '../modules/receipt/ReceiptCard';
 import {useAuth} from '../../providers/auth-provider';
 import {ModalStyles} from '../../styles';
-import IconAnt from 'react-native-vector-icons/AntDesign';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../icons';
 
 interface EditAmountModalProps {
   receipt: Partial<IReceipt>;
@@ -39,10 +39,10 @@ const EditAmountModal = ({
       visible={visible}
       headerComponent={
         <>
-          <IconAnt
+          <Icons
             onPress={onClose}
             style={modalStyles.headerButtons}
-            name={'arrowleft'}
+            name={'arrow-left-light'}
             color={'#454d66'}
             size={25}
           />

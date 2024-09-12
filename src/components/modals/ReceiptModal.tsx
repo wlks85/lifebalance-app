@@ -14,8 +14,6 @@ import {
   Alert,
 } from 'react-native';
 import ModalComponent from '../Modal';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import IconAnt from 'react-native-vector-icons/AntDesign';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {TextInput} from 'react-native-gesture-handler';
 import ReceiptOverviewModal from './ReceiptOverviewModal';
@@ -26,15 +24,16 @@ import {generateReceiptTitle} from '../../utils';
 import AppActivityIndicator from '../AppActivityIndicator';
 import {ModalStyles} from '../../styles';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../icons';
 
 const ReceiptModalHeader = ({onClose}) => {
   const {t} = useTranslation();
   return (
     <>
-      <IconAnt
+      <Icons
         onPress={onClose}
         style={modalStyles.headerButtons}
-        name={'arrowleft'}
+        name={'arrow-left-light'}
         color={'#454d66'}
         size={25}
       />
@@ -176,10 +175,10 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
       visible={visible}
       headerComponent={
         <>
-          <IconAnt
+          <Icons
             onPress={onClose}
             style={modalStyles.headerButtons}
-            name={'arrowleft'}
+            name={'arrow-left-light'}
             color={'#454d66'}
             size={25}
           />
@@ -247,7 +246,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                       <Text style={modalStyles.photoBtnTitle}>
                         {t('Take a photo of the receipt')}
                       </Text>
-                      <Icon name="camera" size={25} />
+                      <Icons name="camera" size={25} />
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={modalStyles.takeOrUploadPhotoBtn}
@@ -255,7 +254,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                       <Text style={modalStyles.photoBtnTitle}>
                         {t('Upload receipt')}
                       </Text>
-                      <IconAnt name="upload" size={25} />
+                      <Icons name="upload-lig" size={25} />
                     </TouchableOpacity>
                   </View>
                 </TouchableWithoutFeedback>

@@ -4,11 +4,9 @@ import React from 'react';
 import {View, Text, StyleSheet, ImageBackground} from 'react-native';
 import ModalComponent from '../Modal';
 import NextButton from '../ui/NextButton';
-import Icon from 'react-native-vector-icons/FontAwesome6';
-import IconAnt from 'react-native-vector-icons/AntDesign';
 import {ModalStyles} from '../../styles';
 import {useTranslation} from 'react-i18next';
-
+import {Icons} from '../icons';
 interface AddReceiptCompletedProps {
   visible: boolean;
   onClose: () => void;
@@ -25,10 +23,10 @@ const AddReceiptCompleted = ({visible, onClose}: AddReceiptCompletedProps) => {
       visible={visible}
       headerComponent={
         <>
-          <IconAnt
+          <Icons
             onPress={handleClose}
             style={modalStyles.headerButtons}
-            name={'close'}
+            name={'close-light'}
             color={'#454d66'}
             size={25}
           />
@@ -41,9 +39,9 @@ const AddReceiptCompleted = ({visible, onClose}: AddReceiptCompletedProps) => {
               source={require('../../assets/normal_u13.png')}
               style={{width: 96, height: 83}}
               resizeMode="contain">
-              <Icon
+              <Icons
                 style={modalStyles.ticIcon}
-                name="check"
+                name="check-light"
                 size={25}
                 color="#fff"
               />
