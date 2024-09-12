@@ -7,6 +7,8 @@ import {
   StyleSheet,
   SafeAreaView,
   SectionList,
+  Platform,
+  ScrollView,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
@@ -83,6 +85,7 @@ const ListComponent = ({
         <SectionList
           onEndReachedThreshold={0.5}
           onEndReached={onEndReached}
+          scrollEnabled={Platform.OS === 'ios' ? false : true}
           sections={data}
           keyExtractor={item => item.uuid.toString()}
           renderItem={() => null}
@@ -177,12 +180,24 @@ const ReceiptScreen = () => {
           <IconAnt name="right" size={25} color={'#454d66'} />
         </View>
       </TouchableOpacity>
-      <ListComponent
-        data={receiptData || []}
-        isLoading={isLoading}
-        onReceiptSelected={onReceiptSelected}
-        onEndReached={fetchMore}
-      />
+      {Platform.OS === 'ios' ? (
+        // eslint-disable-next-line react-native/no-inline-styles
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+          <ListComponent
+            data={receiptData || []}
+            isLoading={isLoading}
+            onReceiptSelected={onReceiptSelected}
+            onEndReached={fetchMore}
+          />
+        </ScrollView>
+      ) : (
+        <ListComponent
+          data={receiptData || []}
+          isLoading={isLoading}
+          onReceiptSelected={onReceiptSelected}
+          onEndReached={fetchMore}
+        />
+      )}
       {selectedReceipt && (
         <ReceiptModal
           visible={previewModalVisible}
@@ -238,6 +253,7 @@ const styles = StyleSheet.create({
   sectionWrapper: {
     display: 'flex',
     gap: 10,
+    paddingBottom: Platform.OS === 'ios' ? 150 : 20,
   },
   sectionTitle: {
     lineHeight: 24,
