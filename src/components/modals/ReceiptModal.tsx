@@ -38,6 +38,13 @@ const ReceiptModalHeader = ({onClose}) => {
         size={25}
       />
       <Text style={modalStyles.modalTitle}>{t('Check quality')}</Text>
+      <Icons
+        onPress={onClose}
+        style={modalStyles.headerButtons}
+        name={'question-mark-circle-light'}
+        color={'#454d66'}
+        size={25}
+      />
     </>
   );
 };
@@ -170,7 +177,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   }, [receipt?.amount]);
   return (
     <ModalComponent
-      transparent={true}
+      // transparent={true}
       onClose={onClose}
       visible={visible}
       headerComponent={
@@ -183,6 +190,12 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
             size={25}
           />
           <Text style={modalStyles.modalTitle}>{t('Amount paid')}</Text>
+          <Icons
+            style={modalStyles.headerButtons}
+            name={'question-mark-circle-light'}
+            color={'#454d66'}
+            size={25}
+          />
         </>
       }>
       {!!receipt && (
@@ -200,7 +213,16 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                 placeholder="0,00 €"
                 placeholderTextColor={'#454d66'}
                 value={amount ? amount : ''}
-                onChangeText={value => setAmount(value)}
+                onChangeText={value => {
+                  console.log(value);
+                  const isValid = /^(0|[1-9][0-9]*)$/;
+                  if (isValid.test(value)) {
+                    setAmount(value);
+                  }
+                  if (value === '') {
+                    setAmount('');
+                  }
+                }}
                 keyboardType="numeric"
               />
             </View>
@@ -246,7 +268,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                       <Text style={modalStyles.photoBtnTitle}>
                         {t('Take a photo of the receipt')}
                       </Text>
-                      <Icons name="camera" size={25} />
+                      <Icons name="camera-light" size={25} color={'#454d66'} />
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={modalStyles.takeOrUploadPhotoBtn}
@@ -254,7 +276,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                       <Text style={modalStyles.photoBtnTitle}>
                         {t('Upload receipt')}
                       </Text>
-                      <Icons name="upload-lig" size={25} />
+                      <Icons name="upload-light" size={25} color={'#454d66'} />
                     </TouchableOpacity>
                   </View>
                 </TouchableWithoutFeedback>

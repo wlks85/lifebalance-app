@@ -18,7 +18,7 @@ const ReceiptOverviewModal = ({receipt, visible, onClose}) => {
           <Icons
             onPress={onClose}
             style={modalStyles.headerButtons}
-            name={'arrow-left-light'}
+            name={'close-light'}
             color={'#454d66'}
             size={25}
           />

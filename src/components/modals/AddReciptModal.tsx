@@ -24,6 +24,7 @@ const AddReceiptModal = ({
   const {t} = useTranslation();
   return (
     <ModalComponent
+      // transparent={true}
       onClose={onClose}
       visible={visible}
       headerComponent={
@@ -31,12 +32,12 @@ const AddReceiptModal = ({
           <Icons
             onPress={onClose}
             style={modalStyles.headerButtons}
-            name={'arrow-left-light'}
+            name={defaultValue ? 'arrow-left-light' : 'close-light'}
             color={'#454d66'}
             size={25}
           />
           <Text style={modalStyles.modalTitle}>
-            {defaultValue ? t('editService') : t('Amount paid')}
+            {defaultValue ? t('Amount paid') : t('New service')}
           </Text>
         </>
       }>

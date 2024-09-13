@@ -42,7 +42,7 @@ const AddReceiptCompleted = ({visible, onClose}: AddReceiptCompletedProps) => {
               <Icons
                 style={modalStyles.ticIcon}
                 name="check-light"
-                size={25}
+                size={30}
                 color="#fff"
               />
             </ImageBackground>

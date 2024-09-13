@@ -59,5 +59,6 @@
   "Not Found": "Nicht gefunden",
   "New service": "Neue Dienstleistung",
   "Last used": "Zuletzt verwendet",
-  "Service category": "Dienstleistungskategorie"
+  "Service category": "Dienstleistungskategorie",
+  "editService": "Edit service"
 }
