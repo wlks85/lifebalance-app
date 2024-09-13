@@ -47,13 +47,14 @@ const ProfilePageListItems = ({items}) => {
 };
 
 const OtherInformation = () => {
+  const {t} = useTranslation();
   const items = [
     {
-      title: 'Data Protection',
+      title: t('Data protection'),
       icon: 'user-shield-light',
     },
     {
-      title: 'Data M',
+      title: t('Imprint'),
       icon: 'file-lines-light',
     },
   ];
@@ -75,11 +76,11 @@ const Security = ({user}) => {
       icon: 'view-finder-light',
     },
     {
-      title: 'Password Management',
+      title: t('Change password'),
       icon: 'lock-light',
     },
     {
-      title: 'Logout',
+      title: t('Logout'),
       icon: 'exit-light',
       onPress: handleLogout,
     },

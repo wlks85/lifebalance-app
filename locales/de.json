@@ -60,5 +60,9 @@
   "New service": "Neue Dienstleistung",
   "Last used": "Zuletzt verwendet",
   "Service category": "Dienstleistungskategorie",
-  "editService": "Edit service"
+  "editService": "Edit service",
+  "Change password": "Passwort ändern",
+  "Logout": "Abmelden",
+  "Data protection": "Datenschutz",
+  "Imprint": "Impressum"
 }
