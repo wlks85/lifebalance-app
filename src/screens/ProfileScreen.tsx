@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 import Layout from '../components/Layout';
 import BankBalance from '../components/profile/BankBalanceComponent';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {useAuth} from '../providers/auth-provider';
 import userService from '../services/UserService';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../components/icons';
 
 const ProfilePageListItems = ({items}) => {
   const renderListItem = item => {
@@ -22,18 +22,18 @@ const ProfilePageListItems = ({items}) => {
         key={Math.random()}
         style={styles.menuItem}
         onPress={item?.onPress}>
-        <Icon
-          style={styles.menuIcon}
+        <Icons
           name={item.icon}
           size={30}
-          color="#6200ee"
+          style={styles.menuIcon}
+          color={'#454d66'}
         />
         <Text style={styles.menuText}>{item.title}</Text>
-        <Icon
+        <Icons
           style={[styles.menuIcon, styles.menuIconRight]}
-          name="chevron-right"
+          name="angle-right-light"
           size={30}
-          color="#6200ee"
+          color="#454d66"
         />
       </TouchableOpacity>
     );
@@ -50,11 +50,11 @@ const OtherInformation = () => {
   const items = [
     {
       title: 'Data Protection',
-      icon: 'home',
+      icon: 'user-shield-light',
     },
     {
       title: 'Data M',
-      icon: 'home',
+      icon: 'file-lines-light',
     },
   ];
   return (
@@ -72,15 +72,15 @@ const Security = ({user}) => {
   const securityButtons = [
     {
       title: 'Face-ID',
-      icon: 'home',
+      icon: 'view-finder-light',
     },
     {
       title: 'Password Management',
-      icon: 'lock',
+      icon: 'lock-light',
     },
     {
       title: 'Logout',
-      icon: 'sign-out',
+      icon: 'exit-light',
       onPress: handleLogout,
     },
   ];
@@ -143,7 +143,7 @@ const ProfileScreen = () => {
   };
   return (
     <Layout title="Profil">
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.container}>
         <BasicInformaton user={user} />
         <BankBalance user={user} />
         <SectionLabel label="Schicherheit" />
@@ -156,6 +156,9 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    paddingBottom: 90,
+  },
   navigationCard: {
     backgroundColor: '#ffffff',
     borderRadius: 25,
