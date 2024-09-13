@@ -38,20 +38,27 @@ const ModalComponent = ({visible, onClose, children}) => (
   </Modal>
 );
 
-const ReceiptImageModal = ({receipt, visible, onClose}) => (
-  <ModalComponent visible={visible} onClose={onClose}>
-    {receipt && (
-      <>
-        <View style={{flex: 1}}>
-          <Image
-            style={{flex: 1, width: '100%', height: '100%'}}
-            src={receipt?.image}
-          />
-        </View>
-      </>
-    )}
-  </ModalComponent>
-);
+const ReceiptImageModal = ({receipt, visible, onClose, setSelectedReceipt}) => {
+  const handleClose = () => {
+    setSelectedReceipt?.(receipt);
+    onClose?.();
+  };
+  console.log({receipt});
+  return (
+    <ModalComponent visible={visible} onClose={handleClose}>
+      {receipt && (
+        <>
+          <View style={{flex: 1}}>
+            <Image
+              style={{flex: 1, width: '100%', height: '100%'}}
+              src={receipt?.image}
+            />
+          </View>
+        </>
+      )}
+    </ModalComponent>
+  );
+};
 
 const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   const {t} = useTranslation();
@@ -411,10 +418,13 @@ const ListComponent = ({data = [], onEndReached, isLoading}) => {
   const closeImageModal = () => {
     setImageSelectedReceipt(null);
     setImageVisible(false);
+    setTimeout(() => setModalVisible(true), 100);
+    setSelectedReceipt(selectedReceipt);
   };
 
   const onReceiptImageDisplay = receipt => {
-    setImageVisible(true);
+    setModalVisible(false);
+    setTimeout(() => setImageVisible(true), 100);
     setImageSelectedReceipt(receipt);
   };
 
@@ -443,6 +453,7 @@ const ListComponent = ({data = [], onEndReached, isLoading}) => {
         visible={imageVisible}
         receipt={imageSelectedReceipt}
         onClose={closeImageModal}
+        setSelectedReceipt={setSelectedReceipt}
       />
     </SafeAreaView>
   );
