@@ -1,11 +1,13 @@
 //@ts-nocheck
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Linking,
+  Alert,
 } from 'react-native';
 import Layout from '../components/Layout';
 import BankBalance from '../components/profile/BankBalanceComponent';
@@ -14,6 +16,66 @@ import userService from '../services/UserService';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import {Icons} from '../components/icons';
+import ModalComponent from '../components/Modal';
+
+const demoData = [
+  {
+    title: 'Heading 1',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi maxime aspernatur exercitationem iste, a dignissimos, voluptatum expedita perspiciatis deleniti veritatis, molestias unde mollitia explicabo! Exercitationem sed officia ratione deleniti illo?',
+  },
+  {
+    title: 'Heading 2',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi maxime aspernatur exercitationem iste, a dignissimos, voluptatum expedita perspiciatis deleniti veritatis, molestias unde mollitia explicabo! Exercitationem sed officia ratione deleniti illo?',
+  },
+  {
+    title: 'Heading 3',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi maxime aspernatur exercitationem iste, a dignissimos, voluptatum expedita perspiciatis deleniti veritatis, molestias unde mollitia explicabo! Exercitationem sed officia ratione deleniti illo?',
+  },
+  {
+    title: 'Heading 4',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi maxime aspernatur exercitationem iste, a dignissimos, voluptatum expedita perspiciatis deleniti veritatis, molestias unde mollitia explicabo! Exercitationem sed officia ratione deleniti illo?',
+  },
+  {
+    title: 'Heading 5',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi maxime aspernatur exercitationem iste, a dignissimos, voluptatum expedita perspiciatis deleniti veritatis, molestias unde mollitia explicabo! Exercitationem sed officia ratione deleniti illo?',
+  },
+];
+
+const DataProtectionModal = ({visible, onClose, children}) => {
+  return (
+    <ModalComponent
+      visible={visible}
+      onClose={onClose}
+      headerComponent={
+        <TouchableOpacity onPress={onClose}>
+          <Icons name="close-light" size={25} color={'#454d66'} />
+        </TouchableOpacity>
+      }>
+      {children}
+    </ModalComponent>
+  );
+};
+
+const DataProtectionModalContent = ({data}) => (
+  <ScrollView
+    contentContainerStyle={styles.dataProtectionModalContentContainer}>
+    {data?.map((item, index) => (
+      <View key={index} style={styles.dataProtectionModalContentBox}>
+        <Text style={styles.dataProtectionModalContentTitle}>
+          {item?.title}
+        </Text>
+        <Text style={styles.dataProtectionModalContentPara}>
+          {item?.content}
+        </Text>
+      </View>
+    ))}
+  </ScrollView>
+);
 
 const ProfilePageListItems = ({items}) => {
   const renderListItem = item => {
@@ -48,19 +110,28 @@ const ProfilePageListItems = ({items}) => {
 
 const OtherInformation = () => {
   const {t} = useTranslation();
+  const [showDataProtection, setShowDataProtection] = useState(false);
+  const handleClose = () => {
+    setShowDataProtection(false);
+  };
   const items = [
     {
       title: t('Data protection'),
       icon: 'user-shield-light',
+      onPress: () => setShowDataProtection(true),
     },
     {
       title: t('Imprint'),
       icon: 'file-lines-light',
+      onPress: () => setShowDataProtection(true),
     },
   ];
   return (
     <>
       <ProfilePageListItems items={items} />
+      <DataProtectionModal visible={showDataProtection} onClose={handleClose}>
+        <DataProtectionModalContent data={demoData} />
+      </DataProtectionModal>
     </>
   );
 };
@@ -70,6 +141,15 @@ const Security = ({user}) => {
   const {setUserDetails} = useAuth();
   const navigation = useNavigation();
   const {t} = useTranslation();
+  const handleChangePassword = async () => {
+    try {
+      const url = 'https://w3.lbplus.de/user/password';
+      await Linking.openURL(url);
+    } catch (err) {
+      Alert.prompt('Please try again later!');
+      console.log(err.message);
+    }
+  };
   const securityButtons = [
     {
       title: 'Face-ID',
@@ -78,6 +158,7 @@ const Security = ({user}) => {
     {
       title: t('Change password'),
       icon: 'lock-light',
+      onPress: handleChangePassword,
     },
     {
       title: t('Logout'),
@@ -203,6 +284,24 @@ const styles = StyleSheet.create({
     top: '20%',
     overflow: 'scroll',
     gap: 16,
+  },
+  dataProtectionModalContentContainer: {
+    display: 'flex',
+    gap: 30,
+  },
+  dataProtectionModalContentBox: {
+    display: 'flex',
+    gap: 20,
+  },
+  dataProtectionModalContentTitle: {
+    fontFamily: 'PTSerif-Regular',
+    fontSize: 24,
+    color: '#454d66',
+  },
+  dataProtectionModalContentPara: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 15,
+    color: '#454d66',
   },
 });
 
