@@ -11,12 +11,12 @@ import {
   Linking,
   SafeAreaView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useAuth} from '../providers/auth-provider';
 import userService from '../services/UserService';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../components/icons';
 
 const formSchema = z.object({
   username: z.string(),
@@ -239,7 +239,11 @@ function FormItem({
           <Pressable
             style={styles.floatingIcon}
             onPress={() => setShowRawText(value => !value)}>
-            <Icon name={showRawText ? 'eye' : 'eye-slash'} size={20} />
+            <Icons
+              name={showRawText ? 'eye-light' : 'eye-slash'}
+              size={20}
+              color={'#454d66'}
+            />
           </Pressable>
         )}
       </View>
