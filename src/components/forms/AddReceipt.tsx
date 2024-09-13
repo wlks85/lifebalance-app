@@ -65,7 +65,7 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
 
   const onReceiptModalClose = () => {
     setShowReceiptModal(false);
-    onClose();
+    setTimeout(() => onClose(), 100);
   };
 
   const handleCreateReceipt = async () => {

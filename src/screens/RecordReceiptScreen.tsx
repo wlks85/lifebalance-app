@@ -9,16 +9,17 @@ import {
   SectionList,
   Platform,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
-import IconAnt from 'react-native-vector-icons/AntDesign';
 import ReceiptItem from '../components/modules/receipt/ReceiptItem';
 import ReceiptModal from '../components/modals/ReceiptModal';
 import AddReceiptModal from '../components/modals/AddReciptModal';
 import receiptService from '../services/ReceiptService';
 import AppActivityIndicator from '../components/AppActivityIndicator';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../components/icons';
 
 interface HeaderProps {
   goBack: () => void;
@@ -28,20 +29,19 @@ const Header = ({goBack}: HeaderProps) => {
   const {t} = useTranslation();
   return (
     <View style={styles.headerContainer}>
-      <IconAnt
+      <Icons
         onPress={goBack}
         style={styles.headerButtons}
-        name={'arrowleft'}
+        name={'arrow-left-light'}
         color={'#454d66'}
         size={25}
       />
 
       <Text style={styles.headerTitle}>{t('service')}</Text>
 
-      <IconAnt
-        onPress={goBack}
+      <Icons
         style={styles.headerButtons}
-        name={'search1'}
+        name={'search-light'}
         color={'#454d66'}
         size={25}
       />
@@ -56,9 +56,9 @@ const SectionWrapper = ({section, onSelectedItem}) => (
     </View>
 
     <View style={styles.card}>
-      {section?.data?.map(item => (
+      {section?.data?.map((item, index) => (
         <ReceiptItem
-          key={item?.uuid}
+          key={`${item.uuid}${index}`}
           onItemClicked={onSelectedItem}
           receipt={item}
           disabled={false}
@@ -87,7 +87,7 @@ const ListComponent = ({
           onEndReached={onEndReached}
           scrollEnabled={Platform.OS === 'ios' ? false : true}
           sections={data}
-          keyExtractor={item => item.uuid.toString()}
+          keyExtractor={(item, index) => `${item.uuid}${index}`}
           renderItem={() => null}
           renderSectionHeader={({section}) => (
             <SectionWrapper
@@ -155,11 +155,20 @@ const ReceiptScreen = () => {
         setPage(pre => pre + 1);
       }
     } catch (err) {
-      console.log(err);
       // eslint-disable-next-line no-alert
-      alert(err);
+      Alert.prompt(err ?? '');
     }
   };
+
+  function handleInfinityScroll(event) {
+    let mHeight = event.layoutMeasurement.height;
+    let cSize = event.contentSize.height;
+    let Y = event.contentOffset.y;
+    if (Math.ceil(mHeight + Y) >= cSize) {
+      return true;
+    }
+    return false;
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -173,16 +182,22 @@ const ReceiptScreen = () => {
         style={styles.addReceiptBtnContainer}
         onPress={() => openAddReceiptModal()}>
         <View style={styles.addReceiptTitle}>
-          <IconAnt name="plus" size={25} color={'#454d66'} />
+          <Icons name="plus-light" size={25} color={'#454d66'} />
           <Text style={styles.textStyle}>{t('New service')} </Text>
         </View>
         <View>
-          <IconAnt name="right" size={25} color={'#454d66'} />
+          <Icons name="angle-right-light" size={25} color={'#454d66'} />
         </View>
       </TouchableOpacity>
       {Platform.OS === 'ios' ? (
-        // eslint-disable-next-line react-native/no-inline-styles
-        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+        <ScrollView
+          // eslint-disable-next-line react-native/no-inline-styles
+          contentContainerStyle={{flexGrow: 1}}
+          onScroll={({nativeEvent}) => {
+            if (handleInfinityScroll(nativeEvent)) {
+              fetchMore();
+            }
+          }}>
           <ListComponent
             data={receiptData || []}
             isLoading={isLoading}
@@ -222,7 +237,6 @@ const styles = StyleSheet.create({
     height: 80,
     fontFamily: 'OpenSans-Bold',
     paddingVertical: 15,
-    // backgroundColor:
   },
   headerButtons: {
     fontWeight: '100',
@@ -233,7 +247,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     height: 48,
     justifyContent: 'center',
-    // flex: 5,
   },
   headerTitle: {
     textAlign: 'center',

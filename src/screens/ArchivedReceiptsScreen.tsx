@@ -10,55 +10,55 @@ import {
   SectionList,
   Modal,
   Image,
+  Alert,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
 import {formatDate, formatAmount, mergeDataByTitle} from '../utils';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import FAIcon from 'react-native-vector-icons/FontAwesome';
-import AntIcon from 'react-native-vector-icons/AntDesign';
 import {ReceiptService} from '../services';
 import ReceiptItem from '../components/modules/receipt/ReceiptItem';
 import AppActivityIndicator from '../components/AppActivityIndicator';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../components/icons';
 
 const ModalComponent = ({visible, onClose, children}) => (
   <Modal animationType="slide" visible={visible} onRequestClose={onClose}>
     <SafeAreaView style={{flex: 1}}>
       <View style={modalStyles.modalContainer}>
         <View style={modalStyles.modalHeader}>
-          <AntIcon
-            name="close"
+          <Icons
             onPress={onClose}
-            style={modalStyles.modalCloseButton}
+            color="#454d66"
+            name="close-light"
+            size={30}
           />
         </View>
-        <View style={modalStyles.modalContent}>
-          {children}
-          {/* <View style={{height: 30,width: '100%',
-          paddingBottom: 20,
-          marginBottom: 100,
-        }}></View> */}
-        </View>
+        <View style={modalStyles.modalContent}>{children}</View>
       </View>
     </SafeAreaView>
   </Modal>
 );
 
-const ReceiptImageModal = ({receipt, visible, onClose}) => (
-  <ModalComponent visible={visible} onClose={onClose}>
-    {receipt && (
-      <>
-        <View style={{flex: 1}}>
-          <Image
-            style={{flex: 1, width: '100%', height: '100%'}}
-            src={receipt?.image}
-          />
-        </View>
-      </>
-    )}
-  </ModalComponent>
-);
+const ReceiptImageModal = ({receipt, visible, onClose, setSelectedReceipt}) => {
+  const handleClose = () => {
+    setSelectedReceipt?.(receipt);
+    onClose?.();
+  };
+  return (
+    <ModalComponent visible={visible} onClose={handleClose}>
+      {receipt && (
+        <>
+          <View style={{flex: 1}}>
+            <Image
+              style={{flex: 1, width: '100%', height: '100%'}}
+              src={receipt?.image}
+            />
+          </View>
+        </>
+      )}
+    </ModalComponent>
+  );
+};
 
 const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   const {t} = useTranslation();
@@ -75,7 +75,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
           <View style={modalStyles.receiptDetailsCard}>
             <View style={modalStyles.cardItem}>
               <View style={modalStyles.cardItemIcon}>
-                <Icon size={30} name="piggy-bank" />
+                <Icons size={30} name="piggy-bank" color={'#454d66'} />
               </View>
               <View style={modalStyles.cardItemContent}>
                 <Text style={modalStyles.receiptDetailsItemLabel}>
@@ -99,7 +99,11 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                       ]}>
                       {t('Rejected')}
                     </Text>
-                    <Icon color="#454d66" name="question-circle" size={15} />
+                    <Icons
+                      color="#454d66"
+                      name="question-mark-circle-light"
+                      size={15}
+                    />
                   </View>
                 )}
                 {receipt?.status === '2' && (
@@ -112,7 +116,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
 
             <View style={modalStyles.cardItem}>
               <View style={modalStyles.cardItemIcon}>
-                <Icon size={30} name="calendar-alt" />
+                <Icons color="#454d66" name="calendar-light" size={30} />
               </View>
               <View style={modalStyles.cardItemContent}>
                 <Text style={modalStyles.receiptDetailsItemLabel}>
@@ -126,7 +130,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
 
             <View style={modalStyles.cardItem}>
               <View style={modalStyles.cardItemIcon}>
-                <Icon size={30} name="map-marker-alt" />
+                <Icons color="#454d66" name="location-light" size={30} />
               </View>
               <View style={modalStyles.cardItemContent}>
                 <Text style={modalStyles.receiptDetailsItemLabel}>
@@ -140,7 +144,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
 
             <View style={modalStyles.cardItem}>
               <View style={modalStyles.cardItemIcon}>
-                <Icon size={30} name="project-diagram" />
+                <Icons color="#454d66" name="shapes-light" size={30} />
               </View>
               <View style={modalStyles.cardItemContent}>
                 <Text style={modalStyles.receiptDetailsItemLabel}>
@@ -156,16 +160,17 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               style={modalStyles.cardItem}
               onPress={() => onAction(receipt)}>
               <View style={modalStyles.cardItemIcon}>
-                <FAIcon size={30} name="file-text-o" />
+                <Icons size={30} name="receipt-light" color="#454d66" />
               </View>
               <View style={{...modalStyles.cardItemContentRow}}>
-                <Text style={{fontSize: 17, fontFamily: 'OpenSans-Regular'}}>
+                <Text style={{fontSize: 17, fontWeight: '400'}}>
                   {t('View receipt')}
                 </Text>
-                <FAIcon
-                  size={20}
-                  name="chevron-right"
+                <Icons
+                  size={30}
+                  name="angle-right-light"
                   style={{paddingRight: 15}}
+                  color="#454d66"
                 />
               </View>
             </TouchableOpacity>
@@ -179,23 +184,17 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
 const modalStyles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,1)',
+    backgroundColor: '#f8f6f4',
   },
   modalHeader: {
     flexDirection: 'row',
     height: 80,
-    backgroundColor: '#ffffff',
     alignItems: 'center',
-  },
-  modalCloseButton: {
-    fontSize: 27,
-    color: '#454d66',
     paddingLeft: 15,
   },
   modalContent: {
     flex: 1,
     width: '100%',
-    backgroundColor: '#ffffff',
     borderRadius: 0, // No border radius to make it full screen
   },
   modalTitle: {
@@ -209,7 +208,7 @@ const modalStyles = StyleSheet.create({
     paddingLeft: 0,
     paddingBottom: 8,
     paddingRight: 0,
-    fontFamily: 'OpenSans-Bold',
+    fontWeight: 'bold',
   },
   receiptAmountText: {
     fontSize: 55,
@@ -222,7 +221,6 @@ const modalStyles = StyleSheet.create({
     height: 97,
     flexGrow: 0,
     flexShrink: 0,
-    fontFamily: 'OpenSans-Bold',
   },
   receiptDetailsCard: {
     backgroundColor: '#ffffff',
@@ -262,7 +260,7 @@ const modalStyles = StyleSheet.create({
     alignItems: 'center',
   },
   receiptDetailsItemLabel: {
-    fontFamily: 'OpenSans-Bold',
+    fontWeight: 'bold',
     color: '#454d66',
     paddingTop: 16,
     paddingLeft: 0,
@@ -270,7 +268,7 @@ const modalStyles = StyleSheet.create({
     paddingRight: 0,
   },
   receiptDetailsItemValue: {
-    fontFamily: 'OpenSans-Regular',
+    fontWeight: 'normal',
     color: '#454d66',
     paddingTop: 0,
     paddingLeft: 0,
@@ -374,30 +372,32 @@ const styles = StyleSheet.create({
   },
   sectionTitleText: {
     color: '#454d66',
-    fontFamily: 'OpenSans-Bold',
+    fontWeight: '700',
     lineHeight: 24,
     fontSize: 19,
   },
 });
 
-const SectionWrapper = ({section, onSelectedItem}) => (
-  <View style={styles.sectionWrapper}>
-    <View style={styles.sectionTitle}>
-      <Text style={styles.sectionTitleText}>{section.title}</Text>
-    </View>
+const SectionWrapper = ({section, onSelectedItem}) => {
+  return (
+    <View style={styles.sectionWrapper}>
+      <View style={styles.sectionTitle}>
+        <Text style={styles.sectionTitleText}>{section.title}</Text>
+      </View>
 
-    <View style={styles.card}>
-      {section.data.map(item => (
-        <ReceiptItem
-          key={item.uuid}
-          onItemClicked={onSelectedItem}
-          receipt={item}
-          showAmount={true}
-        />
-      ))}
+      <View style={styles.card}>
+        {section.data.map((item, index) => (
+          <ReceiptItem
+            key={`${item?.uuid?.toString()}${index}`}
+            onItemClicked={onSelectedItem}
+            receipt={item}
+            showAmount={true}
+          />
+        ))}
+      </View>
     </View>
-  </View>
-);
+  );
+};
 const ListComponent = ({data = [], onEndReached, isLoading}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
@@ -416,10 +416,13 @@ const ListComponent = ({data = [], onEndReached, isLoading}) => {
   const closeImageModal = () => {
     setImageSelectedReceipt(null);
     setImageVisible(false);
+    setTimeout(() => setModalVisible(true), 100);
+    setSelectedReceipt(selectedReceipt);
   };
 
   const onReceiptImageDisplay = receipt => {
-    setImageVisible(true);
+    setModalVisible(false);
+    setTimeout(() => setImageVisible(true), 100);
     setImageSelectedReceipt(receipt);
   };
 
@@ -431,7 +434,7 @@ const ListComponent = ({data = [], onEndReached, isLoading}) => {
           onEndReachedThreshold={0.5}
           onEndReached={onEndReached}
           sections={data || []}
-          keyExtractor={item => item.uuid.toString()}
+          keyExtractor={(item, index) => `${item?.uuid?.toString()}${index}`}
           renderItem={() => null} // No need to render items here, they will be rendered in the wrapper
           renderSectionHeader={({section}) => (
             <SectionWrapper onSelectedItem={openModal} section={section} />
@@ -448,6 +451,7 @@ const ListComponent = ({data = [], onEndReached, isLoading}) => {
         visible={imageVisible}
         receipt={imageSelectedReceipt}
         onClose={closeImageModal}
+        setSelectedReceipt={setSelectedReceipt}
       />
     </SafeAreaView>
   );
@@ -482,7 +486,7 @@ const ArchivedReceiptsScreen = () => {
     } catch (err) {
       console.log(err);
       // eslint-disable-next-line no-alert
-      alert(err);
+      Alert.prompt(err ?? '');
     }
   };
 

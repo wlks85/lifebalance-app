@@ -4,8 +4,8 @@ import {useNavigation} from '@react-navigation/native';
 import React, {PropsWithChildren} from 'react';
 
 import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
 import {useTranslation} from 'react-i18next';
+import {Icons} from './icons';
 
 interface LayoutProps {
   title: string;
@@ -33,10 +33,10 @@ const Layout = ({
             {!noBackButton && (
               <>
                 <View>
-                  <Icon
+                  <Icons
                     onPress={goBack}
                     style={styles.backButton}
-                    name={'arrowleft'}
+                    name={'arrow-left-light'}
                     color={'#454d66'}
                     size={25}
                   />

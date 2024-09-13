@@ -60,5 +60,9 @@
   "Not Found": "Not Found",
   "New service": "New service",
   "Last used": "Last used",
-  "Service category": "Service category"
+  "Service category": "Service category",
+  "Change password": "Change password",
+  "Logout": "Logout",
+  "Data protection": "Data protection",
+  "Imprint": "Imprint"
 }

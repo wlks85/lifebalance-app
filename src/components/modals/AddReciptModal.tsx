@@ -4,9 +4,9 @@ import {View, Text, StyleSheet} from 'react-native';
 import ModalComponent from '../Modal';
 import AddReceiptForm from '../forms/AddReceipt';
 import {IReceipt} from '../modules/receipt/ReceiptItem';
-import IconAnt from 'react-native-vector-icons/AntDesign';
 import {ModalStyles} from '../../styles';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../icons';
 
 interface AddReceiptModalProps {
   visible: boolean;
@@ -24,19 +24,20 @@ const AddReceiptModal = ({
   const {t} = useTranslation();
   return (
     <ModalComponent
+      // transparent={true}
       onClose={onClose}
       visible={visible}
       headerComponent={
         <>
-          <IconAnt
+          <Icons
             onPress={onClose}
             style={modalStyles.headerButtons}
-            name={'arrowleft'}
+            name={defaultValue ? 'arrow-left-light' : 'close-light'}
             color={'#454d66'}
             size={25}
           />
           <Text style={modalStyles.modalTitle}>
-            {defaultValue ? t('editService') : t('Amount paid')}
+            {defaultValue ? t('Amount paid') : t('New service')}
           </Text>
         </>
       }>

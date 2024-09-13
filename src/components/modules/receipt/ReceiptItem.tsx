@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 //@ts-nocheck
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {View, Text, TouchableOpacity, StyleSheet, Alert} from 'react-native';
 import AddReceiptModal from '../../modals/AddReciptModal';
 import receiptService from '../../../services/ReceiptService';
-import {formatAmount} from '../../../utils';
+import {formatAmount, formatDate} from '../../../utils';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../../icons';
 
 export interface IReceipt {
   title?: string;
@@ -23,13 +23,13 @@ const ReceiptStatus = ({status, amount}) => {
   const {t} = useTranslation();
   if (status === '0') {
     return (
-      <Text style={{color: 'green'}}>
+      <Text style={{color: '#1e4251'}}>
         {amount} {t('reimbursed')}
       </Text>
     );
   }
   if (status === '1') {
-    return <Text style={{color: 'red'}}>{t('Rejected')}</Text>;
+    return <Text style={{color: '#aa040e'}}>{t('Rejected')}</Text>;
   }
   return <Text>{t('Is checked')} …</Text>;
 };
@@ -41,6 +41,7 @@ interface ReceiptItemProps {
   showEditBtn?: boolean;
   onEditBtnPress?: () => void;
   showAmount?: boolean;
+  setLoading?: (val: boolean) => void;
 }
 
 const ReceiptItem = ({
@@ -50,6 +51,7 @@ const ReceiptItem = ({
   showEditBtn,
   onEditBtnPress,
   showAmount,
+  setLoading,
 }: ReceiptItemProps) => {
   const {t} = useTranslation();
   const [showAddReceiptModal, setShowAddReceiptModal] = useState(false);
@@ -68,15 +70,21 @@ const ReceiptItem = ({
         receiptService.getReceiptDetails(receipt?.nid).then(data => {
           setReceiptDetails(data);
         });
-      } catch (err) {}
+      } catch (err) {
+        Alert.prompt(err.message);
+      }
     }
-  }, [disabled, receipt]);
-
+  }, [disabled, receipt, setLoading]);
   return (
     <TouchableOpacity
       style={styles.receipt}
       onPress={() => {
-        onItemClicked(receiptDetails);
+        if (showAmount && receiptDetails?.amount) {
+          onItemClicked?.(receiptDetails);
+        }
+        if (!showAmount) {
+          onItemClicked?.(receiptDetails);
+        }
       }}
       // disabled={disabled}
     >
@@ -86,26 +94,30 @@ const ReceiptItem = ({
       <View style={styles.receiptInfo}>
         <View style={styles.receiptCompanyInfo}>
           <Text style={styles.receiptCompanyText}>
-            {receiptDetails?.providerName}
+            {receiptDetails?.providerName
+              ? receiptDetails?.providerName
+              : `${t('Loading')}...`}
           </Text>
           {showAmount && receiptDetails?.amount !== 'NaN' && (
             <Text style={[styles.receiptCompanyText, {fontWeight: 'bold'}]}>
-              {formatAmount(
-                receiptDetails?.amount === undefined
-                  ? 0
-                  : receiptDetails?.amount / 100,
-              )}{' '}
+              {receiptDetails?.amount
+                ? formatAmount(
+                    receiptDetails?.amount === undefined
+                      ? 0
+                      : receiptDetails?.amount / 100,
+                  )
+                : `${t('Loading')}...`}{' '}
             </Text>
           )}
         </View>
         <View style={styles.receiptDateInfo}>
           {!showAmount ? (
             <Text style={styles.date}>
-              {receiptDetails?.postCode || '1234'}・{t('Yoga-Kurs')}
+              {receiptDetails?.postCode || ''}・{t('Yoga-Kurs')}
             </Text>
           ) : (
             <Text style={styles.date}>
-              {receiptDetails?.postCode || '1234'}・
+              {formatDate(new Date(receiptDetails?.date))}・
               {ReceiptStatus({
                 status: receiptDetails?.status,
                 amount: formatAmount(
@@ -120,9 +132,7 @@ const ReceiptItem = ({
       </View>
       {showEditBtn && (
         <TouchableOpacity onPress={onEditBtnPressHandler}>
-          <Text>
-            <Icon name="pencil" size={25} color="#454d66" />
-          </Text>
+          <Icons name="pen-light" size={25} color="#454d66" />
         </TouchableOpacity>
       )}
       <AddReceiptModal

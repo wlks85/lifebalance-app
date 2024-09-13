@@ -1,19 +1,81 @@
 //@ts-nocheck
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Linking,
+  Alert,
 } from 'react-native';
 import Layout from '../components/Layout';
 import BankBalance from '../components/profile/BankBalanceComponent';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {useAuth} from '../providers/auth-provider';
 import userService from '../services/UserService';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../components/icons';
+import ModalComponent from '../components/Modal';
+
+const demoData = [
+  {
+    title: 'Heading 1',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi maxime aspernatur exercitationem iste, a dignissimos, voluptatum expedita perspiciatis deleniti veritatis, molestias unde mollitia explicabo! Exercitationem sed officia ratione deleniti illo?',
+  },
+  {
+    title: 'Heading 2',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi maxime aspernatur exercitationem iste, a dignissimos, voluptatum expedita perspiciatis deleniti veritatis, molestias unde mollitia explicabo! Exercitationem sed officia ratione deleniti illo?',
+  },
+  {
+    title: 'Heading 3',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi maxime aspernatur exercitationem iste, a dignissimos, voluptatum expedita perspiciatis deleniti veritatis, molestias unde mollitia explicabo! Exercitationem sed officia ratione deleniti illo?',
+  },
+  {
+    title: 'Heading 4',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi maxime aspernatur exercitationem iste, a dignissimos, voluptatum expedita perspiciatis deleniti veritatis, molestias unde mollitia explicabo! Exercitationem sed officia ratione deleniti illo?',
+  },
+  {
+    title: 'Heading 5',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi maxime aspernatur exercitationem iste, a dignissimos, voluptatum expedita perspiciatis deleniti veritatis, molestias unde mollitia explicabo! Exercitationem sed officia ratione deleniti illo?',
+  },
+];
+
+const DataProtectionModal = ({visible, onClose, children}) => {
+  return (
+    <ModalComponent
+      visible={visible}
+      onClose={onClose}
+      headerComponent={
+        <TouchableOpacity onPress={onClose}>
+          <Icons name="close-light" size={25} color={'#454d66'} />
+        </TouchableOpacity>
+      }>
+      {children}
+    </ModalComponent>
+  );
+};
+
+const DataProtectionModalContent = ({data}) => (
+  <ScrollView
+    contentContainerStyle={styles.dataProtectionModalContentContainer}>
+    {data?.map((item, index) => (
+      <View key={index} style={styles.dataProtectionModalContentBox}>
+        <Text style={styles.dataProtectionModalContentTitle}>
+          {item?.title}
+        </Text>
+        <Text style={styles.dataProtectionModalContentPara}>
+          {item?.content}
+        </Text>
+      </View>
+    ))}
+  </ScrollView>
+);
 
 const ProfilePageListItems = ({items}) => {
   const renderListItem = item => {
@@ -22,18 +84,18 @@ const ProfilePageListItems = ({items}) => {
         key={Math.random()}
         style={styles.menuItem}
         onPress={item?.onPress}>
-        <Icon
-          style={styles.menuIcon}
+        <Icons
           name={item.icon}
           size={30}
-          color="#6200ee"
+          style={styles.menuIcon}
+          color={'#454d66'}
         />
         <Text style={styles.menuText}>{item.title}</Text>
-        <Icon
+        <Icons
           style={[styles.menuIcon, styles.menuIconRight]}
-          name="chevron-right"
+          name="angle-right-light"
           size={30}
-          color="#6200ee"
+          color="#454d66"
         />
       </TouchableOpacity>
     );
@@ -47,19 +109,29 @@ const ProfilePageListItems = ({items}) => {
 };
 
 const OtherInformation = () => {
+  const {t} = useTranslation();
+  const [showDataProtection, setShowDataProtection] = useState(false);
+  const handleClose = () => {
+    setShowDataProtection(false);
+  };
   const items = [
     {
-      title: 'Data Protection',
-      icon: 'home',
+      title: t('Data protection'),
+      icon: 'user-shield-light',
+      onPress: () => setShowDataProtection(true),
     },
     {
-      title: 'Data M',
-      icon: 'home',
+      title: t('Imprint'),
+      icon: 'file-lines-light',
+      onPress: () => setShowDataProtection(true),
     },
   ];
   return (
     <>
       <ProfilePageListItems items={items} />
+      <DataProtectionModal visible={showDataProtection} onClose={handleClose}>
+        <DataProtectionModalContent data={demoData} />
+      </DataProtectionModal>
     </>
   );
 };
@@ -69,18 +141,28 @@ const Security = ({user}) => {
   const {setUserDetails} = useAuth();
   const navigation = useNavigation();
   const {t} = useTranslation();
+  const handleChangePassword = async () => {
+    try {
+      const url = 'https://w3.lbplus.de/user/password';
+      await Linking.openURL(url);
+    } catch (err) {
+      Alert.prompt('Please try again later!');
+      console.log(err.message);
+    }
+  };
   const securityButtons = [
     {
       title: 'Face-ID',
-      icon: 'home',
+      icon: 'view-finder-light',
     },
     {
-      title: 'Password Management',
-      icon: 'lock',
+      title: t('Change password'),
+      icon: 'lock-light',
+      onPress: handleChangePassword,
     },
     {
-      title: 'Logout',
-      icon: 'sign-out',
+      title: t('Logout'),
+      icon: 'exit-light',
       onPress: handleLogout,
     },
   ];
@@ -143,7 +225,7 @@ const ProfileScreen = () => {
   };
   return (
     <Layout title="Profil">
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.container}>
         <BasicInformaton user={user} />
         <BankBalance user={user} />
         <SectionLabel label="Schicherheit" />
@@ -156,6 +238,9 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    paddingBottom: 90,
+  },
   navigationCard: {
     backgroundColor: '#ffffff',
     borderRadius: 25,
@@ -199,6 +284,24 @@ const styles = StyleSheet.create({
     top: '20%',
     overflow: 'scroll',
     gap: 16,
+  },
+  dataProtectionModalContentContainer: {
+    display: 'flex',
+    gap: 30,
+  },
+  dataProtectionModalContentBox: {
+    display: 'flex',
+    gap: 20,
+  },
+  dataProtectionModalContentTitle: {
+    fontFamily: 'PTSerif-Regular',
+    fontSize: 24,
+    color: '#454d66',
+  },
+  dataProtectionModalContentPara: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 15,
+    color: '#454d66',
   },
 });
 

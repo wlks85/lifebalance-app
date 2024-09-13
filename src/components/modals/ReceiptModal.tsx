@@ -14,8 +14,6 @@ import {
   Alert,
 } from 'react-native';
 import ModalComponent from '../Modal';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import IconAnt from 'react-native-vector-icons/AntDesign';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {TextInput} from 'react-native-gesture-handler';
 import ReceiptOverviewModal from './ReceiptOverviewModal';
@@ -26,19 +24,27 @@ import {generateReceiptTitle} from '../../utils';
 import AppActivityIndicator from '../AppActivityIndicator';
 import {ModalStyles} from '../../styles';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../icons';
 
 const ReceiptModalHeader = ({onClose}) => {
   const {t} = useTranslation();
   return (
     <>
-      <IconAnt
+      <Icons
         onPress={onClose}
         style={modalStyles.headerButtons}
-        name={'arrowleft'}
+        name={'arrow-left-light'}
         color={'#454d66'}
         size={25}
       />
       <Text style={modalStyles.modalTitle}>{t('Check quality')}</Text>
+      <Icons
+        onPress={onClose}
+        style={modalStyles.headerButtons}
+        name={'question-mark-circle-light'}
+        color={'#454d66'}
+        size={25}
+      />
     </>
   );
 };
@@ -171,19 +177,25 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   }, [receipt?.amount]);
   return (
     <ModalComponent
-      transparent={true}
+      // transparent={true}
       onClose={onClose}
       visible={visible}
       headerComponent={
         <>
-          <IconAnt
+          <Icons
             onPress={onClose}
             style={modalStyles.headerButtons}
-            name={'arrowleft'}
+            name={'arrow-left-light'}
             color={'#454d66'}
             size={25}
           />
           <Text style={modalStyles.modalTitle}>{t('Amount paid')}</Text>
+          <Icons
+            style={modalStyles.headerButtons}
+            name={'question-mark-circle-light'}
+            color={'#454d66'}
+            size={25}
+          />
         </>
       }>
       {!!receipt && (
@@ -201,7 +213,15 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                 placeholder="0,00 €"
                 placeholderTextColor={'#454d66'}
                 value={amount ? amount : ''}
-                onChangeText={value => setAmount(value)}
+                onChangeText={value => {
+                  const isValid = /^\d*[.,]?\d*$/;
+                  if (isValid.test(value)) {
+                    setAmount(value);
+                  }
+                  if (value === '') {
+                    setAmount('');
+                  }
+                }}
                 keyboardType="numeric"
               />
             </View>
@@ -247,7 +267,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                       <Text style={modalStyles.photoBtnTitle}>
                         {t('Take a photo of the receipt')}
                       </Text>
-                      <Icon name="camera" size={25} />
+                      <Icons name="camera-light" size={25} color={'#454d66'} />
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={modalStyles.takeOrUploadPhotoBtn}
@@ -255,7 +275,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                       <Text style={modalStyles.photoBtnTitle}>
                         {t('Upload receipt')}
                       </Text>
-                      <IconAnt name="upload" size={25} />
+                      <Icons name="upload-light" size={25} color={'#454d66'} />
                     </TouchableOpacity>
                   </View>
                 </TouchableWithoutFeedback>

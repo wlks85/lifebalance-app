@@ -11,12 +11,11 @@ import RecordReceiptScreen from '../screens/RecordReceiptScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ArchivedReceiptsScreen from '../screens/ArchivedReceiptsScreen';
 import AppLogin from '../screens/AuthScreen';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useTheme} from '../theme';
 import {useTranslation} from 'react-i18next';
 import {Text, View} from 'react-native';
+import {Icons} from '../components/icons';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -37,23 +36,23 @@ const MainNavigation = () => {
             let iconName: string;
             switch (route.params?.title) {
               case t('navigation.home'):
-                iconName = focused ? 'home' : 'home';
+                iconName = focused ? 'home-solid' : 'home-light';
                 break;
               case t('navigation.receipt'):
-                iconName = focused ? 'file-text' : 'file-text-o';
+                iconName = focused ? 'receipt-solid' : 'receipt-light';
                 break;
               case t('navigation.archive'):
-                iconName = focused ? 'folder' : 'folder-o';
+                iconName = focused ? 'folder-solid' : 'folder-light';
                 break;
               case t('navigation.profile'):
-                iconName = focused ? 'user' : 'user-o';
+                iconName = focused ? 'user-solid' : 'user-light';
                 break;
               default:
                 iconName = 'circle';
                 break;
             }
 
-            return <Icon name={iconName} size={size} color={color} />;
+            return <Icons name={iconName} size={size} color={color} />;
           },
           headerShown: false,
           activeColor: '#309975',
@@ -94,7 +93,11 @@ const MainNavigation = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Icon name="home" size={size} color={color} />
+              {focused ? (
+                <Icons name="home-solid" size={size} color={color} />
+              ) : (
+                <Icons name="home-light" size={size} color={color} />
+              )}
               <Text
                 // eslint-disable-next-line react-native/no-inline-styles
                 style={{
@@ -125,8 +128,8 @@ const MainNavigation = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Icon
-                name={focused ? 'file-text' : 'file-text-o'}
+              <Icons
+                name={focused ? 'receipt-dark' : 'receipt-light'}
                 size={size}
                 color={color}
               />
@@ -160,8 +163,8 @@ const MainNavigation = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Icon
-                name={focused ? 'folder' : 'folder-o'}
+              <Icons
+                name={focused ? 'folder-solid' : 'folder-light'}
                 size={size}
                 color={color}
               />
@@ -195,8 +198,8 @@ const MainNavigation = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Icon
-                name={focused ? 'user' : 'user-o'}
+              <Icons
+                name={focused ? 'user-solid' : 'user-light'}
                 size={size}
                 color={color}
               />

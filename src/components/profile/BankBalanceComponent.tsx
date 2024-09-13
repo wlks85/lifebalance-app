@@ -3,8 +3,8 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../icons';
 
 const BankBalance = ({user, hasNavigation = true}: any) => {
   const {navigate} = useNavigation();
@@ -25,7 +25,7 @@ const BankBalance = ({user, hasNavigation = true}: any) => {
             <Text style={styles.cardTitle}>{t('Account balance')}</Text>
           </View>
           <View>
-            <Icon name="credit-card" size={30} color={'#ffffff'} />
+            <Icons name="wallet-light" size={30} color={'#ffffff'} />
           </View>
         </View>
         <View style={styles.balanceContainer}>
@@ -40,7 +40,7 @@ const BankBalance = ({user, hasNavigation = true}: any) => {
           <Text style={styles.cardTitle}>{t('Account balance')}</Text>
         </View>
         <View>
-          <Icon name="credit-card" size={30} color={'#ffffff'} />
+          <Icons name="wallet-light" size={30} color={'#ffffff'} />
         </View>
       </View>
       <View style={styles.balanceContainer}>

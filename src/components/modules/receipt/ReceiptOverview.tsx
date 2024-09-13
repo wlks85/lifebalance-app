@@ -1,11 +1,10 @@
 /* eslint-disable no-alert */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import ReceiptItem, {IReceipt} from './ReceiptItem';
 import FieldLabel from '../../ui/FieldLabel';
 import ItemCard from './ItemCard';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import NextButton from '../../ui/NextButton';
 import {ScrollView} from 'react-native-gesture-handler';
 import AddReceiptModal from '../../modals/AddReciptModal';
@@ -15,6 +14,7 @@ import AddReceiptCompleted from '../../modals/AddReceiptCompletedModal';
 import receiptService from '../../../services/ReceiptService';
 import {useAuth} from '../../../providers/auth-provider';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../../icons';
 
 const ReceiptOverview = ({receipt, onClose}) => {
   const {t} = useTranslation();
@@ -45,7 +45,7 @@ const ReceiptOverview = ({receipt, onClose}) => {
       setShowReceiptImageModal(false);
       setLoading(false);
     } catch (err) {
-      alert(err?.message ?? t('Something went wrong'));
+      Alert.prompt(err?.message ?? t('Something went wrong'));
       setLoading(false);
     }
   };
@@ -66,7 +66,7 @@ const ReceiptOverview = ({receipt, onClose}) => {
             <ItemCard
               item={{
                 title: receiptInfo?.amount,
-                logo: '€',
+                logo: <Icons name="euro-light" size={20} />,
                 subtitle: receiptInfo?.amount,
               }}
               showEditBtn={true}
@@ -79,7 +79,7 @@ const ReceiptOverview = ({receipt, onClose}) => {
             <ItemCard
               item={{
                 title: receiptInfo?.title ?? '123-1234567-lbBeleg',
-                logo: <Icon name="file-text-o" size={20} />,
+                logo: <Icons name="receipt-light" size={20} />,
                 subtitle: t('photo'),
               }}
               showEditBtn={true}
