@@ -43,7 +43,6 @@ const ReceiptImageModal = ({receipt, visible, onClose, setSelectedReceipt}) => {
     setSelectedReceipt?.(receipt);
     onClose?.();
   };
-  console.log({receipt});
   return (
     <ModalComponent visible={visible} onClose={handleClose}>
       {receipt && (

@@ -46,10 +46,12 @@ class ReceiptService {
     const providerInfo = result?.field_address?.und[0];
     let amount = result?.field_amount_gross.und?.[0]?.value;
     let price = result?.field_price_gross.und?.[0]?.value;
-    const fileName = result?.field_media?.und?.[0]?.filename;
+    const fileName =
+      result?.field_media?.und?.[0]?.filename ||
+      result?.field_uploads_prf?.und?.[0]?.filename;
     // eslint-disable-next-line radix
     const date = new Date(parseInt(result?.created) * 1000);
-    const image = `https://w3.lbplus.de/sites/all/files/public/receipts/${fileName}`;
+    const image = `https://w3.lbplus.de/sites/all/files/public/${fileName}`;
     if (
       amount === undefined ||
       amount === 'undefined' ||
@@ -126,7 +128,7 @@ class ReceiptService {
       field_uploads_prf: {
         und: [
           {
-            fid: '1510',
+            fid: values?.fid,
           },
         ],
       },
