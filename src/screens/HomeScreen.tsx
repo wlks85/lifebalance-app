@@ -37,7 +37,7 @@ const RenderNavigation = () => {
             style={styles.menuIcon}
             name="receipt-light"
             size={30}
-            color="#6200ee"
+            color="#454d66"
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -48,7 +48,7 @@ const RenderNavigation = () => {
             style={styles.menuIcon}
             name="folder-light"
             size={30}
-            color="#6200ee"
+            color="#454d66"
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -59,7 +59,7 @@ const RenderNavigation = () => {
             style={styles.menuIcon}
             name="user-light"
             size={30}
-            color="#6200ee"
+            color="#454d66"
           />
         </TouchableOpacity>
       </View>

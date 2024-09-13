@@ -93,7 +93,11 @@ const MainNavigation = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Icons name="home-light" size={size} color={color} />
+              {focused ? (
+                <Icons name="home-solid" size={size} color={color} />
+              ) : (
+                <Icons name="home-light" size={size} color={color} />
+              )}
               <Text
                 // eslint-disable-next-line react-native/no-inline-styles
                 style={{
