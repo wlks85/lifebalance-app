@@ -379,24 +379,26 @@ const styles = StyleSheet.create({
   },
 });
 
-const SectionWrapper = ({section, onSelectedItem}) => (
-  <View style={styles.sectionWrapper}>
-    <View style={styles.sectionTitle}>
-      <Text style={styles.sectionTitleText}>{section.title}</Text>
-    </View>
+const SectionWrapper = ({section, onSelectedItem}) => {
+  return (
+    <View style={styles.sectionWrapper}>
+      <View style={styles.sectionTitle}>
+        <Text style={styles.sectionTitleText}>{section.title}</Text>
+      </View>
 
-    <View style={styles.card}>
-      {section.data.map(item => (
-        <ReceiptItem
-          key={item.uuid}
-          onItemClicked={onSelectedItem}
-          receipt={item}
-          showAmount={true}
-        />
-      ))}
+      <View style={styles.card}>
+        {section.data.map((item, index) => (
+          <ReceiptItem
+            key={`${item?.uuid?.toString()}${index}`}
+            onItemClicked={onSelectedItem}
+            receipt={item}
+            showAmount={true}
+          />
+        ))}
+      </View>
     </View>
-  </View>
-);
+  );
+};
 const ListComponent = ({data = [], onEndReached, isLoading}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
@@ -430,7 +432,7 @@ const ListComponent = ({data = [], onEndReached, isLoading}) => {
           onEndReachedThreshold={0.5}
           onEndReached={onEndReached}
           sections={data || []}
-          keyExtractor={item => item.uuid.toString()}
+          keyExtractor={(item, index) => `${item?.uuid?.toString()}${index}`}
           renderItem={() => null} // No need to render items here, they will be rendered in the wrapper
           renderSectionHeader={({section}) => (
             <SectionWrapper onSelectedItem={openModal} section={section} />

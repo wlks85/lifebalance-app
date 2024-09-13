@@ -56,9 +56,9 @@ const SectionWrapper = ({section, onSelectedItem}) => (
     </View>
 
     <View style={styles.card}>
-      {section?.data?.map(item => (
+      {section?.data?.map((item, index) => (
         <ReceiptItem
-          key={item?.uuid}
+          key={`${item.uuid}${index}`}
           onItemClicked={onSelectedItem}
           receipt={item}
           disabled={false}
@@ -87,7 +87,7 @@ const ListComponent = ({
           onEndReached={onEndReached}
           scrollEnabled={Platform.OS === 'ios' ? false : true}
           sections={data}
-          keyExtractor={item => item.uuid.toString()}
+          keyExtractor={(item, index) => `${item.uuid}${index}`}
           renderItem={() => null}
           renderSectionHeader={({section}) => (
             <SectionWrapper
