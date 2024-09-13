@@ -14,32 +14,25 @@ import {
 import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
 import {formatDate, formatAmount, mergeDataByTitle} from '../utils';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import FAIcon from 'react-native-vector-icons/FontAwesome';
-import AntIcon from 'react-native-vector-icons/AntDesign';
 import {ReceiptService} from '../services';
 import ReceiptItem from '../components/modules/receipt/ReceiptItem';
 import AppActivityIndicator from '../components/AppActivityIndicator';
 import {useTranslation} from 'react-i18next';
+import {Icons} from '../components/icons';
 
 const ModalComponent = ({visible, onClose, children}) => (
   <Modal animationType="slide" visible={visible} onRequestClose={onClose}>
     <SafeAreaView style={{flex: 1}}>
       <View style={modalStyles.modalContainer}>
         <View style={modalStyles.modalHeader}>
-          <AntIcon
-            name="close"
+          <Icons
             onPress={onClose}
-            style={modalStyles.modalCloseButton}
+            color="#454d66"
+            name="close-light"
+            size={30}
           />
         </View>
-        <View style={modalStyles.modalContent}>
-          {children}
-          {/* <View style={{height: 30,width: '100%',
-          paddingBottom: 20,
-          marginBottom: 100,
-        }}></View> */}
-        </View>
+        <View style={modalStyles.modalContent}>{children}</View>
       </View>
     </SafeAreaView>
   </Modal>
@@ -75,7 +68,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
           <View style={modalStyles.receiptDetailsCard}>
             <View style={modalStyles.cardItem}>
               <View style={modalStyles.cardItemIcon}>
-                <Icon size={30} name="piggy-bank" />
+                <Icons size={30} name="piggy-bank" color={'#454d66'} />
               </View>
               <View style={modalStyles.cardItemContent}>
                 <Text style={modalStyles.receiptDetailsItemLabel}>
@@ -99,7 +92,11 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                       ]}>
                       {t('Rejected')}
                     </Text>
-                    <Icon color="#454d66" name="question-circle" size={15} />
+                    <Icons
+                      color="#454d66"
+                      name="question-mark-circle-light"
+                      size={15}
+                    />
                   </View>
                 )}
                 {receipt?.status === '2' && (
@@ -112,7 +109,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
 
             <View style={modalStyles.cardItem}>
               <View style={modalStyles.cardItemIcon}>
-                <Icon size={30} name="calendar-alt" />
+                <Icons color="#454d66" name="calendar-light" size={30} />
               </View>
               <View style={modalStyles.cardItemContent}>
                 <Text style={modalStyles.receiptDetailsItemLabel}>
@@ -126,7 +123,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
 
             <View style={modalStyles.cardItem}>
               <View style={modalStyles.cardItemIcon}>
-                <Icon size={30} name="map-marker-alt" />
+                <Icons color="#454d66" name="location-light" size={30} />
               </View>
               <View style={modalStyles.cardItemContent}>
                 <Text style={modalStyles.receiptDetailsItemLabel}>
@@ -140,7 +137,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
 
             <View style={modalStyles.cardItem}>
               <View style={modalStyles.cardItemIcon}>
-                <Icon size={30} name="project-diagram" />
+                <Icons color="#454d66" name="shapes-light" size={30} />
               </View>
               <View style={modalStyles.cardItemContent}>
                 <Text style={modalStyles.receiptDetailsItemLabel}>
@@ -156,16 +153,17 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               style={modalStyles.cardItem}
               onPress={() => onAction(receipt)}>
               <View style={modalStyles.cardItemIcon}>
-                <FAIcon size={30} name="file-text-o" />
+                <Icons size={30} name="receipt-light" color="#454d66" />
               </View>
               <View style={{...modalStyles.cardItemContentRow}}>
                 <Text style={{fontSize: 17, fontWeight: '400'}}>
                   {t('View receipt')}
                 </Text>
-                <FAIcon
-                  size={20}
-                  name="chevron-right"
+                <Icons
+                  size={30}
+                  name="angle-right-light"
                   style={{paddingRight: 15}}
+                  color="#454d66"
                 />
               </View>
             </TouchableOpacity>
@@ -186,10 +184,6 @@ const modalStyles = StyleSheet.create({
     height: 80,
     backgroundColor: '#ffffff',
     alignItems: 'center',
-  },
-  modalCloseButton: {
-    fontSize: 27,
-    color: '#454d66',
     paddingLeft: 15,
   },
   modalContent: {
