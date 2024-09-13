@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Alert} from 'react-native';
 import AddReceiptModal from '../../modals/AddReciptModal';
 import receiptService from '../../../services/ReceiptService';
-import {formatAmount} from '../../../utils';
+import {formatAmount, formatDate} from '../../../utils';
 import {useTranslation} from 'react-i18next';
 import {Icons} from '../../icons';
 
@@ -23,13 +23,13 @@ const ReceiptStatus = ({status, amount}) => {
   const {t} = useTranslation();
   if (status === '0') {
     return (
-      <Text style={{color: 'green'}}>
+      <Text style={{color: '#1e4251'}}>
         {amount} {t('reimbursed')}
       </Text>
     );
   }
   if (status === '1') {
-    return <Text style={{color: 'red'}}>{t('Rejected')}</Text>;
+    return <Text style={{color: '#aa040e'}}>{t('Rejected')}</Text>;
   }
   return <Text>{t('Is checked')} …</Text>;
 };
@@ -98,7 +98,6 @@ const ReceiptItem = ({
               ? receiptDetails?.providerName
               : `${t('Loading')}...`}
           </Text>
-          {/* {showAmount && !receiptDetails?.amount && <Text>Loading...</Text>} */}
           {showAmount && receiptDetails?.amount !== 'NaN' && (
             <Text style={[styles.receiptCompanyText, {fontWeight: 'bold'}]}>
               {receiptDetails?.amount
@@ -114,11 +113,11 @@ const ReceiptItem = ({
         <View style={styles.receiptDateInfo}>
           {!showAmount ? (
             <Text style={styles.date}>
-              {receiptDetails?.postCode || '1234'}・{t('Yoga-Kurs')}
+              {receiptDetails?.postCode || ''}・{t('Yoga-Kurs')}
             </Text>
           ) : (
             <Text style={styles.date}>
-              {receiptDetails?.postCode || '1234'}・
+              {formatDate(new Date(receiptDetails?.date))}・
               {ReceiptStatus({
                 status: receiptDetails?.status,
                 amount: formatAmount(

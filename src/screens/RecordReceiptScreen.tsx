@@ -9,6 +9,7 @@ import {
   SectionList,
   Platform,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
@@ -39,7 +40,6 @@ const Header = ({goBack}: HeaderProps) => {
       <Text style={styles.headerTitle}>{t('service')}</Text>
 
       <Icons
-        onPress={goBack}
         style={styles.headerButtons}
         name={'search-light'}
         color={'#454d66'}
@@ -155,11 +155,20 @@ const ReceiptScreen = () => {
         setPage(pre => pre + 1);
       }
     } catch (err) {
-      console.log(err);
       // eslint-disable-next-line no-alert
-      alert(err);
+      Alert.prompt(err ?? '');
     }
   };
+
+  function handleInfinityScroll(event) {
+    let mHeight = event.layoutMeasurement.height;
+    let cSize = event.contentSize.height;
+    let Y = event.contentOffset.y;
+    if (Math.ceil(mHeight + Y) >= cSize) {
+      return true;
+    }
+    return false;
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -181,8 +190,14 @@ const ReceiptScreen = () => {
         </View>
       </TouchableOpacity>
       {Platform.OS === 'ios' ? (
-        // eslint-disable-next-line react-native/no-inline-styles
-        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+        <ScrollView
+          // eslint-disable-next-line react-native/no-inline-styles
+          contentContainerStyle={{flexGrow: 1}}
+          onScroll={({nativeEvent}) => {
+            if (handleInfinityScroll(nativeEvent)) {
+              fetchMore();
+            }
+          }}>
           <ListComponent
             data={receiptData || []}
             isLoading={isLoading}
@@ -222,7 +237,6 @@ const styles = StyleSheet.create({
     height: 80,
     fontFamily: 'OpenSans-Bold',
     paddingVertical: 15,
-    // backgroundColor:
   },
   headerButtons: {
     fontWeight: '100',
@@ -233,7 +247,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     height: 48,
     justifyContent: 'center',
-    // flex: 5,
   },
   headerTitle: {
     textAlign: 'center',

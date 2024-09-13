@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import ReceiptItem, {IReceipt} from './ReceiptItem';
 import FieldLabel from '../../ui/FieldLabel';
 import ItemCard from './ItemCard';
@@ -45,7 +45,7 @@ const ReceiptOverview = ({receipt, onClose}) => {
       setShowReceiptImageModal(false);
       setLoading(false);
     } catch (err) {
-      alert(err?.message ?? t('Something went wrong'));
+      Alert.prompt(err?.message ?? t('Something went wrong'));
       setLoading(false);
     }
   };

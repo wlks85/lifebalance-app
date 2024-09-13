@@ -10,6 +10,7 @@ import {
   SectionList,
   Modal,
   Image,
+  Alert,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Layout from '../components/Layout';
@@ -183,19 +184,17 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
 const modalStyles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,1)',
+    backgroundColor: '#f8f6f4',
   },
   modalHeader: {
     flexDirection: 'row',
     height: 80,
-    backgroundColor: '#ffffff',
     alignItems: 'center',
     paddingLeft: 15,
   },
   modalContent: {
     flex: 1,
     width: '100%',
-    backgroundColor: '#ffffff',
     borderRadius: 0, // No border radius to make it full screen
   },
   modalTitle: {
@@ -487,7 +486,7 @@ const ArchivedReceiptsScreen = () => {
     } catch (err) {
       console.log(err);
       // eslint-disable-next-line no-alert
-      alert(err);
+      Alert.prompt(err ?? '');
     }
   };
 

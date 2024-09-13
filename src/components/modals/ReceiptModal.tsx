@@ -214,8 +214,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                 placeholderTextColor={'#454d66'}
                 value={amount ? amount : ''}
                 onChangeText={value => {
-                  console.log(value);
-                  const isValid = /^(0|[1-9][0-9]*)$/;
+                  const isValid = /^\d*[.,]?\d*$/;
                   if (isValid.test(value)) {
                     setAmount(value);
                   }
