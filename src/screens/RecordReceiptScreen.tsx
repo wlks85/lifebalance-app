@@ -156,7 +156,7 @@ const ReceiptScreen = () => {
       }
     } catch (err) {
       // eslint-disable-next-line no-alert
-      Alert.prompt(err ?? '');
+      Alert.alert(err ?? '');
     }
   };
 

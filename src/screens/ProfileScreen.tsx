@@ -146,7 +146,7 @@ const Security = ({user}) => {
       const url = 'https://w3.lbplus.de/user/password';
       await Linking.openURL(url);
     } catch (err) {
-      Alert.prompt('Please try again later!');
+      Alert.alert('Please try again later!');
       console.log(err.message);
     }
   };

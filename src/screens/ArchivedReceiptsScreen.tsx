@@ -486,7 +486,7 @@ const ArchivedReceiptsScreen = () => {
     } catch (err) {
       console.log(err);
       // eslint-disable-next-line no-alert
-      Alert.prompt(err ?? '');
+      Alert.alert(err ?? '');
     }
   };
 

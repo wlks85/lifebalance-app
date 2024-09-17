@@ -45,7 +45,7 @@ const ReceiptOverview = ({receipt, onClose}) => {
       setShowReceiptImageModal(false);
       setLoading(false);
     } catch (err) {
-      Alert.prompt(err?.message ?? t('Something went wrong'));
+      Alert.alert(err?.message ?? t('Something went wrong'));
       setLoading(false);
     }
   };

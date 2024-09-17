@@ -71,7 +71,7 @@ const ReceiptItem = ({
           setReceiptDetails(data);
         });
       } catch (err) {
-        Alert.prompt(err.message);
+        Alert.alert(err.message);
       }
     }
   }, [disabled, receipt, setLoading]);
