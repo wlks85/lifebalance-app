@@ -80,7 +80,7 @@ const HomeScreen = () => {
     <SafeAreaView style={{flex: 1}}>
       <ScrollView style={styles.container}>
         <ImageBackground
-          source={require('../assets/u11_state0.png')}
+          source={require('../assets/bg.png')}
           style={{
             width: 'auto',
             height: 250,
