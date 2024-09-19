@@ -12,7 +12,7 @@ interface EditAmountModalProps {
   receipt: Partial<IReceipt>;
   visible: boolean;
   onClose: () => void;
-  onAction: (values: number) => void;
+  onAction: (values: string) => void;
 }
 
 const EditAmountModal = ({
@@ -22,12 +22,29 @@ const EditAmountModal = ({
   onAction,
 }: EditAmountModalProps) => {
   const [amount, setAmount] = useState('0,00 €');
+  const [error, setError] = useState('');
   const {userDetails} = useAuth();
   const {t} = useTranslation();
 
+  const isValid = (value: string) => {
+    const germanNumberPattern =
+      /^(\d{1,3}(\.\d{3})*,\d{0,2}|\d{1,3}(\.\d{3})*|\d*)$/;
+
+    // Validate and set value if it matches German numeric format
+    if (germanNumberPattern.test(value)) {
+      setError('');
+      return true;
+    } else {
+      setError(t('Invalid Number'));
+      return false;
+    }
+  };
+
   const handleEditAmount = () => {
-    onAction?.(Number(amount));
-    onClose?.();
+    if (isValid(amount)) {
+      onAction?.(amount);
+      onClose?.();
+    }
   };
 
   useEffect(() => {
@@ -41,7 +58,6 @@ const EditAmountModal = ({
         <>
           <Icons
             onPress={onClose}
-            style={modalStyles.headerButtons}
             name={'arrow-left-light'}
             color={'#454d66'}
             size={25}
@@ -64,9 +80,13 @@ const EditAmountModal = ({
                 placeholder="0,00 €"
                 placeholderTextColor={'#454d66'}
                 value={amount ?? '0,00 €'}
-                onChangeText={value => setAmount(value)}
-                keyboardType="numeric"
+                onChangeText={value => {
+                  setAmount(value);
+                  isValid(value);
+                }}
+                // keyboardType="numeric"
               />
+              {error && <Text style={modalStyles.amountError}>{error}</Text>}
             </View>
             <View style={modalStyles.amountsSection}>
               <View style={modalStyles.amountInfo}>
@@ -154,6 +174,10 @@ const modalStyles = StyleSheet.create({
     fontSize: 48,
     fontWeight: '700',
     fontFamily: 'OpenSans-Bold',
+  },
+  amountError: {
+    color: 'red',
+    fontFamily: 'OpenSans-Regular',
   },
   amountsSection: {
     display: 'flex',

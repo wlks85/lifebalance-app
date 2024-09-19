@@ -6,7 +6,7 @@ import {View, Text} from 'react-native';
 
 const FaIcons = (props: SvgProperty) => {
   const {size, color, name} = props;
-  const d = getPath(name);
+  const {d, viewBox} = getPath(name);
   if (!d) {
     return (
       <>
@@ -17,7 +17,7 @@ const FaIcons = (props: SvgProperty) => {
     );
   }
   return (
-    <Svg viewBox="0 0 576 512" width={size} height={size} {...props}>
+    <Svg viewBox={viewBox} width={size} height={size} {...props}>
       <Path fill={color} d={d} {...props} />
     </Svg>
   );

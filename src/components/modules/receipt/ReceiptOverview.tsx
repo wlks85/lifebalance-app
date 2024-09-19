@@ -45,7 +45,7 @@ const ReceiptOverview = ({receipt, onClose}) => {
       setShowReceiptImageModal(false);
       setLoading(false);
     } catch (err) {
-      Alert.prompt(err?.message ?? t('Something went wrong'));
+      Alert.alert(`Server communication error: ${err?.status}`);
       setLoading(false);
     }
   };
@@ -72,6 +72,7 @@ const ReceiptOverview = ({receipt, onClose}) => {
               showEditBtn={true}
               onItemClicked={() => {}}
               onEditBtnPress={() => setShowEditAmountModal(true)}
+              showCurrency={true}
             />
           </FieldLabel>
 

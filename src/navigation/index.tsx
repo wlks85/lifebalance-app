@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 //@ts-nocheck
 import React from 'react';
 import {
@@ -14,7 +15,7 @@ import AppLogin from '../screens/AuthScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useTheme} from '../theme';
 import {useTranslation} from 'react-i18next';
-import {Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {Icons} from '../components/icons';
 
 const Tab = createBottomTabNavigator();
@@ -60,8 +61,6 @@ const MainNavigation = () => {
           tabBarActiveTintColor: '#309975',
           tabBarInactiveTintColor: '#454d66',
           tabBarLabelStyle: {
-            fontSize: 14,
-            fontWeight: 'bold',
             display: 'none',
           },
           tabBarStyle: {
@@ -84,28 +83,17 @@ const MainNavigation = () => {
         options={{
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({focused, color, size}) => (
-            <View
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <View style={styles.navItem}>
               {focused ? (
                 <Icons name="home-solid" size={size} color={color} />
               ) : (
                 <Icons name="home-light" size={size} color={color} />
               )}
               <Text
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={{
-                  fontSize: 12,
-                  fontWeight: 'bold',
-                  fontFamily: '"Open Sans", sans-serif',
-                  color: focused ? '#309975' : '#454d66',
-                }}>
+                style={[
+                  styles.navItemText,
+                  {color: focused ? '#309975' : '#454d66'},
+                ]}>
                 {t('navigation.home')}
               </Text>
             </View>
@@ -119,28 +107,17 @@ const MainNavigation = () => {
         options={{
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({focused, size, color}) => (
-            <View
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <View style={styles.navItem}>
               <Icons
                 name={focused ? 'receipt-dark' : 'receipt-light'}
                 size={size}
                 color={color}
               />
               <Text
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={{
-                  fontSize: 12,
-                  fontWeight: 'bold',
-                  fontFamily: '"Open Sans", sans-serif',
-                  color: focused ? '#309975' : '#454d66',
-                }}>
+                style={[
+                  styles.navItemText,
+                  {color: focused ? '#309975' : '#454d66'},
+                ]}>
                 {t('navigation.receipt')}
               </Text>
             </View>
@@ -154,28 +131,17 @@ const MainNavigation = () => {
         options={{
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({focused, size, color}) => (
-            <View
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <View style={styles.navItem}>
               <Icons
                 name={focused ? 'folder-solid' : 'folder-light'}
                 size={size}
                 color={color}
               />
               <Text
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={{
-                  fontSize: 12,
-                  fontWeight: 'bold',
-                  fontFamily: '"Open Sans", sans-serif',
-                  color: focused ? '#309975' : '#454d66',
-                }}>
+                style={[
+                  styles.navItemText,
+                  {color: focused ? '#309975' : '#454d66'},
+                ]}>
                 {t('navigation.archive')}
               </Text>
             </View>
@@ -189,28 +155,17 @@ const MainNavigation = () => {
         options={{
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({focused, size, color}) => (
-            <View
-              // eslint-disable-next-line react-native/no-inline-styles
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <View style={styles.navItem}>
               <Icons
                 name={focused ? 'user-solid' : 'user-light'}
                 size={size}
                 color={color}
               />
               <Text
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={{
-                  fontSize: 12,
-                  fontWeight: 'bold',
-                  fontFamily: '"Open Sans", sans-serif',
-                  color: focused ? '#309975' : '#454d66',
-                }}>
+                style={[
+                  styles.navItemText,
+                  {color: focused ? '#309975' : '#454d66'},
+                ]}>
                 {t('navigation.profile')}
               </Text>
             </View>
@@ -235,3 +190,17 @@ const AppNavigator = () => (
 );
 
 export default AppNavigator;
+
+const styles = StyleSheet.create({
+  navItem: {
+    display: 'flex',
+    gap: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  navItemText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    fontFamily: '"Open Sans", sans-serif',
+  },
+});
