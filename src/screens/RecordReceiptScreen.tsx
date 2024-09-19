@@ -156,7 +156,7 @@ const ReceiptScreen = () => {
       }
     } catch (err) {
       // eslint-disable-next-line no-alert
-      Alert.alert(err ?? '');
+      Alert.alert(`Server communication error: ${err?.status}`);
     }
   };
 

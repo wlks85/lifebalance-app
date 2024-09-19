@@ -132,15 +132,6 @@ const HomeScreen = () => {
             </View>
           </View>
         </ImageBackground>
-        {/* <View style={styles.bannerContainer}>
-                    <Image
-                        source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUKydDx97ben_aZABRk5MRpYj7zaRfgAMW7Q&s' }}
-                        style={styles.avatar}
-                    />
-                    <View style={styles.nameContainer}>
-                        <View style={styles.nameGradient}><Text style={styles.nameText}>John Doe</Text></View>
-                    </View>
-                </View> */}
         <View style={styles.components}>
           {RenderBalance(userDetails)}
           {RenderNavigation()}
@@ -256,31 +247,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: 26,
+    paddingHorizontal: 32,
     borderBottomColor: '#f0f0f0',
     borderBottomWidth: 1,
     minHeight: 80,
     padding: 2,
   },
   menuText: {
-    paddingTop: 26,
-    paddingLeft: 32,
-    paddingBottom: 8,
-    paddingRight: 32,
     fontSize: 18,
     color: '#454d66',
-    marginLeft: 10,
-    textAlign: 'center',
     fontFamily: 'OpenSans-Bold',
   },
   menuIcon: {
-    paddingTop: 26,
-    paddingLeft: 32,
-    paddingBottom: 8,
-    paddingRight: 32,
     color: '#454d66',
-    marginLeft: 10,
-    textAlign: 'center',
   },
   components: {
     flex: 1,

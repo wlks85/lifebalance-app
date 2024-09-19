@@ -146,7 +146,7 @@ const Security = ({user}) => {
       const url = 'https://w3.lbplus.de/user/password';
       await Linking.openURL(url);
     } catch (err) {
-      Alert.alert('Please try again later!');
+      Alert.alert(`Server communication error: ${err?.status}`);
       console.log(err.message);
     }
   };
@@ -257,7 +257,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f0f0f0',
     borderBottomWidth: 1,
     minHeight: 80,
-    padding: 2,
+    paddingHorizontal: 20,
+    gap: 4,
   },
   menuText: {
     color: '#454d66',
@@ -266,8 +267,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   menuIcon: {
-    paddingLeft: 32,
-    paddingRight: 20,
     color: '#454d66',
     textAlign: 'center',
     fontSize: 25,

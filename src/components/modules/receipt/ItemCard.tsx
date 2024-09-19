@@ -14,6 +14,7 @@ interface ItemCardProps {
   disabled?: boolean;
   showEditBtn?: boolean;
   onEditBtnPress?: () => void;
+  showCurrency?: boolean;
 }
 
 const ItemCard = ({
@@ -22,6 +23,7 @@ const ItemCard = ({
   disabled,
   showEditBtn,
   onEditBtnPress,
+  showCurrency = false,
 }: ItemCardProps) => {
   return (
     <TouchableOpacity
@@ -34,10 +36,14 @@ const ItemCard = ({
       </View>
       <View style={styles.itemInfo}>
         <View style={styles.itemTitleContainer}>
-          <Text style={styles.itemTitle}>{item.title}</Text>
+          <Text style={styles.itemTitle}>
+            {item.title} {showCurrency && '€'}
+          </Text>
         </View>
         <View style={styles.itemSubtitleContainer}>
-          <Text style={styles.itemSubtitle}>{item.subtitle}</Text>
+          <Text style={styles.itemSubtitle}>
+            {item.subtitle} {showCurrency && '€'}
+          </Text>
         </View>
       </View>
       {showEditBtn && (
@@ -77,7 +83,6 @@ const styles = StyleSheet.create({
   itemLogo: {
     width: 50,
     height: 50,
-    paddingLeft: 10,
     backgroundColor: '#f8f6f4',
     color: '#fffffff',
     justifyContent: 'center',

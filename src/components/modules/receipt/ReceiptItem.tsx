@@ -71,7 +71,7 @@ const ReceiptItem = ({
           setReceiptDetails(data);
         });
       } catch (err) {
-        Alert.alert(err.message);
+        Alert.alert(`Server communication error: ${err?.status}`);
       }
     }
   }, [disabled, receipt, setLoading]);

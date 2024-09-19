@@ -25,8 +25,9 @@ import AppActivityIndicator from '../AppActivityIndicator';
 import {ModalStyles} from '../../styles';
 import {useTranslation} from 'react-i18next';
 import {Icons} from '../icons';
+import ImageInfoModal from './ImageInfoModal';
 
-const ReceiptModalHeader = ({onClose}) => {
+const ReceiptModalHeader = ({onClose, setShowInfo}) => {
   const {t} = useTranslation();
   return (
     <>
@@ -39,7 +40,7 @@ const ReceiptModalHeader = ({onClose}) => {
       />
       <Text style={modalStyles.modalTitle}>{t('Check quality')}</Text>
       <Icons
-        onPress={onClose}
+        onPress={() => setShowInfo(true)}
         style={modalStyles.headerButtons}
         name={'question-mark-circle-light'}
         color={'#454d66'}
@@ -58,6 +59,7 @@ const ReceiptImageModal = ({
   onNext,
 }) => {
   const [loading, setLoading] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   const handleBtnClick = async () => {
     //upload to remote and return data;
@@ -76,7 +78,9 @@ const ReceiptImageModal = ({
   };
   return (
     <ModalComponent
-      headerComponent={<ReceiptModalHeader onClose={onClose} />}
+      headerComponent={
+        <ReceiptModalHeader setShowInfo={setShowInfo} onClose={onClose} />
+      }
       visible={visible}
       onClose={onClose}
       contentStyle={{paddingHorizontal: 0}}>
@@ -101,6 +105,7 @@ const ReceiptImageModal = ({
           )}
         </>
       )}
+      <ImageInfoModal visible={showInfo} onClose={() => setShowInfo(false)} />
     </ModalComponent>
   );
 };
@@ -114,10 +119,18 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   const [amount, setAmount] = useState('0,00 €');
   const {userDetails} = useAuth();
   const [imageVisible, setImageVisible] = useState(false);
+  const [error, setError] = useState('');
+  const [showInfo, setShowInfo] = useState(false);
   const [imagePreviewModalButtonText, setImagePreviewModalButtonText] =
     useState('Use Photo');
   const handleFurther = () => {
-    setShowPhotoModal(true);
+    const germanNumberPattern =
+      /^(\d{1,3}(\.\d{3})*,\d{0,2}|\d{1,3}(\.\d{3})*|\d*)$/;
+    // Validate and set value if it matches German numeric format
+    if (germanNumberPattern.test(amount)) {
+      setError('');
+      setShowPhotoModal(true);
+    }
   };
   const ImageLibConfig = {
     mediaType: 'photo',
@@ -131,11 +144,13 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
         ...ImageLibConfig,
         cameraType: 'back',
       });
-      setImage(result);
-      console.log(result);
-      onAction?.(amount);
-      setImageVisible(true);
-      setImagePreviewModalButtonText('Use Photo');
+      if (!result.didCancel) {
+        setImage(result);
+        console.log(result);
+        onAction?.(amount);
+        setImageVisible(true);
+        setImagePreviewModalButtonText('Use Photo');
+      }
     } catch (err) {
       alert(err.message);
       console.log('open camera error', err);
@@ -169,6 +184,18 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
       if (data) {
         setFid(data?.fid);
       }
+    }
+  };
+
+  const validateChange = (value: string) => {
+    const germanNumberPattern =
+      /^(\d{1,3}(\.\d{3})*,\d{0,2}|\d{1,3}(\.\d{3})*|\d*)$/;
+
+    // Validate and set value if it matches German numeric format
+    if (germanNumberPattern.test(value)) {
+      setError('');
+    } else {
+      setError(t('Invalid Number'));
     }
   };
 
@@ -214,16 +241,12 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                 placeholderTextColor={'#454d66'}
                 value={amount ? amount : ''}
                 onChangeText={value => {
-                  const isValid = /^\d*[.,]?\d*$/;
-                  if (isValid.test(value)) {
-                    setAmount(value);
-                  }
-                  if (value === '') {
-                    setAmount('');
-                  }
+                  setAmount(value);
+                  validateChange(value);
                 }}
                 keyboardType="numeric"
               />
+              {error && <Text style={modalStyles.amountError}>{error}</Text>}
             </View>
             <View style={modalStyles.amountsSection}>
               <View style={modalStyles.amountInfo}>
@@ -263,7 +286,10 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                   <View style={modalStyles.photoBtnContainer}>
                     <TouchableOpacity
                       style={modalStyles.takeOrUploadPhotoBtn}
-                      onPress={handleOpenCamera}>
+                      onPress={() => {
+                        setShowPhotoModal(false);
+                        setShowInfo(true);
+                      }}>
                       <Text style={modalStyles.photoBtnTitle}>
                         {t('Take a photo of the receipt')}
                       </Text>
@@ -293,6 +319,14 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               }}
             />
 
+            <ImageInfoModal
+              visible={showInfo}
+              onClose={() => {
+                handleOpenCamera();
+                setShowInfo(false);
+              }}
+            />
+
             <ReceiptOverviewModal
               receipt={{
                 ...receipt,
@@ -304,7 +338,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               visible={showOverviewModal}
               onClose={() => {
                 setShowOverviewModal(false);
-                onClose();
+                setTimeout(() => onClose(), 100);
               }}
             />
           </View>
@@ -366,6 +400,10 @@ const modalStyles = StyleSheet.create({
     color: '#454d66',
     fontSize: 48,
     fontFamily: 'OpenSans-Bold',
+  },
+  amountError: {
+    color: 'red',
+    fontFamily: 'OpenSans-Regular',
   },
   amountsSection: {
     display: 'flex',
