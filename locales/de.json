@@ -1,13 +1,13 @@
 {
   "Receipts": "Quittungen",
   "navigation": {
-    "receipt": "Bettalng",
+    "receipt": "Erfassen",
     "home": "Start",
     "archive": "Archiv",
     "profile": "Profil",
     "user": "Profil"
   },
-  "loadingData": "Lade daten",
+  "loadingData": "Lade Daten",
   "thankYouMessage": "Vielen Dank für Ihren Beleg!",
   "receiptReceiptMessage": "Wir haben Ihren Beleg erhalten und beginnen umgehend mit der Prüfung.",
   "Submit further evidence": "Weiteren Beleg einreichen",
@@ -45,7 +45,7 @@
   "category": "Kategore",
   "View receipt": "Beleg ansehen",
   "Surface archive": "Belagarchiv",
-  "Login": "Login",
+  "Login": "Anmelden",
   "Forgot Password": "Passwort vergessen",
   "Register": "Registrieren",
   "Email": "E-Mail",
@@ -60,7 +60,7 @@
   "New service": "Neue Dienstleistung",
   "Last used": "Zuletzt verwendet",
   "Service category": "Dienstleistungskategorie",
-  "editService": "Edit service",
+  "editService": "Bearbeiten",
   "Change password": "Passwort ändern",
   "Logout": "Abmelden",
   "Data protection": "Datenschutz",

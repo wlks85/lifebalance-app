@@ -228,7 +228,7 @@ const ProfileScreen = () => {
       <ScrollView contentContainerStyle={styles.container}>
         <BasicInformaton user={user} />
         <BankBalance user={user} />
-        <SectionLabel label="Schicherheit" />
+        <SectionLabel label="Sicherheit" />
         <Security user={user} />
         <SectionLabel label="Rechtliche Informationen" />
         <OtherInformation />
