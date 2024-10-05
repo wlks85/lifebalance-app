@@ -84,7 +84,6 @@ const EditAmountModal = ({
                   setAmount(value);
                   isValid(value);
                 }}
-                // keyboardType="numeric"
               />
               {error && <Text style={modalStyles.amountError}>{error}</Text>}
             </View>
