@@ -153,7 +153,6 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
       }
     } catch (err) {
       alert(err.message);
-      console.log('open camera error', err);
     }
   };
 
@@ -244,7 +243,6 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                   setAmount(value);
                   validateChange(value);
                 }}
-                keyboardType="numeric"
               />
               {error && <Text style={modalStyles.amountError}>{error}</Text>}
             </View>
