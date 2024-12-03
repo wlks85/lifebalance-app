@@ -1,14 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import FieldLabel from '../../ui/FieldLabel';
 import FieldError from '../../ui/FieldError';
-import {useTranslation} from 'react-i18next';
-import {Icons} from '../../icons';
+import { useTranslation } from 'react-i18next';
+import { Icons } from '../../icons';
 
 interface ServiceCategoryProps {
   onPress: () => void;
-  serviceCategories: {id: number; title: string}[];
+  serviceCategories: { id: number; title: string }[];
   error: string;
 }
 
@@ -17,7 +17,7 @@ const ServiceCategory = ({
   serviceCategories,
   error,
 }: ServiceCategoryProps) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <Pressable onPress={onPress}>
       <FieldLabel label={t('Service category')}>
@@ -25,10 +25,10 @@ const ServiceCategory = ({
           <View
             style={[
               styles.inputContainer,
-              error && {borderColor: 'red', borderWidth: 2},
+              error && { borderColor: 'red', borderWidth: 2 },
             ]}>
-            <Text style={[styles.catText, error && {color: 'red'}]}>
-              {serviceCategories?.[0]?.title ?? t('Please choose')} …
+            <Text style={[styles.catText, error && { color: 'red' }]}>
+              {serviceCategories ? serviceCategories.map(s => s.title).slice(0, Math.min(serviceCategories.length, 5)).join(', ') : t('Please choose')} …
             </Text>
             <Icons name="angle-right-light" size={20} color={error && 'red'} />
           </View>

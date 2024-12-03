@@ -95,7 +95,8 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
             control={control}
             render={({field}) => (
               <FieldLabel label={t('Name of the service provider')}>
-                <FieldError error={errors.providerName?.message}>
+                <FieldError error={errors.providerName?.message?'Bitte geben Sie einen Dienstleister an':null}>
+                
                   <Input
                     inputType="text"
                     onChange={field.onChange}
@@ -113,7 +114,8 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
             control={control}
             render={({field}) => (
               <FieldLabel label={t('Postal code of the service provider')}>
-                <FieldError error={errors.postCode?.message}>
+                {/* <FieldError error={errors.postCode?.message}> */}
+                <FieldError error={errors.postCode?.message?"Bitte geben Sie eine Postleitzahl an":null}>
                   <Input
                     inputType="text"
                     onChange={field.onChange}
@@ -127,7 +129,8 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
           />
 
           <ServiceCategory
-            error={errors?.serviceCategory?.message}
+            // error={errors?.serviceCategory?.message}
+            error={errors?.serviceCategory?"Bitte wählen Sie mindestens eine Kategorie":null}
             serviceCategories={serviceCategories}
             onPress={() => setShowModal(true)}
           />

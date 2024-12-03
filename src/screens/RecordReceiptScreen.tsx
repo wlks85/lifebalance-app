@@ -1,5 +1,5 @@
 //@ts-nocheck
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -11,22 +11,22 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import Layout from '../components/Layout';
 import ReceiptItem from '../components/modules/receipt/ReceiptItem';
 import ReceiptModal from '../components/modals/ReceiptModal';
 import AddReceiptModal from '../components/modals/AddReciptModal';
 import receiptService from '../services/ReceiptService';
 import AppActivityIndicator from '../components/AppActivityIndicator';
-import {useTranslation} from 'react-i18next';
-import {Icons} from '../components/icons';
+import { useTranslation } from 'react-i18next';
+import { Icons } from '../components/icons';
 
 interface HeaderProps {
   goBack: () => void;
 }
 
-const Header = ({goBack}: HeaderProps) => {
-  const {t} = useTranslation();
+const Header = ({ goBack }: HeaderProps) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.headerContainer}>
       <Icons
@@ -36,20 +36,14 @@ const Header = ({goBack}: HeaderProps) => {
         color={'#454d66'}
         size={25}
       />
-
-      <Text style={styles.headerTitle}>{t('service')}</Text>
-
-      <Icons
-        style={styles.headerButtons}
-        name={'search-light'}
-        color={'#454d66'}
-        size={25}
-      />
+      <View style={styles.headerTitle}>
+        <Text style={styles.headerTitleText}>{t('service')}</Text>
+      </View>
     </View>
   );
 };
 
-const SectionWrapper = ({section, onSelectedItem}) => (
+const SectionWrapper = ({ section, onSelectedItem }) => (
   <View style={styles.sectionWrapper}>
     <View style={styles.sectionTitle}>
       <Text style={styles.sectionTitleText}>{section.title}</Text>
@@ -79,7 +73,7 @@ const ListComponent = ({
 
   return (
     // eslint-disable-next-line react-native/no-inline-styles
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       {isLoading && <AppActivityIndicator size="large" isLoading={isLoading} />}
       {!isLoading && (
         <SectionList
@@ -89,7 +83,7 @@ const ListComponent = ({
           sections={data}
           keyExtractor={(item, index) => `${item.uuid}${index}`}
           renderItem={() => null}
-          renderSectionHeader={({section}) => (
+          renderSectionHeader={({ section }) => (
             <SectionWrapper
               onSelectedItem={previewSelected}
               section={section}
@@ -102,7 +96,7 @@ const ListComponent = ({
 };
 
 const ReceiptScreen = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [receiptData, setReceiptData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [createReceiptVisible, setCreateReceiptVisible] = useState(false);
@@ -135,7 +129,7 @@ const ReceiptScreen = () => {
       .getReceipts(0)
       .then(data => {
         setIsLoading(false);
-        setReceiptData([{title: t('Last used'), data: data || []}]);
+        setReceiptData([{ title: t('Last used'), data: data || [] }]);
       })
       .catch(() => {
         setIsLoading(false);
@@ -192,8 +186,8 @@ const ReceiptScreen = () => {
       {Platform.OS === 'ios' ? (
         <ScrollView
           // eslint-disable-next-line react-native/no-inline-styles
-          contentContainerStyle={{flexGrow: 1}}
-          onScroll={({nativeEvent}) => {
+          contentContainerStyle={{ flexGrow: 1 }}
+          onScroll={({ nativeEvent }) => {
             if (handleInfinityScroll(nativeEvent)) {
               fetchMore();
             }
@@ -232,7 +226,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     height: 80,
     fontFamily: 'OpenSans-Bold',
@@ -249,6 +243,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerTitle: {
+    flex: 1,
+  },
+  headerTitleText: {
     textAlign: 'center',
     fontFamily: 'OpenSans-Bold',
     color: '#454d66',
@@ -260,7 +257,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 10,
-    shadowOffset: {width: 0, height: 5},
+    shadowOffset: { width: 0, height: 5 },
     overflow: 'scroll',
   },
   sectionWrapper: {

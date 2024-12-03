@@ -1,14 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
 //@ts-nocheck
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import ModalComponent from '../Modal';
-import {ScrollView} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import NextButton from '../ui/NextButton';
-import {ReceiptService} from '../../services';
-import {ModalStyles} from '../../styles';
-import {useTranslation} from 'react-i18next';
-import {Icons} from '../icons';
+import { ReceiptService } from '../../services';
+import { ModalStyles } from '../../styles';
+import { useTranslation } from 'react-i18next';
+import { Icons } from '../icons';
+import CheckBox from 'react-native-check-box'
+
 interface IServiceCategory {
   id: number;
   title: string;
@@ -28,7 +30,7 @@ const ServiceCategoryModal = ({
   setServiceCategories,
   services,
 }: ServiceCategoryModalProps) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [categories, setCategories] = useState([]);
 
   const handleAddService = srvs => {
@@ -87,6 +89,13 @@ const ServiceCategoryModal = ({
                     ]}>
                     {cat.title}
                   </Text>
+                  <CheckBox
+                    style={{ padding: 10 }}
+                    onClick={() => {
+                      handleAddService(cat);
+                    }}
+                    isChecked={services?.find(ser => ser.id === cat.id)}
+                  />
                 </Pressable>
               ))}
             </View>
@@ -100,7 +109,7 @@ const ServiceCategoryModal = ({
           }}>
           <View style={modalStyles.applyBtn}>
             <NextButton
-              buttonStyles={{backgroundColor: '#309975'}}
+              buttonStyles={{ backgroundColor: '#309975' }}
               title={'Auswahl anwenden'}
               onPress={onClose}
             />
@@ -155,8 +164,8 @@ const modalStyles = StyleSheet.create({
     backgroundColor: '#ffffff',
     height: 54,
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'flex-start',
     paddingLeft: 20,
     borderTopLeftRadius: 4,
@@ -164,6 +173,7 @@ const modalStyles = StyleSheet.create({
   },
   catTitle: {
     fontSize: 15,
+    flex: 1,
     color: '#1e4251',
     fontFamily: 'OpenSans-Regular',
   },

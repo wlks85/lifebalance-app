@@ -23,13 +23,13 @@ const ReceiptStatus = ({status, amount}) => {
   const {t} = useTranslation();
   if (status === '0') {
     return (
-      <Text style={{color: '#1e4251'}}>
+      <Text style={{color: '#309975'}}>
         {amount} {t('reimbursed')}
       </Text>
     );
   }
   if (status === '1') {
-    return <Text style={{color: '#aa040e'}}>{t('Rejected')}</Text>;
+    return <Text style={{color: '#a9040e'}}>{t('Rejected')}</Text>;
   }
   return <Text>{t('Is checked')} …</Text>;
 };

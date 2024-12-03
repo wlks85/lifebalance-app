@@ -163,13 +163,13 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                 <Icons size={30} name="receipt-light" color="#454d66" />
               </View>
               <View style={{...modalStyles.cardItemContentRow}}>
-                <Text style={{fontSize: 17, fontWeight: '400'}}>
+                <Text style={{fontSize: 17, fontWeight: '400', color: '#454d66'}}>
                   {t('View receipt')}
                 </Text>
                 <Icons
                   size={30}
                   name="angle-right-light"
-                  style={{paddingRight: 15}}
+                  style={{paddingRight: 15, marginRight: 15}}
                   color="#454d66"
                 />
               </View>

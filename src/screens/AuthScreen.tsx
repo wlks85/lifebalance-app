@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, {ReactNode, useState} from 'react';
-import {useForm, Controller} from 'react-hook-form';
+import React, { ReactNode, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import {
   View,
   Text,
@@ -11,12 +11,12 @@ import {
   Linking,
   SafeAreaView,
 } from 'react-native';
-import {z} from 'zod';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {useAuth} from '../providers/auth-provider';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useAuth } from '../providers/auth-provider';
 import userService from '../services/UserService';
-import {useTranslation} from 'react-i18next';
-import {Icons} from '../components/icons';
+import { useTranslation } from 'react-i18next';
+import { Icons } from '../components/icons';
 
 const formSchema = z.object({
   username: z.string(),
@@ -25,11 +25,11 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
-  const {t} = useTranslation();
+const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const {setIsLoggedIn, setUserDetails} = useAuth();
+  const { setIsLoggedIn, setUserDetails } = useAuth();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -40,12 +40,12 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
     setLoading(true);
     try {
       if (mode === 'login') {
-        const {data: userDetails, error: loginError} = await userService.login({
+        const { data: userDetails, error: loginError } = await userService.login({
           username: values.username!,
           password: values.password!,
         });
         if (loginError) {
-          setError(loginError);
+          setError("loginErrorIhre Kombination aus E-Mail-Adresse und Passwort existiert nicht in unserem System. Bitte versuchen Sie es erneut oder fordern Sie ein neues Passwort an.");
           setLoading(false);
           return;
         }
@@ -60,7 +60,7 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
     }
   }
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>
@@ -72,18 +72,34 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
 
         <View style={styles.form}>
           {mode === 'forgot' ? (
-            <FormItem value="" onChange={() => {}} label={t('Email')} />
+            <FormItem value="" onChange={() => { }} label={t('Email')} />
           ) : (
             <>
               <Controller
                 name="username"
                 control={form.control}
-                render={({field}) => (
+                render={({ field }) => (
+                  <FormItem
+                    label={
+                      t('Username')
+                    }
+                    // error={form.formState.errors.username?.message}
+                    error={form.formState.errors.username?"Bitte geben Sie Ihre E-Mail-Adresse an":null}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    value={field.value}
+                  />
+                )}
+              />
+
+              <Controller
+                name="password"
+                control={form.control}
+                render={({ field }) => (
                   <FormItem
                     label={
                       <View style={styles.formLabelHeader}>
-                        <Text style={styles.formLabel}>{t('Username')}</Text>
-
+                        <Text style={styles.formLabel}>{t('Password')}</Text>
                         {mode === 'login' && (
                           <Text
                             onPress={async () => {
@@ -96,22 +112,9 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
                         )}
                       </View>
                     }
-                    error={form.formState.errors.username?.message}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    value={field.value}
-                  />
-                )}
-              />
-
-              <Controller
-                name="password"
-                control={form.control}
-                render={({field}) => (
-                  <FormItem
-                    label={t('Password')}
                     type="password"
-                    error={form.formState.errors.password?.message}
+                    // error={form.formState.errors.password?.message}
+                    error={form.formState.errors.password?"Bitte geben Sie Ihr Passwort an":null}
                     onChange={field.onChange}
                     onBlur={field.onBlur}
                     value={field.value}
@@ -127,7 +130,7 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
             <Text style={styles.formButtonText}>
               <>
                 {loading ? (
-                  'Loading...'
+                  'Wird geladen...'
                 ) : (
                   <>
                     {mode === 'login' && <>{t('Login')}</>}
@@ -227,13 +230,13 @@ function FormItem({
           onChangeText={valueText => onChange?.(valueText)}
           {...(type === 'password' && !showRawText
             ? {
-                secureTextEntry: true,
-                textContentType: 'password',
-              }
+              secureTextEntry: true,
+              textContentType: 'password',
+            }
             : {
-                secureTextEntry: false,
-                // textContentType: 'text',
-              })}
+              secureTextEntry: false,
+              // textContentType: 'text',
+            })}
         />
         {type === 'password' && (
           <Pressable

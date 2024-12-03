@@ -127,7 +127,8 @@ const HomeScreen = () => {
                   fontWeight: 700,
                   fontFamily: 'serif',
                 }}>
-                {userDetails?.name?.split('@')?.[0] || t('Not Found')}
+                {/* {userDetails?.name?.split('@')?.[0] || t('Not Found')} */}
+                {"Willkommen zurück!"}
               </Text>
             </View>
           </View>

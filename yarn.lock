@@ -3184,6 +3184,7 @@ __metadata:
     react-i18next: ^14.1.2
     react-native: 0.74.1
     react-native-base64: ^0.2.1
+    react-native-check-box: ^2.1.7
     react-native-gesture-handler: ^2.16.2
     react-native-image-picker: ^7.1.2
     react-native-reanimated: ^3.11.0
@@ -8606,7 +8607,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.5.7, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -8751,6 +8752,17 @@ __metadata:
   version: 0.2.1
   resolution: "react-native-base64@npm:0.2.1"
   checksum: 5127c857250cabb9c24f494b56185a4339bd0ebb859824a01c2f4eb3264379556e06efc8e59ffb9585cbf1c5e6fee18f50f4a6e8a1c63fe4b5cedf0658f8c25e
+  languageName: node
+  linkType: hard
+
+"react-native-check-box@npm:^2.1.7":
+  version: 2.1.7
+  resolution: "react-native-check-box@npm:2.1.7"
+  dependencies:
+    prop-types: ^15.5.7
+  peerDependencies:
+    react-native: ">=0.20.0"
+  checksum: 2f303308df139637b70a0ddef39bd702a3331cacb6328026ab84cb407a59f8eb413c37fbf3624f91f272e1f5efc8962d6f15e46512a1b6b233d91140acef6b69
   languageName: node
   linkType: hard
 

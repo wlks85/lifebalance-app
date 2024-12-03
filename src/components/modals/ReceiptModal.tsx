@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-alert */
 //@ts-nocheck
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,21 +14,21 @@ import {
   Alert,
 } from 'react-native';
 import ModalComponent from '../Modal';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {TextInput} from 'react-native-gesture-handler';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { TextInput } from 'react-native-gesture-handler';
 import ReceiptOverviewModal from './ReceiptOverviewModal';
 import ReceiptCard from '../modules/receipt/ReceiptCard';
 import receiptService from '../../services/ReceiptService';
-import {useAuth} from '../../providers/auth-provider';
-import {generateReceiptTitle} from '../../utils';
+import { useAuth } from '../../providers/auth-provider';
+import { generateReceiptTitle } from '../../utils';
 import AppActivityIndicator from '../AppActivityIndicator';
-import {ModalStyles} from '../../styles';
-import {useTranslation} from 'react-i18next';
-import {Icons} from '../icons';
+import { ModalStyles } from '../../styles';
+import { useTranslation } from 'react-i18next';
+import { Icons } from '../icons';
 import ImageInfoModal from './ImageInfoModal';
 
-const ReceiptModalHeader = ({onClose, setShowInfo}) => {
-  const {t} = useTranslation();
+const ReceiptModalHeader = ({ onClose, setShowInfo }) => {
+  const { t } = useTranslation();
   return (
     <>
       <Icons
@@ -83,21 +83,21 @@ const ReceiptImageModal = ({
       }
       visible={visible}
       onClose={onClose}
-      contentStyle={{paddingHorizontal: 0}}>
+      contentStyle={{ paddingHorizontal: 0 }}>
       {!!receipt && (
         <>
           {loading && <AppActivityIndicator isLoading={loading} size="large" />}
           {!loading && (
-            <View style={{flex: 1, gap: 10}}>
+            <View style={{ flex: 1, gap: 10 }}>
               <Image
-                style={{flex: 1, width: '100%', height: '100%'}}
+                style={{ flex: 1, width: '100%', height: '100%' }}
                 src={receipt?.image}
               />
 
-              <View style={{padding: 25}}>
+              <View style={{ padding: 25 }}>
                 <TouchableOpacity
                   onPress={handleBtnClick}
-                  style={{...modalStyles.furtherBtn}}>
+                  style={{ ...modalStyles.furtherBtn }}>
                   <Text style={modalStyles.btnText}>{buttonText}</Text>
                 </TouchableOpacity>
               </View>
@@ -110,14 +110,14 @@ const ReceiptImageModal = ({
   );
 };
 
-const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
-  const {t} = useTranslation();
+const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
+  const { t } = useTranslation();
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [showOverviewModal, setShowOverviewModal] = useState(false);
   const [image, setImage] = useState(null);
   const [fid, setFid] = useState(null);
   const [amount, setAmount] = useState('0,00 €');
-  const {userDetails} = useAuth();
+  const { userDetails } = useAuth();
   const [imageVisible, setImageVisible] = useState(false);
   const [error, setError] = useState('');
   const [showInfo, setShowInfo] = useState(false);
@@ -149,7 +149,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
         console.log(result);
         onAction?.(amount);
         setImageVisible(true);
-        setImagePreviewModalButtonText('Use Photo');
+        setImagePreviewModalButtonText('Foto verwenden');
       }
     } catch (err) {
       alert(err.message);
@@ -194,7 +194,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
     if (germanNumberPattern.test(value)) {
       setError('');
     } else {
-      setError(t('Invalid Number'));
+      setError(t('Invalid Number'))
     }
   };
 
@@ -238,10 +238,35 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                 style={modalStyles.amount}
                 placeholder="0,00 €"
                 placeholderTextColor={'#454d66'}
-                value={amount ? amount : ''}
+                value={amount ? `${amount}€` : ''}
                 onChangeText={value => {
-                  setAmount(value);
-                  validateChange(value);
+                  try {
+                    // Remove all non-digit characters except for the comma
+                    value = value.replace(/[^0-9,]/g, '');
+
+                    // Replace the last comma with a dot for parsing
+                    let parts = value.split(',');
+                    if (parts.length > 2) {
+                      value = parts[0] + ',' + parts.slice(1).join('');
+                    }
+
+                    // Parse the value as a float
+                    let number = parseFloat(parts[0].replace(',', '.') || '0');
+
+                    // If the number is valid, format it
+                    if (!isNaN(number)) {
+                      // Fixed to two decimal places and add the euro sign
+                      value = number.toFixed(2).replace('.', ',');
+                      validateChange(number);
+                    } else {
+                      // If invalid, reset the input
+                      value = '';
+                    }
+
+                    setAmount(value);
+                  } catch (err) {
+
+                  }
                 }}
               />
               {error && <Text style={modalStyles.amountError}>{error}</Text>}
@@ -257,7 +282,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               </View>
               <View style={modalStyles.amountInfo}>
                 <Text style={modalStyles.amountInfoText}>
-                  {t('Current account balance')}:
+                  {t('Current account balance')}
                 </Text>
                 <Text style={modalStyles.currentBalance}>
                   {userDetails?.field_balance_current?.und[0]?.value} €
@@ -278,7 +303,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               // onDismiss={() => setImageVisible(false)}
               animationType="slide">
               <Pressable
-                style={{backgroundColor: 'rgba(0, 0, 0, 0.15)', flex: 1}}
+                style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)', flex: 1 }}
                 onPress={() => setShowPhotoModal(false)}>
                 <TouchableWithoutFeedback>
                   <View style={modalStyles.photoBtnContainer}>
@@ -308,7 +333,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
 
             <ReceiptImageModal
               visible={imageVisible}
-              receipt={{...receipt, image: image?.assets?.[0]?.uri}}
+              receipt={{ ...receipt, image: image?.assets?.[0]?.uri }}
               onClose={() => setImageVisible(false)}
               buttonText={imagePreviewModalButtonText}
               image={image}

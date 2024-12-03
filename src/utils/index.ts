@@ -59,7 +59,7 @@ export const formatAmount = amount => {
 export const generateReceiptTitle = () => {
   const timestamp = Math.floor(Date.now() / 1000);
   const randomNumber = Math.floor(100000 + Math.random() * 900000);
-  const receiptString = `Posted Receipt #R${timestamp}${randomNumber}`;
+  const receiptString = `#R${timestamp}${randomNumber}`;
   return receiptString;
 };
 

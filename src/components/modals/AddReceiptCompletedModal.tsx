@@ -119,7 +119,7 @@ const modalStyles = StyleSheet.create({
   ticIcon: {
     position: 'absolute',
     top: 25,
-    left: 40,
+    left: 35,
   },
   title: {
     fontSize: 24,
