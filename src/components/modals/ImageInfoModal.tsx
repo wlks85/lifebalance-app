@@ -54,7 +54,7 @@ const modalStyles = StyleSheet.create({
     display: 'flex',
     gap: 200,
     backgroundColor: '#f5f0ee',
-    height: '80%',
+    height: '70%',
     width: '80%',
     borderRadius: 4,
   },

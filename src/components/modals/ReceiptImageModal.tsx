@@ -1,19 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
 //@ts-nocheck
-import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import ModalComponent from '../Modal';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+import { launchCamera } from 'react-native-image-picker';
 
 interface EditAmountModalProps {
   image: string;
   visible: boolean;
   onClose: () => void;
   onAction: (values: number) => void;
+  handleOpenCamera: () => void;
 }
 
-const ReceiptImageModal = ({image, visible, onClose}: EditAmountModalProps) => {
-  const {t} = useTranslation();
+const ReceiptImageModal = ({ image, visible, buttonText = "Wiederholen", handleOpenCamera, onClose }: EditAmountModalProps) => {
+  const { t } = useTranslation();
+
   return (
     <ModalComponent
       onClose={onClose}
@@ -28,10 +31,17 @@ const ReceiptImageModal = ({image, visible, onClose}: EditAmountModalProps) => {
           <Text style={modalStyles.modalTitle}>{t('Edit amount')}</Text>
         </View>
       }
-      contentStyle={{paddingHorizontal: 0}}>
+      contentStyle={{ paddingHorizontal: 0 }}>
       {image && (
         <View style={modalStyles.imageContainer}>
           <Image style={modalStyles.image} src={image} />
+          <View style={{ padding: 25 }}>
+            <TouchableOpacity
+              onPress={handleOpenCamera}
+              style={modalStyles.furtherBtn}>
+              <Text style={modalStyles.btnText}>{buttonText}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
     </ModalComponent>
@@ -71,12 +81,23 @@ const modalStyles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingBottom: 25,
   },
   image: {
+    flex: 1,
     width: '100%',
     height: '100%',
+  },
+  furtherBtn: {
+    backgroundColor: '#454d66',
+    display: 'flex',
+    alignItems: 'center',
+    paddingVertical: 15,
+    borderRadius: 32,
+  },
+  btnText: {
+    color: 'white',
+    fontFamily: 'OpenSans-Bold',
+    fontSize: 18,
   },
 });

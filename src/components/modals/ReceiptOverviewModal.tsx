@@ -7,7 +7,7 @@ import {ModalStyles} from '../../styles';
 import {useTranslation} from 'react-i18next';
 import {Icons} from '../icons';
 
-const ReceiptOverviewModal = ({receipt, visible, onClose}) => {
+const ReceiptOverviewModal = ({receipt, visible, onClose, handleOpenCamera}) => {
   const {t} = useTranslation();
   return (
     <ModalComponent
@@ -25,7 +25,7 @@ const ReceiptOverviewModal = ({receipt, visible, onClose}) => {
           <Text style={modalStyles.modalTitle}>{t('Overview')}</Text>
         </>
       }>
-      <ReceiptOverview receipt={receipt} onClose={onClose} />
+      <ReceiptOverview receipt={receipt} onClose={onClose} handleOpenCamera={handleOpenCamera} />
     </ModalComponent>
   );
 };

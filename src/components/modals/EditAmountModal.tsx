@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ModalComponent from '../Modal';
-import {TextInput} from 'react-native-gesture-handler';
-import {IReceipt} from '../modules/receipt/ReceiptCard';
-import {useAuth} from '../../providers/auth-provider';
-import {ModalStyles} from '../../styles';
-import {useTranslation} from 'react-i18next';
-import {Icons} from '../icons';
+import { TextInput } from 'react-native-gesture-handler';
+import { IReceipt } from '../modules/receipt/ReceiptCard';
+import { useAuth } from '../../providers/auth-provider';
+import { ModalStyles } from '../../styles';
+import { useTranslation } from 'react-i18next';
+import { Icons } from '../icons';
 
 interface EditAmountModalProps {
   receipt: Partial<IReceipt>;
@@ -23,8 +23,8 @@ const EditAmountModal = ({
 }: EditAmountModalProps) => {
   const [amount, setAmount] = useState('0,00 €');
   const [error, setError] = useState('');
-  const {userDetails} = useAuth();
-  const {t} = useTranslation();
+  const { userDetails } = useAuth();
+  const { t } = useTranslation();
 
   const isValid = (value: string) => {
     const germanNumberPattern =
@@ -44,6 +44,18 @@ const EditAmountModal = ({
     if (isValid(amount)) {
       onAction?.(amount);
       onClose?.();
+    }
+  };
+
+  const validateChange = (value: string) => {
+    const germanNumberPattern =
+      /^(\d{1,3}(\.\d{3})*,\d{0,2}|\d{1,3}(\.\d{3})*|\d*)$/;
+
+    // Validate and set value if it matches German numeric format
+    if (germanNumberPattern.test(value)) {
+      setError('');
+    } else {
+      setError(t('Invalid Number'))
     }
   };
 
@@ -79,10 +91,37 @@ const EditAmountModal = ({
                 style={modalStyles.amount}
                 placeholder="0,00 €"
                 placeholderTextColor={'#454d66'}
-                value={amount ?? '0,00 €'}
+                value={amount ? `${amount}€` : ''}
                 onChangeText={value => {
-                  setAmount(value);
-                  isValid(value);
+                  // setAmount(value);
+                  // isValid(value);
+                  try {
+                    // Remove all non-digit characters except for the comma
+                    value = value.replace(/[^0-9,]/g, '');
+
+                    // Replace the last comma with a dot for parsing
+                    let parts = value.split(',');
+                    if (parts.length > 2) {
+                      value = parts[0] + ',' + parts.slice(1).join('');
+                    }
+
+                    // Parse the value as a float
+                    let number = parseFloat(parts[0].replace(',', '.') || '0');
+
+                    // If the number is valid, format it
+                    if (!isNaN(number)) {
+                      // Fixed to two decimal places and add the euro sign
+                      value = number.toFixed(2).replace('.', ',');
+                      validateChange(number);
+                    } else {
+                      // If invalid, reset the input
+                      value = '';
+                    }
+
+                    setAmount(value);
+                  } catch (err) {
+
+                  }
                 }}
               />
               {error && <Text style={modalStyles.amountError}>{error}</Text>}

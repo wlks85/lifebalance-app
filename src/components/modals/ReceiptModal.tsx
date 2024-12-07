@@ -311,7 +311,7 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
                       style={modalStyles.takeOrUploadPhotoBtn}
                       onPress={() => {
                         setShowPhotoModal(false);
-                        setShowInfo(true);
+                        handleOpenCamera();
                       }}>
                       <Text style={modalStyles.photoBtnTitle}>
                         {t('Take a photo of the receipt')}
@@ -359,10 +359,12 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
                 image: image?.assets?.[0]?.uri,
               }}
               visible={showOverviewModal}
+              handleOpenCamera={handleOpenCamera}
               onClose={() => {
                 setShowOverviewModal(false);
                 setTimeout(() => onClose(), 100);
               }}
+
             />
           </View>
         </View>

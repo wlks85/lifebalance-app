@@ -16,7 +16,7 @@ import {useAuth} from '../../../providers/auth-provider';
 import {useTranslation} from 'react-i18next';
 import {Icons} from '../../icons';
 
-const ReceiptOverview = ({receipt, onClose}) => {
+const ReceiptOverview = ({receipt, onClose, handleOpenCamera}) => {
   const {t} = useTranslation();
   const [receiptInfo, setReceiptInfo] = useState(receipt);
   const [showAddReceiptModal, setShowAddReceiptModal] = useState(false);
@@ -65,9 +65,9 @@ const ReceiptOverview = ({receipt, onClose}) => {
           <FieldLabel label={`${t('Amount including VAT')}.`}>
             <ItemCard
               item={{
-                title: `${receiptInfo?.amount},00`,
+                title: `${receiptInfo?.amount}`,
                 logo: <Icons name="euro-light" size={20} />,
-                subtitle: `${receiptInfo?.amount},00`,
+                subtitle: `${receiptInfo?.amount}`,
               }}
               showEditBtn={true}
               onItemClicked={() => {}}
@@ -134,6 +134,7 @@ const ReceiptOverview = ({receipt, onClose}) => {
           onClose={() => setShowReceiptImageModal(false)}
           image={receipt?.image}
           onAction={() => {}}
+          handleOpenCamera={handleOpenCamera}
         />
 
         <AddReceiptCompleted
