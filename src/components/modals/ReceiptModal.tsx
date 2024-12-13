@@ -116,7 +116,7 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
   const [showOverviewModal, setShowOverviewModal] = useState(false);
   const [image, setImage] = useState(null);
   const [fid, setFid] = useState(null);
-  const [amount, setAmount] = useState('0,00 €');
+  const [amount, setAmount] = useState('');
   const { userDetails } = useAuth();
   const [imageVisible, setImageVisible] = useState(false);
   const [error, setError] = useState('');
@@ -190,17 +190,37 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
     const germanNumberPattern =
       /^(\d{1,3}(\.\d{3})*,\d{0,2}|\d{1,3}(\.\d{3})*|\d*)$/;
 
-    // Validate and set value if it matches German numeric format
     if (germanNumberPattern.test(value)) {
       setError('');
     } else {
-      setError(t('Invalid Number'))
+      setError(t('Invalid Number'));
     }
   };
 
   useEffect(() => {
-    setAmount(receipt?.amount ? String(receipt?.amount) : '');
+    if (receipt?.amount) {
+      // Format the incoming amount as a German-style decimal
+      const formattedAmount = formatAmount(receipt.amount);
+      setAmount(formattedAmount);
+    }
   }, [receipt?.amount]);
+
+  // Helper function to format the amount into German decimal style
+  const formatAmount = (amount: any): string => {
+    const parsedAmount = parseFloat(amount);
+
+    // If parsedAmount is not a valid number, return '0,00'
+    if (isNaN(parsedAmount)) {
+      return '0,00';
+    }
+
+    // Format the number into German decimal style
+    return parsedAmount
+      .toFixed(2)                // Ensure two decimal places
+      .replace('.', ',')         // Replace dot with comma for decimal point
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'); // Add thousands separator
+  };
+
   return (
     <ModalComponent
       // transparent={true}
@@ -215,13 +235,13 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
             color={'#454d66'}
             size={25}
           />
-          <Text style={modalStyles.modalTitle}>{t('Amount paid')}</Text>
-          <Icons
+          <Text style={modalStyles.modalTitle}>{t('Amount')}</Text>
+          {/* <Icons
             style={modalStyles.headerButtons}
             name={'question-mark-circle-light'}
             color={'#454d66'}
             size={25}
-          />
+          /> */}
         </>
       }>
       {!!receipt && (
@@ -239,36 +259,58 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
                 placeholder="0,00 €"
                 placeholderTextColor={'#454d66'}
                 value={amount ? `${amount}€` : ''}
-                onChangeText={value => {
+                onChangeText={(value) => {
                   try {
-                    // Remove all non-digit characters except for the comma
+                    // Remove any non-numeric character except comma
                     value = value.replace(/[^0-9,]/g, '');
 
-                    // Replace the last comma with a dot for parsing
-                    let parts = value.split(',');
-                    if (parts.length > 2) {
-                      value = parts[0] + ',' + parts.slice(1).join('');
-                    }
+                    // If the user removes the comma, handle the update
+                    if (!value.includes(',')) {
+                      // Remove any non-numeric characters
+                      value = value.replace(/[^0-9]/g, '');
 
-                    // Parse the value as a float
-                    let number = parseFloat(parts[0].replace(',', '.') || '0');
-
-                    // If the number is valid, format it
-                    if (!isNaN(number)) {
-                      // Fixed to two decimal places and add the euro sign
-                      value = number.toFixed(2).replace('.', ',');
-                      validateChange(number);
+                      // Divide the integer by 100 when comma is removed
+                      if (value) {
+                        let integerValue = parseInt(value, 10);
+                        value = (integerValue / 100).toFixed(2).replace('.', ',');
+                      } else {
+                        value = '0,00'; // Default to zero if no valid input
+                      }
                     } else {
-                      // If invalid, reset the input
-                      value = '';
+                      let parts = value.split(',');
+
+                      // If there are more than two parts, trim extra parts
+                      if (parts.length > 2) {
+                        value = parts[0] + ',' + parts.slice(1).join('');
+                      }
+
+                      // Ensure decimal part doesn't exceed two digits
+                      if (parts.length === 1) {
+                        value = parts[0] + ',00'; // Ensure there's a decimal part if it's missing
+                      } else if (parts.length === 2) {
+                        // Limit decimal part to two digits
+                        value = parts[0] + ',' + parts[1].slice(0, 2);
+                      }
                     }
 
-                    setAmount(value);
-                  } catch (err) {
+                    // Handle the number itself (parse the integer part and format it)
+                    let number = parseFloat(value.replace('.', '').replace(',', '.') || '0');
 
+                    if (!isNaN(number)) {
+                      // Format the number with German format (thousands separator)
+                      value = formatAmount(number);
+                      validateChange(value); // Validate the formatted value
+                    } else {
+                      value = '0,00'; // Default to zero if invalid number
+                    }
+
+                    setAmount(value); // Update the state with the new value
+                  } catch (err) {
+                    console.error(err); // Log any errors for debugging
                   }
                 }}
               />
+
               {error && <Text style={modalStyles.amountError}>{error}</Text>}
             </View>
             <View style={modalStyles.amountsSection}>

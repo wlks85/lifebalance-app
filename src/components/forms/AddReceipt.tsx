@@ -130,7 +130,8 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
 
           <ServiceCategory
             // error={errors?.serviceCategory?.message}
-            error={errors?.serviceCategory?"Bitte wählen Sie mindestens eine Kategorie":null}
+            // error={errors?.serviceCategory?"Bitte wählen Sie mindestens eine Kategorie":null}
+            error={errors?.serviceCategory?.message?"Bitte wählen Sie mindestens eine Kategorie":null}
             serviceCategories={serviceCategories}
             onPress={() => setShowModal(true)}
           />

@@ -94,7 +94,7 @@ const ServiceCategoryModal = ({
                     onClick={() => {
                       handleAddService(cat);
                     }}
-                    isChecked={services?.find(ser => ser.id === cat.id)}
+                    isChecked={services?.find(ser => ser.id === cat.id) !== undefined}
                   />
                 </Pressable>
               ))}
@@ -166,7 +166,7 @@ const modalStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     paddingLeft: 20,
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
