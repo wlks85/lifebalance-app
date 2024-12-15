@@ -5,6 +5,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import ModalComponent from '../Modal';
 import { useTranslation } from 'react-i18next';
 import { launchCamera } from 'react-native-image-picker';
+import { Icons } from '../icons';
 
 interface EditAmountModalProps {
   image: string;
@@ -24,9 +25,12 @@ const ReceiptImageModal = ({ image, visible, buttonText = "Wiederholen", handleO
       headerComponent={
         <View style={modalStyles.headerContainer}>
           <View style={modalStyles.modalHeader}>
-            <Text onPress={onClose} style={modalStyles.modalCloseButton}>
-              x
-            </Text>
+            <Icons
+              onPress={onClose}
+              name={'close-light'}
+              color={'#454d66'}
+              size={25}
+            />
           </View>
           <Text style={modalStyles.modalTitle}>{t('Edit amount')}</Text>
         </View>

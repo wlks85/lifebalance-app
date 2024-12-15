@@ -258,7 +258,7 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
                 style={modalStyles.amount}
                 placeholder="0,00 €"
                 placeholderTextColor={'#454d66'}
-                value={amount ? `${amount}€` : ''}
+                value={amount ? `${amount} €` : ''}
                 onChangeText={(value) => {
                   try {
                     // Remove any non-numeric character except comma
@@ -324,7 +324,7 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
               </View>
               <View style={modalStyles.amountInfo}>
                 <Text style={modalStyles.amountInfoText}>
-                  {t('Current account balance')}
+                  {t('Current account balance')}:
                 </Text>
                 <Text style={modalStyles.currentBalance}>
                   {userDetails?.field_balance_current?.und[0]?.value} €

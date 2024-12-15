@@ -70,7 +70,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
             {receipt.providerName}
           </Text>
           <Text style={modalStyles.receiptAmountText}>
-            {formatAmount(Number(receipt.amount) / 100)}
+            {formatAmount(Number(receipt.amount))}
           </Text>
           <View style={modalStyles.receiptDetailsCard}>
             <View style={modalStyles.cardItem}>
@@ -87,7 +87,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                       modalStyles.receiptDetailsItemValue,
                       {color: '#309975'},
                     ]}>
-                    {formatAmount(Number(receipt?.amount) / 100)}
+                    {formatAmount(Number(receipt?.amount))}
                   </Text>
                 )}
                 {receipt?.status === '1' && (

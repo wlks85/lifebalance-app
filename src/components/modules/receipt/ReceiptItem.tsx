@@ -104,7 +104,7 @@ const ReceiptItem = ({
                 ? formatAmount(
                     receiptDetails?.amount === undefined
                       ? 0
-                      : receiptDetails?.amount / 100,
+                      : receiptDetails?.amount,
                   )
                 : `${t('Loading')}...`}{' '}
             </Text>
@@ -123,7 +123,7 @@ const ReceiptItem = ({
                 amount: formatAmount(
                   receiptDetails?.amount === undefined
                     ? 0
-                    : receiptDetails?.amount / 100,
+                    : receiptDetails?.amount,
                 ),
               })}
             </Text>

@@ -12,5 +12,6 @@ export const ModalStyles = StyleSheet.create({
     color: '#454d66',
     textAlign: 'center',
     flex: 1,
+    marginRight: 13,
   },
 });

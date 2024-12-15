@@ -111,7 +111,7 @@ const EditAmountModal = ({
                 style={modalStyles.amount}
                 placeholder="0,00 €"
                 placeholderTextColor={'#454d66'}
-                value={amount ? `${amount}€` : ''}
+                value={amount ? `${amount} €` : ''}
                 onChangeText={(value) => {
                   try {
                     // Remove any non-numeric character except comma
