@@ -20,6 +20,7 @@ import ReceiptItem from '../components/modules/receipt/ReceiptItem';
 import AppActivityIndicator from '../components/AppActivityIndicator';
 import {useTranslation} from 'react-i18next';
 import {Icons} from '../components/icons';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const ModalComponent = ({visible, onClose, children}) => (
   <Modal animationType="slide" visible={visible} onRequestClose={onClose}>
@@ -65,7 +66,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   return (
     <ModalComponent onClose={onClose} visible={visible}>
       {receipt && (
-        <View style={{padding: 20}}>
+        <ScrollView style={{margin: 20}}>
           <Text style={modalStyles.receiptCompanyText}>
             {receipt.providerName}
           </Text>
@@ -175,7 +176,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               </View>
             </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       )}
     </ModalComponent>
   );
@@ -211,7 +212,7 @@ const modalStyles = StyleSheet.create({
     fontWeight: 'bold',
   },
   receiptAmountText: {
-    fontSize: 55,
+    fontSize: 45,
     color: '#454d66',
     paddingTop: 0,
     paddingLeft: 0,

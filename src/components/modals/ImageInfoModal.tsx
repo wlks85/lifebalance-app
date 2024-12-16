@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import { Icons } from '../icons';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function ImageInfoModal({ visible, onClose }) {
   return (
@@ -22,12 +23,14 @@ export default function ImageInfoModal({ visible, onClose }) {
             <TouchableOpacity style={modalStyles.closeBtn} onPress={onClose}>
               <Icons name="close-light" size={25} color={'#454d66'} />
             </TouchableOpacity>
-            <View style={modalStyles.textContainer}>
+            <ScrollView style={modalStyles.textContainer}>
               <Text style={modalStyles.heading}>Halten Sie die Kamera ruhig</Text>
               <Text style={modalStyles.text}>
                 Um die besten Ergebnisse beim Fotografieren Ihrer Dokumente zu erzielen, sorgen Sie für ausreichend Licht – Tageslicht oder eine gleichmäßige Beleuchtung sind ideal. Halten Sie die Kamera parallel zum Dokument, sodass es vollständig im Bild ist. Stellen Sie sicher, dass der Fokus auf dem Text liegt. Verzichten Sie bitte auf Zoom und achten Sie außerdem darauf, dass alle Ecken des Dokuments sichtbar sind und nichts abgeschnitten wird.
+                Um die besten Ergebnisse beim Fotografieren Ihrer Dokumente zu erzielen, sorgen Sie für ausreichend Licht – Tageslicht oder eine gleichmäßige Beleuchtung sind ideal. Halten Sie die Kamera parallel zum Dokument, sodass es vollständig im Bild ist. Stellen Sie sicher, dass der Fokus auf dem Text liegt. Verzichten Sie bitte auf Zoom und achten Sie außerdem darauf, dass alle Ecken des Dokuments sichtbar sind und nichts abgeschnitten wird.
+                Um die besten Ergebnisse beim Fotografieren Ihrer Dokumente zu erzielen, sorgen Sie für ausreichend Licht – Tageslicht oder eine gleichmäßige Beleuchtung sind ideal. Halten Sie die Kamera parallel zum Dokument, sodass es vollständig im Bild ist. Stellen Sie sicher, dass der Fokus auf dem Text liegt. Verzichten Sie bitte auf Zoom und achten Sie außerdem darauf, dass alle Ecken des Dokuments sichtbar sind und nichts abgeschnitten wird.
               </Text>
-            </View>
+            </ScrollView>
           </View>
         </SafeAreaView>
       </View>
@@ -61,7 +64,6 @@ const modalStyles = StyleSheet.create({
   textContainer: {
     flex: 1,
     paddingHorizontal: 24,
-    paddingTop: 16,
     backgroundColor: '#ffffff',
     display: 'flex',
     gap: 20,
@@ -69,11 +71,13 @@ const modalStyles = StyleSheet.create({
     borderBottomEndRadius: 4,
   },
   heading: {
+    marginTop: 20,
     fontFamily: 'OpenSans-Bold',
     fontSize: 16,
     color: '#1e4251',
   },
   text: {
+    marginVertical: 16,
     fontFamily: 'OpenSans-Regular',
     fontSize: 14,
     textAlign: 'left',
