@@ -65,9 +65,9 @@ const ReceiptOverview = ({receipt, onClose, handleOpenCamera}) => {
           <FieldLabel label={`${t('Amount including VAT')}.`}>
             <ItemCard
               item={{
-                title: `${receiptInfo?.amount}`,
+                title: receiptInfo?.amount ? receiptInfo?.amount : '0,00',
                 logo: <Icons name="euro-light" size={20} />,
-                subtitle: `${receiptInfo?.amount}`,
+                // subtitle: `${receiptInfo?.amount}`,
               }}
               showEditBtn={true}
               onItemClicked={() => {}}

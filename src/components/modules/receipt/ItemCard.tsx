@@ -40,11 +40,11 @@ const ItemCard = ({
             {item.title} {showCurrency && '€'}
           </Text>
         </View>
-        <View style={styles.itemSubtitleContainer}>
+        {/* <View style={styles.itemSubtitleContainer}>
           <Text style={styles.itemSubtitle}>
             {item.subtitle} {showCurrency && '€'}
           </Text>
-        </View>
+        </View> */}
       </View>
       {showEditBtn && (
         <TouchableOpacity onPress={onEditBtnPress}>
