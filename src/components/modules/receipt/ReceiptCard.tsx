@@ -32,7 +32,8 @@ const ReceiptCard = ({receipt}: ReceiptCardProps) => {
         </View>
         <View style={styles.receiptDateInfo}>
           <Text style={styles.date}>
-            {receipt?.postCode || '1234'}・{t('Yoga class')}
+            {receipt?.postCode || '1234'}
+            {/* ・{t('Yoga class')} */}
           </Text>
         </View>
       </View>

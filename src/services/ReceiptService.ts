@@ -93,6 +93,7 @@ class ReceiptService {
   }
 
   async addReceipt(values) {
+    console.log("===>", values);
     const modifiedBody = {
       title: values?.title,
       type: 'receipt',

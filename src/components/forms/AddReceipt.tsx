@@ -22,7 +22,7 @@ interface AddReceiptFormProps {
       IReceipt & {
         providerName: string;
         postCode: string;
-        serviceCat: string[];
+        // serviceCat: string[];
       }
     >,
   ) => void;
@@ -31,7 +31,7 @@ interface AddReceiptFormProps {
 const providerInfoSchema = z.object({
   providerName: z.string(),
   postCode: z.string(),
-  serviceCategory: z.array(z.string()),
+  // serviceCategory: z.array(z.string()),
 });
 
 type ServiceCategorySchema = z.infer<typeof providerInfoSchema>;
@@ -128,13 +128,13 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
             )}
           />
 
-          <ServiceCategory
+          {/* <ServiceCategory
             // error={errors?.serviceCategory?.message}
             // error={errors?.serviceCategory?"Bitte wählen Sie mindestens eine Kategorie":null}
             error={errors?.serviceCategory?.message?"Bitte wählen Sie mindestens eine Kategorie":null}
             serviceCategories={serviceCategories}
             onPress={() => setShowModal(true)}
-          />
+          /> */}
         </View>
 
         {!defaultValue ? (

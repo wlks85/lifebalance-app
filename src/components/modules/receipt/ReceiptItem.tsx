@@ -113,7 +113,8 @@ const ReceiptItem = ({
         <View style={styles.receiptDateInfo}>
           {!showAmount ? (
             <Text style={styles.date}>
-              {receiptDetails?.postCode || ''}・{t('Yoga-Kurs')}
+              {receiptDetails?.postCode || ''}
+              {/* ・{t('Yoga-Kurs')} */}
             </Text>
           ) : (
             <Text style={styles.date}>
