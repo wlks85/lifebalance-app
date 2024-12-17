@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-alert */
 //@ts-nocheck
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,21 +14,21 @@ import {
   Alert,
 } from 'react-native';
 import ModalComponent from '../Modal';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { TextInput } from 'react-native-gesture-handler';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {TextInput} from 'react-native-gesture-handler';
 import ReceiptOverviewModal from './ReceiptOverviewModal';
 import ReceiptCard from '../modules/receipt/ReceiptCard';
 import receiptService from '../../services/ReceiptService';
-import { useAuth } from '../../providers/auth-provider';
-import { generateReceiptTitle } from '../../utils';
+import {useAuth} from '../../providers/auth-provider';
+import {generateReceiptTitle} from '../../utils';
 import AppActivityIndicator from '../AppActivityIndicator';
-import { ModalStyles } from '../../styles';
-import { useTranslation } from 'react-i18next';
-import { Icons } from '../icons';
+import {ModalStyles} from '../../styles';
+import {useTranslation} from 'react-i18next';
+import {Icons} from '../icons';
 import ImageInfoModal from './ImageInfoModal';
 
-const ReceiptModalHeader = ({ onClose, setShowInfo }) => {
-  const { t } = useTranslation();
+const ReceiptModalHeader = ({onClose, setShowInfo}) => {
+  const {t} = useTranslation();
   return (
     <>
       <Icons
@@ -83,21 +83,21 @@ const ReceiptImageModal = ({
       }
       visible={visible}
       onClose={onClose}
-      contentStyle={{ paddingHorizontal: 0 }}>
+      contentStyle={{paddingHorizontal: 0}}>
       {!!receipt && (
         <>
           {loading && <AppActivityIndicator isLoading={loading} size="large" />}
           {!loading && (
-            <View style={{ flex: 1, gap: 10 }}>
+            <View style={{flex: 1, gap: 10}}>
               <Image
-                style={{ flex: 1, width: '100%', height: '100%' }}
+                style={{flex: 1, width: '100%', height: '100%'}}
                 src={receipt?.image}
               />
 
-              <View style={{ padding: 25 }}>
+              <View style={{padding: 25}}>
                 <TouchableOpacity
                   onPress={handleBtnClick}
-                  style={{ ...modalStyles.furtherBtn }}>
+                  style={{...modalStyles.furtherBtn}}>
                   <Text style={modalStyles.btnText}>{buttonText}</Text>
                 </TouchableOpacity>
               </View>
@@ -110,14 +110,14 @@ const ReceiptImageModal = ({
   );
 };
 
-const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
-  const { t } = useTranslation();
+const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
+  const {t} = useTranslation();
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [showOverviewModal, setShowOverviewModal] = useState(false);
   const [image, setImage] = useState(null);
   const [fid, setFid] = useState(null);
   const [amount, setAmount] = useState('');
-  const { userDetails } = useAuth();
+  const {userDetails} = useAuth();
   const [imageVisible, setImageVisible] = useState(false);
   const [error, setError] = useState('');
   const [showInfo, setShowInfo] = useState(false);
@@ -166,7 +166,7 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
       setTimeout(() => {
         setImage(result);
         onAction?.(amount);
-        setImagePreviewModalButtonText('Choose Photo');
+        setImagePreviewModalButtonText('Foto wählen');
         setImageVisible(true);
       }, 500);
     } catch (err) {
@@ -186,39 +186,36 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
     }
   };
 
-  const validateChange = (value: string) => {
+  const validateChange = value => {
     const germanNumberPattern =
       /^(\d{1,3}(\.\d{3})*,\d{0,2}|\d{1,3}(\.\d{3})*|\d*)$/;
 
     if (germanNumberPattern.test(value)) {
       setError('');
     } else {
-      setError(t('Invalid Number'));
+      setError('Invalid Number');
     }
   };
 
   useEffect(() => {
     if (receipt?.amount) {
-      // Format the incoming amount as a German-style decimal
       const formattedAmount = formatAmount(receipt.amount);
       setAmount(formattedAmount);
     }
   }, [receipt?.amount]);
 
-  // Helper function to format the amount into German decimal style
-  const formatAmount = (amount: any): string => {
+  const formatAmount = amount => {
     const parsedAmount = parseFloat(amount);
 
-    // If parsedAmount is not a valid number, return '0,00'
-    if (isNaN(parsedAmount)) {
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
       return '0,00';
     }
 
-    // Format the number into German decimal style
+
     return parsedAmount
-      .toFixed(2)                // Ensure two decimal places
-      .replace('.', ',')         // Replace dot with comma for decimal point
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'); // Add thousands separator
+      .toFixed(2)
+      .replace('.', ',')
+      .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
 
   return (
@@ -236,12 +233,6 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
             size={25}
           />
           <Text style={modalStyles.modalTitle}>{t('Amount')}</Text>
-          {/* <Icons
-            style={modalStyles.headerButtons}
-            name={'question-mark-circle-light'}
-            color={'#454d66'}
-            size={25}
-          /> */}
         </>
       }>
       {!!receipt && (
@@ -258,55 +249,32 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
                 style={modalStyles.amount}
                 placeholder="0,00 €"
                 placeholderTextColor={'#454d66'}
+                keyboardType="numeric"
                 value={amount ? `${amount} €` : ''}
-                onChangeText={(value) => {
+                onChangeText={value => {
+
+                  value = value.replace(/[^0-9,]/g, '');
+
+                  setAmount(value);
+                }}
+                onBlur={() => {
                   try {
-                    // Remove any non-numeric character except comma
-                    value = value.replace(/[^0-9,]/g, '');
 
-                    // If the user removes the comma, handle the update
-                    if (!value.includes(',')) {
-                      // Remove any non-numeric characters
-                      value = value.replace(/[^0-9]/g, '');
-
-                      // Divide the integer by 100 when comma is removed
-                      if (value) {
-                        let integerValue = parseInt(value, 10);
-                        value = (integerValue / 100).toFixed(2).replace('.', ',');
-                      } else {
-                        value = '0,00'; // Default to zero if no valid input
-                      }
+                    let number = parseFloat(amount.replace(/\./g, '').replace(',', '.') || '0');
+                    
+                    if (number <= 0) {
+                      setError('Invalid');
+                      setAmount('0,00');
                     } else {
-                      let parts = value.split(',');
-
-                      // If there are more than two parts, trim extra parts
-                      if (parts.length > 2) {
-                        value = parts[0] + ',' + parts.slice(1).join('');
-                      }
-
-                      // Ensure decimal part doesn't exceed two digits
-                      if (parts.length === 1) {
-                        value = parts[0] + ',00'; // Ensure there's a decimal part if it's missing
-                      } else if (parts.length === 2) {
-                        // Limit decimal part to two digits
-                        value = parts[0] + ',' + parts[1].slice(0, 2);
-                      }
+                      const formattedValue = formatAmount(number);
+                      validateChange(formattedValue);
+                      setAmount(formattedValue);
+                      setError('');
                     }
-
-                    // Handle the number itself (parse the integer part and format it)
-                    let number = parseFloat(value.replace('.', '').replace(',', '.') || '0');
-
-                    if (!isNaN(number)) {
-                      // Format the number with German format (thousands separator)
-                      value = formatAmount(number);
-                      validateChange(value); // Validate the formatted value
-                    } else {
-                      value = '0,00'; // Default to zero if invalid number
-                    }
-
-                    setAmount(value); // Update the state with the new value
                   } catch (err) {
-                    console.error(err); // Log any errors for debugging
+                    console.error(err);
+                    setAmount('0,00');
+                    setError('Invalid');
                   }
                 }}
               />
@@ -335,7 +303,7 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
           <View style={modalStyles.btnContainer}>
             <TouchableOpacity
               onPress={handleFurther}
-              style={modalStyles.furtherBtn}>
+              style={[modalStyles.furtherBtn, { opacity: error ? 0.5 : 1 }]} disabled={!!error}>
               <Text style={modalStyles.btnText}>{t('Further')}</Text>
             </TouchableOpacity>
 
@@ -345,7 +313,7 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
               // onDismiss={() => setImageVisible(false)}
               animationType="slide">
               <Pressable
-                style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)', flex: 1 }}
+                style={{backgroundColor: 'rgba(0, 0, 0, 0.15)', flex: 1}}
                 onPress={() => setShowPhotoModal(false)}>
                 <TouchableWithoutFeedback>
                   <View style={modalStyles.photoBtnContainer}>
@@ -375,7 +343,7 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
 
             <ReceiptImageModal
               visible={imageVisible}
-              receipt={{ ...receipt, image: image?.assets?.[0]?.uri }}
+              receipt={{...receipt, image: image?.assets?.[0]?.uri}}
               onClose={() => setImageVisible(false)}
               buttonText={imagePreviewModalButtonText}
               image={image}
@@ -406,7 +374,6 @@ const ReceiptModal = ({ receipt, visible, onClose, onAction }) => {
                 setShowOverviewModal(false);
                 setTimeout(() => onClose(), 100);
               }}
-
             />
           </View>
         </View>
@@ -440,7 +407,7 @@ const modalStyles = StyleSheet.create({
   modalContent: {
     flex: 1,
     width: '100%',
-    borderRadius: 0, // No border radius to make it full screen
+    borderRadius: 0,
     paddingRight: 25,
     paddingLeft: 25,
   },
@@ -471,6 +438,7 @@ const modalStyles = StyleSheet.create({
   amountError: {
     color: 'red',
     fontFamily: 'OpenSans-Regular',
+    textAlign: 'center'
   },
   amountsSection: {
     display: 'flex',

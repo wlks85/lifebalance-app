@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import ModalComponent from '../Modal';
-import { TextInput } from 'react-native-gesture-handler';
-import { IReceipt } from '../modules/receipt/ReceiptCard';
-import { useAuth } from '../../providers/auth-provider';
-import { ModalStyles } from '../../styles';
-import { useTranslation } from 'react-i18next';
-import { Icons } from '../icons';
+import {TextInput} from 'react-native-gesture-handler';
+import {IReceipt} from '../modules/receipt/ReceiptCard';
+import {useAuth} from '../../providers/auth-provider';
+import {ModalStyles} from '../../styles';
+import {useTranslation} from 'react-i18next';
+import {Icons} from '../icons';
 
 interface EditAmountModalProps {
   receipt: Partial<IReceipt>;
@@ -23,14 +23,13 @@ const EditAmountModal = ({
 }: EditAmountModalProps) => {
   const [amount, setAmount] = useState('');
   const [error, setError] = useState('');
-  const { userDetails } = useAuth();
-  const { t } = useTranslation();
+  const {userDetails} = useAuth();
+  const {t} = useTranslation();
 
   const isValid = (value: string) => {
     const germanNumberPattern =
       /^(\d{1,3}(\.\d{3})*,\d{0,2}|\d{1,3}(\.\d{3})*|\d*)$/;
 
-    // Validate and set value if it matches German numeric format
     if (germanNumberPattern.test(value)) {
       setError('');
       return true;
@@ -47,39 +46,33 @@ const EditAmountModal = ({
     }
   };
 
-  const validateChange = (value: string) => {
+  const validateChange = value => {
     const germanNumberPattern =
       /^(\d{1,3}(\.\d{3})*,\d{0,2}|\d{1,3}(\.\d{3})*|\d*)$/;
 
     if (germanNumberPattern.test(value)) {
       setError('');
     } else {
-      setError(t('Invalid Number'));
+      setError('Invalid Number');
     }
   };
 
   useEffect(() => {
     if (receipt?.amount) {
-      // Format the incoming amount as a German-style decimal
       const formattedAmount = formatAmount(receipt.amount);
       setAmount(formattedAmount);
     }
   }, [receipt?.amount]);
-
-  // Helper function to format the amount into German decimal style
-  const formatAmount = (amount: any): string => {
+  const formatAmount = amount => {
     const parsedAmount = parseFloat(amount);
 
-    // If parsedAmount is not a valid number, return '0,00'
-    if (isNaN(parsedAmount)) {
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
       return '0,00';
     }
-
-    // Format the number into German decimal style
     return parsedAmount
-      .toFixed(2)                // Ensure two decimal places
-      .replace('.', ',')         // Replace dot with comma for decimal point
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'); // Add thousands separator
+      .toFixed(2)
+      .replace('.', ',')
+      .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
 
   return (
@@ -111,55 +104,31 @@ const EditAmountModal = ({
                 style={modalStyles.amount}
                 placeholder="0,00 €"
                 placeholderTextColor={'#454d66'}
+                keyboardType="numeric"
                 value={amount ? `${amount} €` : ''}
-                onChangeText={(value) => {
+                onChangeText={value => {
+                  value = value.replace(/[^0-9,]/g, '');
+                  setAmount(value);
+                }}
+                onBlur={() => {
                   try {
-                    // Remove any non-numeric character except comma
-                    value = value.replace(/[^0-9,]/g, '');
+                    let number = parseFloat(
+                      amount.replace(/\./g, '').replace(',', '.') || '0',
+                    );
 
-                    // If the user removes the comma, handle the update
-                    if (!value.includes(',')) {
-                      // Remove any non-numeric characters
-                      value = value.replace(/[^0-9]/g, '');
-
-                      // Divide the integer by 100 when comma is removed
-                      if (value) {
-                        let integerValue = parseInt(value, 10);
-                        value = (integerValue / 100).toFixed(2).replace('.', ',');
-                      } else {
-                        value = '0,00'; // Default to zero if no valid input
-                      }
+                    if (number <= 0) {
+                      setError('Invalid');
+                      setAmount('0,00');
                     } else {
-                      let parts = value.split(',');
-
-                      // If there are more than two parts, trim extra parts
-                      if (parts.length > 2) {
-                        value = parts[0] + ',' + parts.slice(1).join('');
-                      }
-
-                      // Ensure decimal part doesn't exceed two digits
-                      if (parts.length === 1) {
-                        value = parts[0] + ',00'; // Ensure there's a decimal part if it's missing
-                      } else if (parts.length === 2) {
-                        // Limit decimal part to two digits
-                        value = parts[0] + ',' + parts[1].slice(0, 2);
-                      }
+                      const formattedValue = formatAmount(number);
+                      validateChange(formattedValue);
+                      setAmount(formattedValue);
+                      setError('');
                     }
-
-                    // Handle the number itself (parse the integer part and format it)
-                    let number = parseFloat(value.replace('.', '').replace(',', '.') || '0');
-
-                    if (!isNaN(number)) {
-                      // Format the number with German format (thousands separator)
-                      value = formatAmount(number);
-                      validateChange(value); // Validate the formatted value
-                    } else {
-                      value = '0,00'; // Default to zero if invalid number
-                    }
-
-                    setAmount(value); // Update the state with the new value
                   } catch (err) {
-                    console.error(err); // Log any errors for debugging
+                    console.error(err);
+                    setAmount('0,00');
+                    setError('Invalid');
                   }
                 }}
               />
@@ -185,7 +154,8 @@ const EditAmountModal = ({
           <View style={modalStyles.btnContainer}>
             <TouchableOpacity
               onPress={handleEditAmount}
-              style={modalStyles.furtherBtn}>
+              style={[modalStyles.furtherBtn, {opacity: error ? 0.5 : 1}]}
+              disabled={!!error}>
               <Text style={modalStyles.btnText}>{t('Take over')}</Text>
             </TouchableOpacity>
           </View>
@@ -255,6 +225,7 @@ const modalStyles = StyleSheet.create({
   amountError: {
     color: 'red',
     fontFamily: 'OpenSans-Regular',
+    textAlign: 'center',
   },
   amountsSection: {
     display: 'flex',
