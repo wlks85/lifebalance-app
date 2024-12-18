@@ -27,8 +27,6 @@ export default function ImageInfoModal({ visible, onClose }) {
               <Text style={modalStyles.heading}>Halten Sie die Kamera ruhig</Text>
               <Text style={modalStyles.text}>
                 Um die besten Ergebnisse beim Fotografieren Ihrer Dokumente zu erzielen, sorgen Sie für ausreichend Licht – Tageslicht oder eine gleichmäßige Beleuchtung sind ideal. Halten Sie die Kamera parallel zum Dokument, sodass es vollständig im Bild ist. Stellen Sie sicher, dass der Fokus auf dem Text liegt. Verzichten Sie bitte auf Zoom und achten Sie außerdem darauf, dass alle Ecken des Dokuments sichtbar sind und nichts abgeschnitten wird.
-                Um die besten Ergebnisse beim Fotografieren Ihrer Dokumente zu erzielen, sorgen Sie für ausreichend Licht – Tageslicht oder eine gleichmäßige Beleuchtung sind ideal. Halten Sie die Kamera parallel zum Dokument, sodass es vollständig im Bild ist. Stellen Sie sicher, dass der Fokus auf dem Text liegt. Verzichten Sie bitte auf Zoom und achten Sie außerdem darauf, dass alle Ecken des Dokuments sichtbar sind und nichts abgeschnitten wird.
-                Um die besten Ergebnisse beim Fotografieren Ihrer Dokumente zu erzielen, sorgen Sie für ausreichend Licht – Tageslicht oder eine gleichmäßige Beleuchtung sind ideal. Halten Sie die Kamera parallel zum Dokument, sodass es vollständig im Bild ist. Stellen Sie sicher, dass der Fokus auf dem Text liegt. Verzichten Sie bitte auf Zoom und achten Sie außerdem darauf, dass alle Ecken des Dokuments sichtbar sind und nichts abgeschnitten wird.
               </Text>
             </ScrollView>
           </View>
@@ -55,7 +53,7 @@ const modalStyles = StyleSheet.create({
 
   container: {
     display: 'flex',
-    gap: 200,
+    gap: 100,
     backgroundColor: '#f5f0ee',
     height: '70%',
     width: '80%',
