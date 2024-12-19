@@ -21,7 +21,7 @@ const EditAmountModal = ({
   onClose,
   onAction,
 }: EditAmountModalProps) => {
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState(receipt.amount || '0,00');
   const [error, setError] = useState('');
   const {userDetails} = useAuth();
   const {t} = useTranslation();
@@ -105,25 +105,45 @@ const EditAmountModal = ({
                 placeholder="0,00 €"
                 placeholderTextColor={'#454d66'}
                 keyboardType="numeric"
-                value={amount ? `${amount} €` : ''}
+                value={amount ? `${amount} €` : ''} // Display amount with € symbol
                 onChangeText={value => {
-                  value = value.replace(/[^0-9,]/g, '');
-                  setAmount(value);
+                  // Allow only numbers and one comma for the decimal separator
+                  let sanitizedValue = value.replace(/[^0-9,\.]/g, ''); // Allow only digits, commas, and dots
+
+                  // Handle case where there's more than one comma
+                  const commas = sanitizedValue.split(',').length - 1;
+                  if (commas > 1) {
+                    // Remove the last comma entered by the user if there are multiple commas
+                    sanitizedValue = sanitizedValue.substring(
+                      0,
+                      sanitizedValue.lastIndexOf(','),
+                    );
+                  }
+
+                  // Update the amount with the sanitized value
+                  setAmount(sanitizedValue);
                 }}
                 onBlur={() => {
                   try {
-                    let number = parseFloat(
-                      amount.replace(/\./g, '').replace(',', '.') || '0',
-                    );
+                    // Remove the € symbol and extra spaces if any
+                    let sanitizedAmount = amount.replace(' €', '').trim();
 
-                    if (number <= 0) {
+                    // Replace the comma with a period to handle the German-style decimal separator
+                    let parsedAmount =
+                      sanitizedAmount.replace(/\./g, '').replace(',', '.') ||
+                      '0'; // Convert commas to dots for float parsing
+
+                    parsedAmount = parseFloat(parsedAmount);
+
+                    // Check if the parsed amount is valid and greater than zero
+                    if (isNaN(parsedAmount) || parsedAmount <= 0) {
                       setError('Invalid');
                       setAmount('0,00');
                     } else {
-                      const formattedValue = formatAmount(number);
+                      const formattedValue = formatAmount(parsedAmount); // Format the amount again if valid
                       validateChange(formattedValue);
                       setAmount(formattedValue);
-                      setError('');
+                      setError(''); // Clear error if the amount is valid
                     }
                   } catch (err) {
                     console.error(err);
@@ -135,12 +155,12 @@ const EditAmountModal = ({
               {error && <Text style={modalStyles.amountError}>{error}</Text>}
             </View>
             <View style={modalStyles.amountsSection}>
-              <View style={modalStyles.amountInfo}>
+              {/* <View style={modalStyles.amountInfo}>
                 <Text style={modalStyles.amountInfoText}>
                   {t('Refunded amount')}:
                 </Text>
                 <Text style={modalStyles.refundAmount}>{amount} €</Text>
-              </View>
+              </View> */}
               <View style={modalStyles.amountInfo}>
                 <Text style={modalStyles.amountInfoText}>
                   {t('Current account balance')}:
@@ -154,8 +174,8 @@ const EditAmountModal = ({
           <View style={modalStyles.btnContainer}>
             <TouchableOpacity
               onPress={handleEditAmount}
-              style={[modalStyles.furtherBtn, {opacity: error ? 0.5 : 1}]}
-              disabled={!!error}>
+              style={[modalStyles.furtherBtn, {opacity: amount === '0,00' || error ? 0.5 : 1},]}
+              disabled={amount === '0,00' || !!error}>
               <Text style={modalStyles.btnText}>{t('Take over')}</Text>
             </TouchableOpacity>
           </View>

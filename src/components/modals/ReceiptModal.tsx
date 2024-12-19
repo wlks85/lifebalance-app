@@ -122,7 +122,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   const [error, setError] = useState('');
   const [showInfo, setShowInfo] = useState(false);
   const [imagePreviewModalButtonText, setImagePreviewModalButtonText] =
-    useState('Use Photo');
+    useState('Foto verwenden');
   const handleFurther = () => {
     const germanNumberPattern =
       /^(\d{1,3}(\.\d{3})*,\d{0,2}|\d{1,3}(\.\d{3})*|\d*)$/;
@@ -134,25 +134,42 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   };
   const ImageLibConfig = {
     mediaType: 'photo',
+    maxHeight: 2000,
+    maxWidth: 2000,
     quality: 1,
     includeBase64: true,
+    saveToPhotos: true,
+    cameraType: 'back',
+    language: 'de',
   };
 
   const handleOpenCamera = async () => {
     try {
       const result = await launchCamera({
         ...ImageLibConfig,
-        cameraType: 'back',
       });
       if (!result.didCancel) {
         setImage(result);
-        console.log(result);
         onAction?.(amount);
         setImageVisible(true);
         setImagePreviewModalButtonText('Foto verwenden');
       }
+      return result;
     } catch (err) {
-      alert(err.message);
+      console.log('Camera Error', err.message);
+      try {
+        const imageLibraryResult = await launchImageLibrary(ImageLibConfig);
+        if (!imageLibraryResult.didCancel) {
+          setImage(imageLibraryResult);
+          onAction?.(amount);
+          setImageVisible(true);
+          setImagePreviewModalButtonText('Foto verwenden');
+        }
+        return imageLibraryResult;
+      } catch (libraryError) {
+        alert('Failed to pick an image or open the camera');
+        return null;
+      }
     }
   };
 
@@ -211,7 +228,6 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
       return '0,00';
     }
 
-
     return parsedAmount
       .toFixed(2)
       .replace('.', ',')
@@ -250,26 +266,45 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                 placeholder="0,00 €"
                 placeholderTextColor={'#454d66'}
                 keyboardType="numeric"
-                value={amount ? `${amount} €` : ''}
+                value={amount ? `${amount} €` : ''} // Display amount with € symbol
                 onChangeText={value => {
+                  // Allow only numbers and one comma for the decimal separator
+                  let sanitizedValue = value.replace(/[^0-9,\.]/g, ''); // Allow only digits, commas, and dots
 
-                  value = value.replace(/[^0-9,]/g, '');
+                  // Handle case where there's more than one comma
+                  const commas = sanitizedValue.split(',').length - 1;
+                  if (commas > 1) {
+                    // Remove the last comma entered by the user if there are multiple commas
+                    sanitizedValue = sanitizedValue.substring(
+                      0,
+                      sanitizedValue.lastIndexOf(','),
+                    );
+                  }
 
-                  setAmount(value);
+                  // Update the amount with the sanitized value
+                  setAmount(sanitizedValue);
                 }}
                 onBlur={() => {
                   try {
+                    // Remove the € symbol and extra spaces if any
+                    let sanitizedAmount = amount.replace(' €', '').trim();
 
-                    let number = parseFloat(amount.replace(/\./g, '').replace(',', '.') || '0');
-                    
-                    if (number <= 0) {
+                    // Replace the comma with a period to handle the German-style decimal separator
+                    let parsedAmount =
+                      sanitizedAmount.replace(/\./g, '').replace(',', '.') ||
+                      '0'; // Convert commas to dots for float parsing
+
+                    parsedAmount = parseFloat(parsedAmount);
+
+                    // Check if the parsed amount is valid and greater than zero
+                    if (isNaN(parsedAmount) || parsedAmount <= 0) {
                       setError('Invalid');
                       setAmount('0,00');
                     } else {
-                      const formattedValue = formatAmount(number);
+                      const formattedValue = formatAmount(parsedAmount); // Format the amount again if valid
                       validateChange(formattedValue);
                       setAmount(formattedValue);
-                      setError('');
+                      setError(''); // Clear error if the amount is valid
                     }
                   } catch (err) {
                     console.error(err);
@@ -282,14 +317,14 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               {error && <Text style={modalStyles.amountError}>{error}</Text>}
             </View>
             <View style={modalStyles.amountsSection}>
-              <View style={modalStyles.amountInfo}>
+              {/* <View style={modalStyles.amountInfo}>
                 <Text style={modalStyles.amountInfoText}>
                   {t('Refunded amount')}:
                 </Text>
                 <Text style={modalStyles.refundAmount}>
                   {amount ? `${amount} €` : '0,00 €'}
                 </Text>
-              </View>
+              </View> */}
               <View style={modalStyles.amountInfo}>
                 <Text style={modalStyles.amountInfoText}>
                   {t('Current account balance')}:
@@ -303,7 +338,11 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
           <View style={modalStyles.btnContainer}>
             <TouchableOpacity
               onPress={handleFurther}
-              style={[modalStyles.furtherBtn, { opacity: error ? 0.5 : 1 }]} disabled={!!error}>
+              style={[
+                modalStyles.furtherBtn,
+                {opacity: amount === '0,00' || error ? 0.5 : 1},
+              ]}
+              disabled={amount === '0,00' || !!error}>
               <Text style={modalStyles.btnText}>{t('Further')}</Text>
             </TouchableOpacity>
 
@@ -319,9 +358,9 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                   <View style={modalStyles.photoBtnContainer}>
                     <TouchableOpacity
                       style={modalStyles.takeOrUploadPhotoBtn}
-                      onPress={() => {
+                      onPress={async () => {
+                        const result = await handleOpenCamera();
                         setShowPhotoModal(false);
-                        handleOpenCamera();
                       }}>
                       <Text style={modalStyles.photoBtnTitle}>
                         {t('Take a photo of the receipt')}
@@ -438,7 +477,7 @@ const modalStyles = StyleSheet.create({
   amountError: {
     color: 'red',
     fontFamily: 'OpenSans-Regular',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   amountsSection: {
     display: 'flex',
