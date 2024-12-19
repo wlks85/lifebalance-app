@@ -116,7 +116,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
   const [showOverviewModal, setShowOverviewModal] = useState(false);
   const [image, setImage] = useState(null);
   const [fid, setFid] = useState(null);
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState('0,00');
   const {userDetails} = useAuth();
   const [imageVisible, setImageVisible] = useState(false);
   const [error, setError] = useState('');
