@@ -17,6 +17,7 @@ import { useAuth } from '../providers/auth-provider';
 import userService from '../services/UserService';
 import { useTranslation } from 'react-i18next';
 import { Icons } from '../components/icons';
+import { WebView } from 'react-native-webview';
 
 const formSchema = z.object({
   username: z.string(),
@@ -24,6 +25,23 @@ const formSchema = z.object({
 });
 
 type FormSchema = z.infer<typeof formSchema>;
+
+const WebViewScreen = ({ uri, onClose }: { uri: string; onClose: () => void }) => (
+  <SafeAreaView style={{ flex: 1 }}>
+    {/* <View style={{ flexDirection: 'row', justifyContent: 'flex-end', padding: 10 }}>
+      <Pressable onPress={onClose}>
+      <Icons
+            onPress={onClose}
+            name={'arrow-left-light'}
+            color={'#454d66'}
+            size={25}
+          />
+      </Pressable>
+    </View> */}
+    <WebView source={{ uri }} style={{ flex: 1 }} />
+  </SafeAreaView>
+);
+
 
 const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
   const { t } = useTranslation();
@@ -34,6 +52,20 @@ const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
     resolver: zodResolver(formSchema),
   });
   const [mode, setMode] = useState<'login' | 'forgot' | 'register'>('login');
+
+  const [webViewUri, setWebViewUri] = useState<string | null>(null);
+
+  const openWebView = (url: string) => {
+    setWebViewUri(url);
+  };
+
+  const closeWebView = () => {
+    setWebViewUri(null);
+  };
+
+  if (webViewUri) {
+    return <WebViewScreen uri={webViewUri} onClose={closeWebView} />;
+  }
 
   async function handleSubmit(values: FormSchema) {
     setError('');
@@ -101,11 +133,16 @@ const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
                       <View style={styles.formLabelHeader}>
                         <Text style={styles.formLabel}>{t('Password')}</Text>
                         {mode === 'login' && (
+                          // <Text
+                          //   onPress={async () => {
+                          //     const url = 'https://w3.lbplus.de/user/password';
+                          //     await Linking.openURL(url);
+                          //   }}
+                          //   style={[styles.formLabel, styles.formLabelPrimary]}>
+                          //   {t('Forgot')}?
+                          // </Text>
                           <Text
-                            onPress={async () => {
-                              const url = 'https://w3.lbplus.de/user/password';
-                              await Linking.openURL(url);
-                            }}
+                            onPress={() => openWebView('https://w3.lbplus.de/user/password')}
                             style={[styles.formLabel, styles.formLabelPrimary]}>
                             {t('Forgot')}?
                           </Text>
@@ -160,20 +197,30 @@ const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
               </Text>
             )}
             {mode === 'login' && (
+              // <Text
+              //   style={[styles.formInfoText, styles.formLabelPrimary]}
+              //   onPress={() =>
+              //     Linking.openURL('https://w3.lbplus.de/?q=user/register')
+              //   }>
+              //   {t('Register here')} …
+              // </Text>
               <Text
                 style={[styles.formInfoText, styles.formLabelPrimary]}
-                onPress={() =>
-                  Linking.openURL('https://w3.lbplus.de/?q=user/register')
-                }>
+                onPress={() => openWebView('https://w3.lbplus.de/?q=user/register')}>
                 {t('Register here')} …
               </Text>
             )}
             {mode === 'register' && (
+              // <Text
+              //   style={[styles.formInfoText, styles.formLabelPrimary]}
+              //   onPress={() =>
+              //     Linking.openURL('https://w3.lbplus.de/?q=user/register')
+              //   }>
+              //   {t('Register here')} …
+              // </Text>
               <Text
                 style={[styles.formInfoText, styles.formLabelPrimary]}
-                onPress={() =>
-                  Linking.openURL('https://w3.lbplus.de/?q=user/register')
-                }>
+                onPress={() => openWebView('https://w3.lbplus.de/?q=user/register')}>
                 {t('Register here')} …
               </Text>
             )}

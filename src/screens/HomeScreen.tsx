@@ -68,7 +68,8 @@ const RenderNavigation = () => {
 };
 
 const RenderBalance = (userDetails: any) => {
-  const user = {balance: userDetails?.field_balance_current?.und?.[0]?.value};
+
+  const user = {balance: userDetails?.field_employer_grant_current?.und?.[0]?.value};
   const show = true;
   return show && <BankBalanceComponent hasNavigation={true} user={user} />;
 };
@@ -134,6 +135,7 @@ const HomeScreen = () => {
           </View>
         </ImageBackground>
         <View style={styles.components}>
+          {/* <Text>{JSON.stringify(userDetails)}</Text> */}
           {RenderBalance(userDetails)}
           {RenderNavigation()}
         </View>
