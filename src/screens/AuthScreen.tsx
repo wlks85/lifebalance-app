@@ -28,16 +28,16 @@ type FormSchema = z.infer<typeof formSchema>;
 
 const WebViewScreen = ({ uri, onClose }: { uri: string; onClose: () => void }) => (
   <SafeAreaView style={{ flex: 1 }}>
-    {/* <View style={{ flexDirection: 'row', justifyContent: 'flex-end', padding: 10 }}>
+    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', padding: 10 }}>
       <Pressable onPress={onClose}>
       <Icons
             onPress={onClose}
-            name={'arrow-left-light'}
+            name={'close-light'}
             color={'#454d66'}
             size={25}
           />
       </Pressable>
-    </View> */}
+    </View>
     <WebView source={{ uri }} style={{ flex: 1 }} />
   </SafeAreaView>
 );
