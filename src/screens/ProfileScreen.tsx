@@ -392,12 +392,12 @@ const OtherInformation = () => {
   };
   const items = [
     {
-      title: t('Data protection'),
+      title: t('Imprint'),
       icon: 'user-shield-light',
       onPress: () => setShowDataProtection(true),
     },
     {
-      title: t('Imprint'),
+      title: t('Data protection'),
       icon: 'file-lines-light',
       onPress: () => setShowImprint(true),
     },
@@ -500,7 +500,7 @@ const ProfileScreen = () => {
   const user = {
     fullname: userDetails?.name?.split('@')?.[0],
     email: userDetails?.name,
-    balance: userDetails?.field_balance_current?.und?.[0]?.value,
+    balance: userDetails?.field_employer_grant_current?.und?.[0]?.value,
   };
   return (
     <Layout title="Profil">

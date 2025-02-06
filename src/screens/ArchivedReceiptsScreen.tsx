@@ -143,7 +143,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
               </View>
             </View>
 
-            <View style={modalStyles.cardItem}>
+            {/* <View style={modalStyles.cardItem}>
               <View style={modalStyles.cardItemIcon}>
                 <Icons color="#454d66" name="shapes-light" size={30} />
               </View>
@@ -155,7 +155,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                   {t('Yoga class')}
                 </Text>
               </View>
-            </View>
+            </View> */}
 
             <TouchableOpacity
               style={modalStyles.cardItem}
