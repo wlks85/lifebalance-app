@@ -191,25 +191,18 @@ const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
                 {error}
               </Text>
             )}
-            {mode !== 'forgot' && (
+            {/* {mode !== 'forgot' && (
               <Text style={styles.formInfoText}>
                 {t("Don't have a lifebalancePlus account yet")}?
               </Text>
             )}
             {mode === 'login' && (
-              // <Text
-              //   style={[styles.formInfoText, styles.formLabelPrimary]}
-              //   onPress={() =>
-              //     Linking.openURL('https://w3.lbplus.de/?q=user/register')
-              //   }>
-              //   {t('Register here')} …
-              // </Text>
               <Text
                 style={[styles.formInfoText, styles.formLabelPrimary]}
                 onPress={() => openWebView('https://w3.lbplus.de/?q=user/register')}>
                 {t('Register here')} …
               </Text>
-            )}
+            )} */}
             {mode === 'register' && (
               // <Text
               //   style={[styles.formInfoText, styles.formLabelPrimary]}
