@@ -140,7 +140,7 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
     includeBase64: true,
     saveToPhotos: true,
     cameraType: 'back',
-    language: 'de',
+    language: 'und',
   };
 
   const handleOpenCamera = async () => {
