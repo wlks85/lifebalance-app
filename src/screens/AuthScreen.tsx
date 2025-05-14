@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, { ReactNode, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import React, {ReactNode, useState} from 'react';
+import {Alert, Image, Modal} from 'react-native';
+import {useForm, Controller} from 'react-hook-form';
 import {
   View,
   Text,
@@ -11,13 +12,13 @@ import {
   Linking,
   SafeAreaView,
 } from 'react-native';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuth } from '../providers/auth-provider';
+import {z} from 'zod';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {useAuth} from '../providers/auth-provider';
 import userService from '../services/UserService';
-import { useTranslation } from 'react-i18next';
-import { Icons } from '../components/icons';
-import { WebView } from 'react-native-webview';
+import {useTranslation} from 'react-i18next';
+import {Icons} from '../components/icons';
+import {WebView} from 'react-native-webview';
 
 const formSchema = z.object({
   username: z.string(),
@@ -26,34 +27,36 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-const WebViewScreen = ({ uri, onClose }: { uri: string; onClose: () => void }) => (
-  <SafeAreaView style={{ flex: 1 }}>
-    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', padding: 10 }}>
+const WebViewScreen = ({uri, onClose}: {uri: string; onClose: () => void}) => (
+  <SafeAreaView style={{flex: 1}}>
+    <View
+      style={{flexDirection: 'row', justifyContent: 'flex-end', padding: 10}}>
       <Pressable onPress={onClose}>
-      <Icons
-            onPress={onClose}
-            name={'close-light'}
-            color={'#454d66'}
-            size={25}
-          />
+        <Icons
+          onPress={onClose}
+          name={'close-light'}
+          color={'#454d66'}
+          size={25}
+        />
       </Pressable>
     </View>
-    <WebView source={{ uri }} style={{ flex: 1 }} />
+    <WebView source={{uri}} style={{flex: 1}} />
   </SafeAreaView>
 );
 
-
-const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
-  const { t } = useTranslation();
+const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
+  const {t} = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { setIsLoggedIn, setUserDetails } = useAuth();
+  const {setIsLoggedIn, setUserDetails} = useAuth();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
   const [mode, setMode] = useState<'login' | 'forgot' | 'register'>('login');
 
   const [webViewUri, setWebViewUri] = useState<string | null>(null);
+
+  const [modalVisible, setModalVisible] = useState(true);
 
   const openWebView = (url: string) => {
     setWebViewUri(url);
@@ -72,12 +75,14 @@ const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
     setLoading(true);
     try {
       if (mode === 'login') {
-        const { data: userDetails, error: loginError } = await userService.login({
+        const {data: userDetails, error: loginError} = await userService.login({
           username: values.username!,
           password: values.password!,
         });
         if (loginError) {
-          setError("loginErrorIhre Kombination aus E-Mail-Adresse und Passwort existiert nicht in unserem System. Bitte versuchen Sie es erneut oder fordern Sie ein neues Passwort an.");
+          setError(
+            'loginErrorIhre Kombination aus E-Mail-Adresse und Passwort existiert nicht in unserem System. Bitte versuchen Sie es erneut oder fordern Sie ein neues Passwort an.',
+          );
           setLoading(false);
           return;
         }
@@ -92,7 +97,7 @@ const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
     }
   }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>
@@ -104,19 +109,21 @@ const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
 
         <View style={styles.form}>
           {mode === 'forgot' ? (
-            <FormItem value="" onChange={() => { }} label={t('Email')} />
+            <FormItem value="" onChange={() => {}} label={t('Email')} />
           ) : (
             <>
               <Controller
                 name="username"
                 control={form.control}
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem
-                    label={
-                      t('Username')
-                    }
+                    label={t('Username')}
                     // error={form.formState.errors.username?.message}
-                    error={form.formState.errors.username?"Bitte geben Sie Ihre E-Mail-Adresse an":null}
+                    error={
+                      form.formState.errors.username
+                        ? 'Bitte geben Sie Ihre E-Mail-Adresse an'
+                        : null
+                    }
                     onChange={field.onChange}
                     onBlur={field.onBlur}
                     value={field.value}
@@ -127,7 +134,7 @@ const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
               <Controller
                 name="password"
                 control={form.control}
-                render={({ field }) => (
+                render={({field}) => (
                   <FormItem
                     label={
                       <View style={styles.formLabelHeader}>
@@ -142,7 +149,9 @@ const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
                           //   {t('Forgot')}?
                           // </Text>
                           <Text
-                            onPress={() => openWebView('https://w3.lbplus.de/user/password')}
+                            onPress={() =>
+                              openWebView('https://w3.lbplus.de/user/password')
+                            }
                             style={[styles.formLabel, styles.formLabelPrimary]}>
                             {t('Forgot')}?
                           </Text>
@@ -151,7 +160,11 @@ const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
                     }
                     type="password"
                     // error={form.formState.errors.password?.message}
-                    error={form.formState.errors.password?"Bitte geben Sie Ihr Passwort an":null}
+                    error={
+                      form.formState.errors.password
+                        ? 'Bitte geben Sie Ihr Passwort an'
+                        : null
+                    }
                     onChange={field.onChange}
                     onBlur={field.onBlur}
                     value={field.value}
@@ -213,7 +226,9 @@ const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
               // </Text>
               <Text
                 style={[styles.formInfoText, styles.formLabelPrimary]}
-                onPress={() => openWebView('https://w3.lbplus.de/?q=user/register')}>
+                onPress={() =>
+                  openWebView('https://w3.lbplus.de/?q=user/register')
+                }>
                 {t('Register here')} …
               </Text>
             )}
@@ -226,6 +241,13 @@ const AuthScreen = ({ onSubmit }: { onSubmit?: (value: any) => void }) => {
             )}
           </View>
         </View>
+        <Modal transparent={true} visible={modalVisible}>
+          <View style={styles.modal}>
+            <View>
+              <Text>Hello World!</Text>
+            </View>
+          </View>
+        </Modal>
       </View>
     </SafeAreaView>
   );
@@ -270,13 +292,13 @@ function FormItem({
           onChangeText={valueText => onChange?.(valueText)}
           {...(type === 'password' && !showRawText
             ? {
-              secureTextEntry: true,
-              textContentType: 'password',
-            }
+                secureTextEntry: true,
+                textContentType: 'password',
+              }
             : {
-              secureTextEntry: false,
-              // textContentType: 'text',
-            })}
+                secureTextEntry: false,
+                // textContentType: 'text',
+              })}
         />
         {type === 'password' && (
           <Pressable
@@ -414,5 +436,14 @@ const styles = StyleSheet.create({
     color: 'salmon',
     fontWeight: '500',
     marginTop: 4,
+  },
+  modal: {
+    margin: 24,
+    borderRadius: 32,
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  modalImage: {
+    backgroundColor: 'red',
   },
 });

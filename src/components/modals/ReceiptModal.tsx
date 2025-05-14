@@ -325,14 +325,14 @@ const ReceiptModal = ({receipt, visible, onClose, onAction}) => {
                   {amount ? `${amount} €` : '0,00 €'}
                 </Text>
               </View> */}
-              <View style={modalStyles.amountInfo}>
+              {/* <View style={modalStyles.amountInfo}>
                 <Text style={modalStyles.amountInfoText}>
                   {t('Current account balance')}:
                 </Text>
                 <Text style={modalStyles.currentBalance}>
                   {userDetails?.field_balance_current?.und[0]?.value} €
                 </Text>
-              </View>
+              </View> */}
             </View>
           </View>
           <View style={modalStyles.btnContainer}>
