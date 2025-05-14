@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
 import React, {ReactNode, useState} from 'react';
-import {Alert, Image, Modal} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {
   View,
@@ -10,6 +9,8 @@ import {
   TextInput,
   Pressable,
   Linking,
+  Image,
+  Modal,
   SafeAreaView,
 } from 'react-native';
 import {z} from 'zod';
@@ -19,6 +20,7 @@ import userService from '../services/UserService';
 import {useTranslation} from 'react-i18next';
 import {Icons} from '../components/icons';
 import {WebView} from 'react-native-webview';
+import NextButton from '../components/ui/NextButton';
 
 const formSchema = z.object({
   username: z.string(),
@@ -64,6 +66,10 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
 
   const closeWebView = () => {
     setWebViewUri(null);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
   };
 
   if (webViewUri) {
@@ -243,8 +249,50 @@ const AuthScreen = ({onSubmit}: {onSubmit?: (value: any) => void}) => {
         </View>
         <Modal transparent={true} visible={modalVisible}>
           <View style={styles.modal}>
-            <View>
-              <Text>Hello World!</Text>
+            <View style={styles.modalContainer}>
+              <Image
+                source={require('../assets/normal_logo_u16.png')}
+                style={{
+                  width: 120,
+                  height: 66,
+                }}
+                resizeMode="contain"
+              />
+              <Text style={styles.h1}>
+                Hallo & Willkommen bei lifebalance:plus.
+              </Text>
+              <Image
+                source={require('../assets/normal_u17.png')}
+                style={{
+                  width: 66,
+                  height: 12,
+                }}
+                resizeMode="contain"
+              />
+              <Text style={styles.h4}>
+                Mit dieser App verwaltest Du Deine Gesundheitsmaßnahmen ganz
+                einfach digital: Belege hochladen, Budget im Blick behalten,
+                Rückerstattung erhalten. Los geht´s – für Deine Gesundheit:
+              </Text>
+              <NextButton title={'WEITER'} onPress={closeModal} />
+              <Image
+                source={require('../assets/normal_u11.png')}
+                style={{
+                  transform: [{rotate: '70deg'}],
+                  position: 'absolute',
+                  top: 820,
+                  left: -150,
+                }}
+              />
+              <Image
+                source={require('../assets/normal_u14.png')}
+                style={{
+                  transform: [{rotate: '300deg'}],
+                  position: 'absolute',
+                  top: 730,
+                  right: -300,
+                }}
+              />
             </View>
           </View>
         </Modal>
@@ -442,8 +490,49 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     flex: 1,
     backgroundColor: '#ffffff',
+    overflow: 'hidden'
   },
-  modalImage: {
-    backgroundColor: 'red',
+  modalContainer: {
+    paddingHorizontal: 32,
+    paddingVertical: 35,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    gap: 30,
+    flex: 1,
+  },
+  h1: {
+    fontSize: 24,
+    // fontWeight: 'bold',
+    marginBottom: 16,
+    marginTop: 30,
+    color: '#454d66',
+    fontFamily: 'PTSerif-Regular',
+  },
+  h2: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    color: '#454d66',
+  },
+  h3: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 16,
+    marginBottom: 8,
+    color: '#454d66',
+  },
+  h4: {
+    fontSize: 18,
+    marginTop: 16,
+    marginBottom: 8,
+    color: '#454d66',
+    fontFamily: 'OpenSans-Regular',
+    lineHeight: 30,
+  },
+  paragraph: {
+    fontSize: 16,
+    marginBottom: 12,
+    color: '#454d66',
   },
 });
