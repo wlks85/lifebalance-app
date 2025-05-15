@@ -13,6 +13,7 @@ import ServiceCategoryModal from '../modals/ServiceCatModal';
 import ReceiptModal from '../modals/ReceiptModal';
 import {IReceipt} from '../modules/receipt/ReceiptItem';
 import {useTranslation} from 'react-i18next';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 interface AddReceiptFormProps {
   onClose: () => void;
@@ -87,7 +88,11 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
     }
   }, [serviceCategories, setError, setValue]);
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+    <KeyboardAwareScrollView
+      enableOnAndroid={true}
+      extraScrollHeight={20} // adjust as needed
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{flexGrow: 1}}>
       <View style={formStyle.container}>
         <View>
           <Controller
@@ -95,8 +100,12 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
             control={control}
             render={({field}) => (
               <FieldLabel label={t('Name of the service provider')}>
-                <FieldError error={errors.providerName?.message?'Bitte geben Sie einen Dienstleister an':null}>
-                
+                <FieldError
+                  error={
+                    errors.providerName?.message
+                      ? 'Bitte geben Sie einen Dienstleister an'
+                      : null
+                  }>
                   <Input
                     inputType="text"
                     onChange={field.onChange}
@@ -115,7 +124,12 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
             render={({field}) => (
               <FieldLabel label={t('Postal code of the service provider')}>
                 {/* <FieldError error={errors.postCode?.message}> */}
-                <FieldError error={errors.postCode?.message?"Bitte geben Sie eine Postleitzahl an":null}>
+                <FieldError
+                  error={
+                    errors.postCode?.message
+                      ? 'Bitte geben Sie eine Postleitzahl an'
+                      : null
+                  }>
                   <Input
                     inputType="text"
                     onChange={field.onChange}
@@ -167,7 +181,11 @@ const AddReceipt = ({onClose, defaultValue, onSubmit}: AddReceiptFormProps) => {
           postCode: watch('postCode'),
         }}
       />
-    </ScrollView>
+    </KeyboardAwareScrollView>
+
+    // <ScrollView contentContainerStyle={{flexGrow: 1}}>
+
+    // </ScrollView>
   );
 };
 
